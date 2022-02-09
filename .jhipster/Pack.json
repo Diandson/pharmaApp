@@ -1,0 +1,45 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193732",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "pack",
+  "fields": [
+    {
+      "fieldName": "libelle",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "durer",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "valide",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dateRenew",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Pack",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "structure",
+      "otherEntityRelationshipName": "pack",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "typePack",
+      "otherEntityRelationshipName": "pack",
+      "relationshipName": "type",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

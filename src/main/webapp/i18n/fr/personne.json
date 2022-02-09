@@ -1,0 +1,41 @@
+{
+  "appPharmaApp": {
+    "personne": {
+      "home": {
+        "title": "Personnes",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Personne",
+        "createOrEditLabel": "Créer ou éditer un Personne",
+        "notFound": "Aucun Personne trouvé"
+      },
+      "created": "Un nouveau Personne a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Personne avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Personne avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Personne {{ id }} ?"
+      },
+      "detail": {
+        "title": "Personne"
+      },
+      "id": "ID",
+      "nom": "Nom",
+      "prenom": "Prenom",
+      "dataNaissance": "Data Naissance",
+      "lieuNaissance": "Lieu Naissance",
+      "numeroDoc": "Numero Doc",
+      "profil": "Profil",
+      "telephone": "Telephone",
+      "user": "User",
+      "commande": "Commande",
+      "assurance": "Assurance",
+      "vente": "Vente",
+      "fournisseur": "Fournisseur",
+      "client": "Client",
+      "livraison": "Livraison",
+      "inventaire": "Inventaire",
+      "message": "Message",
+      "notification": "Notification",
+      "structure": "Structure"
+    }
+  }
+}

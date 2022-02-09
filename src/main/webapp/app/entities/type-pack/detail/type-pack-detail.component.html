@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="typePack">
+      <h2 data-cy="typePackDetailsHeading"><span jhiTranslate="appPharmaApp.typePack.detail.title">Type Pack</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ typePack.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.typePack.libelle">Libelle</span></dt>
+        <dd>
+          <span>{{ typePack.libelle }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.typePack.durer">Durer</span></dt>
+        <dd>
+          <span>{{ typePack.durer }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.typePack.prix">Prix</span></dt>
+        <dd>
+          <span>{{ typePack.prix }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.typePack.annexe">Annexe</span></dt>
+        <dd>
+          <span>{{ typePack.annexe }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/type-pack', typePack.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

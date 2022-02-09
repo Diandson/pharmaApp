@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208200243",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "approvisionnement_medicament",
+  "fields": [
+    {
+      "fieldName": "quantite",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ApprovisionnementMedicament",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "medicament",
+      "otherEntityRelationshipName": "approvisionnementMedicament",
+      "relationshipName": "medicament",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "approvisionnement",
+      "otherEntityRelationshipName": "approvisionnementMedicament",
+      "relationshipName": "approvionnement",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

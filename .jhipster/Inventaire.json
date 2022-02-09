@@ -1,0 +1,37 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193741",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "inventaire",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateInventaire",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Inventaire",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "inventaireMedicament",
+      "otherEntityRelationshipName": "inventaire",
+      "relationshipName": "inventaireMedicament",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "inventaire",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

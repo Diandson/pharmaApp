@@ -1,0 +1,28 @@
+{
+  "appPharmaApp": {
+    "typePack": {
+      "home": {
+        "title": "TypePacks",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Type Pack",
+        "createOrEditLabel": "Créer ou éditer un Type Pack",
+        "notFound": "Aucun Type Pack trouvé"
+      },
+      "created": "Un nouveau Type Pack a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Type Pack avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Type Pack avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Type Pack {{ id }} ?"
+      },
+      "detail": {
+        "title": "Type Pack"
+      },
+      "id": "ID",
+      "libelle": "Libelle",
+      "durer": "Durer",
+      "prix": "Prix",
+      "annexe": "Annexe",
+      "pack": "Pack"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193733",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "type_pack",
+  "fields": [
+    {
+      "fieldName": "libelle",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "durer",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "prix",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "annexe",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TypePack",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "pack",
+      "otherEntityRelationshipName": "type",
+      "relationshipName": "pack",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

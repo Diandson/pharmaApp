@@ -1,0 +1,236 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-medicament-heading" data-cy="MedicamentCreateUpdateHeading" jhiTranslate="appPharmaApp.medicament.home.createOrEditLabel">
+        Create or edit a Medicament
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.denomination" for="field_denomination"
+            >Denomination</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="denomination"
+            id="field_denomination"
+            data-cy="denomination"
+            formControlName="denomination"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.dci" for="field_dci">Dci</label>
+          <input type="text" class="form-control" name="dci" id="field_dci" data-cy="dci" formControlName="dci" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.forme" for="field_forme">Forme</label>
+          <input type="text" class="form-control" name="forme" id="field_forme" data-cy="forme" formControlName="forme" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.dosage" for="field_dosage">Dosage</label>
+          <input type="text" class="form-control" name="dosage" id="field_dosage" data-cy="dosage" formControlName="dosage" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.classe" for="field_classe">Classe</label>
+          <input type="text" class="form-control" name="classe" id="field_classe" data-cy="classe" formControlName="classe" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.codeBare" for="field_codeBare">Code Bare</label>
+          <input type="text" class="form-control" name="codeBare" id="field_codeBare" data-cy="codeBare" formControlName="codeBare" />
+          <div *ngIf="editForm.get('codeBare')!.invalid && (editForm.get('codeBare')!.dirty || editForm.get('codeBare')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('codeBare')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 5000 }"
+            >
+              This field cannot be longer than 5000 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.prixAchat" for="field_prixAchat">Prix Achat</label>
+          <input type="number" class="form-control" name="prixAchat" id="field_prixAchat" data-cy="prixAchat" formControlName="prixAchat" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.prixPublic" for="field_prixPublic">Prix Public</label>
+          <input
+            type="number"
+            class="form-control"
+            name="prixPublic"
+            id="field_prixPublic"
+            data-cy="prixPublic"
+            formControlName="prixPublic"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.stockAlerte" for="field_stockAlerte">Stock Alerte</label>
+          <input
+            type="number"
+            class="form-control"
+            name="stockAlerte"
+            id="field_stockAlerte"
+            data-cy="stockAlerte"
+            formControlName="stockAlerte"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.stockSecurite" for="field_stockSecurite"
+            >Stock Securite</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="stockSecurite"
+            id="field_stockSecurite"
+            data-cy="stockSecurite"
+            formControlName="stockSecurite"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.stockTheorique" for="field_stockTheorique"
+            >Stock Theorique</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="stockTheorique"
+            id="field_stockTheorique"
+            data-cy="stockTheorique"
+            formControlName="stockTheorique"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.dateFabrication" for="field_dateFabrication"
+            >Date Fabrication</label
+          >
+          <div class="input-group">
+            <input
+              id="field_dateFabrication"
+              data-cy="dateFabrication"
+              type="text"
+              class="form-control"
+              name="dateFabrication"
+              ngbDatepicker
+              #dateFabricationDp="ngbDatepicker"
+              formControlName="dateFabrication"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="dateFabricationDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.dateExpiration" for="field_dateExpiration"
+            >Date Expiration</label
+          >
+          <div class="input-group">
+            <input
+              id="field_dateExpiration"
+              data-cy="dateExpiration"
+              type="text"
+              class="form-control"
+              name="dateExpiration"
+              ngbDatepicker
+              #dateExpirationDp="ngbDatepicker"
+              formControlName="dateExpiration"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="dateExpirationDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.image" for="field_image">Image</label>
+          <div>
+            <div *ngIf="editForm.get('image')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-left"
+                (click)="openFile(editForm.get('image')!.value, editForm.get('imageContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-left">{{ editForm.get('imageContentType')!.value }}, {{ byteSize(editForm.get('image')!.value) }}</span>
+              <button
+                type="button"
+                (click)="editForm.patchValue({ image: null }); editForm.patchValue({ imageContentType: null })"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_image"
+              data-cy="image"
+              (change)="setFileData($event, 'image', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="image" id="field_image" data-cy="image" formControlName="image" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="imageContentType"
+            id="field_imageContentType"
+            formControlName="imageContentType"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.medicament.structure" for="field_structure">Structure</label>
+          <select class="form-control" id="field_structure" data-cy="structure" name="structure" formControlName="structure">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="structureOption.id === editForm.get('structure')!.value?.id ? editForm.get('structure')!.value : structureOption"
+              *ngFor="let structureOption of structuresSharedCollection; trackBy: trackStructureById"
+            >
+              {{ structureOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,237 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-structure-heading" data-cy="StructureCreateUpdateHeading" jhiTranslate="appPharmaApp.structure.home.createOrEditLabel">
+        Create or edit a Structure
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.denomination" for="field_denomination">Denomination</label>
+          <input
+            type="text"
+            class="form-control"
+            name="denomination"
+            id="field_denomination"
+            data-cy="denomination"
+            formControlName="denomination"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.ifu" for="field_ifu">Ifu</label>
+          <input type="text" class="form-control" name="ifu" id="field_ifu" data-cy="ifu" formControlName="ifu" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.rccm" for="field_rccm">Rccm</label>
+          <input type="text" class="form-control" name="rccm" id="field_rccm" data-cy="rccm" formControlName="rccm" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.codePostal" for="field_codePostal">Code Postal</label>
+          <input
+            type="text"
+            class="form-control"
+            name="codePostal"
+            id="field_codePostal"
+            data-cy="codePostal"
+            formControlName="codePostal"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.localisation" for="field_localisation">Localisation</label>
+          <input
+            type="text"
+            class="form-control"
+            name="localisation"
+            id="field_localisation"
+            data-cy="localisation"
+            formControlName="localisation"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.contact" for="field_contact">Contact</label>
+          <input type="text" class="form-control" name="contact" id="field_contact" data-cy="contact" formControlName="contact" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.regime" for="field_regime">Regime</label>
+          <input type="text" class="form-control" name="regime" id="field_regime" data-cy="regime" formControlName="regime" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.division" for="field_division">Division</label>
+          <input type="text" class="form-control" name="division" id="field_division" data-cy="division" formControlName="division" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.email" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.logo" for="field_logo">Logo</label>
+          <div>
+            <div *ngIf="editForm.get('logo')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-left"
+                (click)="openFile(editForm.get('logo')!.value, editForm.get('logoContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-left">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span>
+              <button
+                type="button"
+                (click)="editForm.patchValue({ logo: null }); editForm.patchValue({ logoContentType: null })"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_logo"
+              data-cy="logo"
+              (change)="setFileData($event, 'logo', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
+          <input type="hidden" class="form-control" name="logoContentType" id="field_logoContentType" formControlName="logoContentType" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.cachet" for="field_cachet">Cachet</label>
+          <div>
+            <div *ngIf="editForm.get('cachet')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-left"
+                (click)="openFile(editForm.get('cachet')!.value, editForm.get('cachetContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-left">{{ editForm.get('cachetContentType')!.value }}, {{ byteSize(editForm.get('cachet')!.value) }}</span>
+              <button
+                type="button"
+                (click)="editForm.patchValue({ cachet: null }); editForm.patchValue({ cachetContentType: null })"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_cachet"
+              data-cy="cachet"
+              (change)="setFileData($event, 'cachet', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="cachet" id="field_cachet" data-cy="cachet" formControlName="cachet" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="cachetContentType"
+            id="field_cachetContentType"
+            formControlName="cachetContentType"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.signature" for="field_signature">Signature</label>
+          <div>
+            <div *ngIf="editForm.get('signature')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-left"
+                (click)="openFile(editForm.get('signature')!.value, editForm.get('signatureContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-left"
+                >{{ editForm.get('signatureContentType')!.value }}, {{ byteSize(editForm.get('signature')!.value) }}</span
+              >
+              <button
+                type="button"
+                (click)="editForm.patchValue({ signature: null }); editForm.patchValue({ signatureContentType: null })"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_signature"
+              data-cy="signature"
+              (change)="setFileData($event, 'signature', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="signature" id="field_signature" data-cy="signature" formControlName="signature" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="signatureContentType"
+            id="field_signatureContentType"
+            formControlName="signatureContentType"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.dateConfig" for="field_dateConfig">Date Config</label>
+          <div class="d-flex">
+            <input
+              id="field_dateConfig"
+              data-cy="dateConfig"
+              type="datetime-local"
+              class="form-control"
+              name="dateConfig"
+              formControlName="dateConfig"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.pdg" for="field_pdg">Pdg</label>
+          <input type="text" class="form-control" name="pdg" id="field_pdg" data-cy="pdg" formControlName="pdg" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.type" for="field_type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'appPharmaApp.TypeStructure.null' | translate }}</option>
+            <option *ngFor="let typeStructure of typeStructureValues" [value]="typeStructure">
+              {{ 'appPharmaApp.TypeStructure.' + typeStructure | translate }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193745",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "message",
+  "fields": [
+    {
+      "fieldName": "message",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateMessage",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "to",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "vue",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Message",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "message",
+      "relationshipName": "from",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

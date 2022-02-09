@@ -1,0 +1,45 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193743",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "client",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "prenom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "telephone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numeroAssure",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Client",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "assurance",
+      "otherEntityRelationshipName": "client",
+      "relationshipName": "assurance",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "client",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

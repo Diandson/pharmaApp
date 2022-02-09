@@ -1,0 +1,154 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-personne-heading" data-cy="PersonneCreateUpdateHeading" jhiTranslate="appPharmaApp.personne.home.createOrEditLabel">
+        Create or edit a Personne
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.nom" for="field_nom">Nom</label>
+          <input type="text" class="form-control" name="nom" id="field_nom" data-cy="nom" formControlName="nom" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.prenom" for="field_prenom">Prenom</label>
+          <input type="text" class="form-control" name="prenom" id="field_prenom" data-cy="prenom" formControlName="prenom" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.dataNaissance" for="field_dataNaissance"
+            >Data Naissance</label
+          >
+          <div class="input-group">
+            <input
+              id="field_dataNaissance"
+              data-cy="dataNaissance"
+              type="text"
+              class="form-control"
+              name="dataNaissance"
+              ngbDatepicker
+              #dataNaissanceDp="ngbDatepicker"
+              formControlName="dataNaissance"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="dataNaissanceDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.lieuNaissance" for="field_lieuNaissance"
+            >Lieu Naissance</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="lieuNaissance"
+            id="field_lieuNaissance"
+            data-cy="lieuNaissance"
+            formControlName="lieuNaissance"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.numeroDoc" for="field_numeroDoc">Numero Doc</label>
+          <input type="text" class="form-control" name="numeroDoc" id="field_numeroDoc" data-cy="numeroDoc" formControlName="numeroDoc" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.profil" for="field_profil">Profil</label>
+          <div>
+            <div *ngIf="editForm.get('profil')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-left"
+                (click)="openFile(editForm.get('profil')!.value, editForm.get('profilContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-left">{{ editForm.get('profilContentType')!.value }}, {{ byteSize(editForm.get('profil')!.value) }}</span>
+              <button
+                type="button"
+                (click)="editForm.patchValue({ profil: null }); editForm.patchValue({ profilContentType: null })"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_profil"
+              data-cy="profil"
+              (change)="setFileData($event, 'profil', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="profil" id="field_profil" data-cy="profil" formControlName="profil" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="profilContentType"
+            id="field_profilContentType"
+            formControlName="profilContentType"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.telephone" for="field_telephone">Telephone</label>
+          <input type="text" class="form-control" name="telephone" id="field_telephone" data-cy="telephone" formControlName="telephone" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.user" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.personne.structure" for="field_structure">Structure</label>
+          <select class="form-control" id="field_structure" data-cy="structure" name="structure" formControlName="structure">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="structureOption.id === editForm.get('structure')!.value?.id ? editForm.get('structure')!.value : structureOption"
+              *ngFor="let structureOption of structuresSharedCollection; trackBy: trackStructureById"
+            >
+              {{ structureOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

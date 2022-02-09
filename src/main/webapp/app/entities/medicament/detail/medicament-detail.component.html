@@ -1,0 +1,93 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="medicament">
+      <h2 data-cy="medicamentDetailsHeading"><span jhiTranslate="appPharmaApp.medicament.detail.title">Medicament</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ medicament.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.denomination">Denomination</span></dt>
+        <dd>
+          <span>{{ medicament.denomination }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.dci">Dci</span></dt>
+        <dd>
+          <span>{{ medicament.dci }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.forme">Forme</span></dt>
+        <dd>
+          <span>{{ medicament.forme }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.dosage">Dosage</span></dt>
+        <dd>
+          <span>{{ medicament.dosage }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.classe">Classe</span></dt>
+        <dd>
+          <span>{{ medicament.classe }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.codeBare">Code Bare</span></dt>
+        <dd>
+          <span>{{ medicament.codeBare }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.prixAchat">Prix Achat</span></dt>
+        <dd>
+          <span>{{ medicament.prixAchat }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.prixPublic">Prix Public</span></dt>
+        <dd>
+          <span>{{ medicament.prixPublic }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.stockAlerte">Stock Alerte</span></dt>
+        <dd>
+          <span>{{ medicament.stockAlerte }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.stockSecurite">Stock Securite</span></dt>
+        <dd>
+          <span>{{ medicament.stockSecurite }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.stockTheorique">Stock Theorique</span></dt>
+        <dd>
+          <span>{{ medicament.stockTheorique }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.dateFabrication">Date Fabrication</span></dt>
+        <dd>
+          <span>{{ medicament.dateFabrication | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.dateExpiration">Date Expiration</span></dt>
+        <dd>
+          <span>{{ medicament.dateExpiration | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.image">Image</span></dt>
+        <dd>
+          <div *ngIf="medicament.image">
+            <a (click)="openFile(medicament.image, medicament.imageContentType)" jhiTranslate="entity.action.open">open</a>
+            {{ medicament.imageContentType }}, {{ byteSize(medicament.image) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.medicament.structure">Structure</span></dt>
+        <dd>
+          <div *ngIf="medicament.structure">
+            <a [routerLink]="['/structure', medicament.structure?.id, 'view']">{{ medicament.structure?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/medicament', medicament.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

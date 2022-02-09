@@ -1,0 +1,69 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="personne">
+      <h2 data-cy="personneDetailsHeading"><span jhiTranslate="appPharmaApp.personne.detail.title">Personne</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ personne.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.nom">Nom</span></dt>
+        <dd>
+          <span>{{ personne.nom }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.prenom">Prenom</span></dt>
+        <dd>
+          <span>{{ personne.prenom }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.dataNaissance">Data Naissance</span></dt>
+        <dd>
+          <span>{{ personne.dataNaissance | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.lieuNaissance">Lieu Naissance</span></dt>
+        <dd>
+          <span>{{ personne.lieuNaissance }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.numeroDoc">Numero Doc</span></dt>
+        <dd>
+          <span>{{ personne.numeroDoc }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.profil">Profil</span></dt>
+        <dd>
+          <div *ngIf="personne.profil">
+            <a (click)="openFile(personne.profil, personne.profilContentType)" jhiTranslate="entity.action.open">open</a>
+            {{ personne.profilContentType }}, {{ byteSize(personne.profil) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.telephone">Telephone</span></dt>
+        <dd>
+          <span>{{ personne.telephone }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.user">User</span></dt>
+        <dd>
+          <span>{{ personne.user?.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.personne.structure">Structure</span></dt>
+        <dd>
+          <div *ngIf="personne.structure">
+            <a [routerLink]="['/structure', personne.structure?.id, 'view']">{{ personne.structure?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/personne', personne.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

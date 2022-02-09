@@ -1,13 +1,24 @@
-<jhi-page-ribbon></jhi-page-ribbon>
+<!--<jhi-page-ribbon></jhi-page-ribbon>-->
 
-<div>
-  <router-outlet name="navbar"></router-outlet>
-</div>
+<!--<div>-->
+<!--  <router-outlet name="navbar"></router-outlet>-->
+<!--</div>-->
 
-<div class="container-fluid">
-  <div class="card jh-card">
+<!--<div class="container-fluid">-->
+<!--  <div class="card jh-card">-->
+<!--    <router-outlet></router-outlet>-->
+<!--  </div>-->
+
+<!--  <jhi-footer></jhi-footer>-->
+<!--</div>-->
+
+<nb-layout windowMode>
+  <nb-layout-header>
+    <router-outlet name="navbar"></router-outlet>
+  </nb-layout-header>
+  <nb-layout-column>
     <router-outlet></router-outlet>
-  </div>
+  </nb-layout-column>
+</nb-layout>
 
-  <jhi-footer></jhi-footer>
-</div>
+<nz-layout [hidden]="true"></nz-layout>

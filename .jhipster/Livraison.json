@@ -1,0 +1,38 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193737",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "livraison",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateLivraison",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Livraison",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "livraison",
+      "ownerSide": false,
+      "relationshipName": "commande",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "livraison",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

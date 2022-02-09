@@ -1,0 +1,10 @@
+{
+  "appPharmaApp": {
+    "TypeStructure": {
+      "null": "",
+      "SIEGE": "SIEGE",
+      "AGENCE": "AGENCE",
+      "MAGASIN": "MAGASIN"
+    }
+  }
+}

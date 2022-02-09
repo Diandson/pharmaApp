@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="pack">
+      <h2 data-cy="packDetailsHeading"><span jhiTranslate="appPharmaApp.pack.detail.title">Pack</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ pack.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.pack.libelle">Libelle</span></dt>
+        <dd>
+          <span>{{ pack.libelle }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.pack.durer">Durer</span></dt>
+        <dd>
+          <span>{{ pack.durer }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.pack.valide">Valide</span></dt>
+        <dd>
+          <span>{{ pack.valide }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.pack.dateRenew">Date Renew</span></dt>
+        <dd>
+          <span>{{ pack.dateRenew | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.pack.operateur">Operateur</span></dt>
+        <dd>
+          <div *ngIf="pack.operateur">
+            <a [routerLink]="['/structure', pack.operateur?.id, 'view']">{{ pack.operateur?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.pack.type">Type</span></dt>
+        <dd>
+          <div *ngIf="pack.type">
+            <a [routerLink]="['/type-pack', pack.type?.id, 'view']">{{ pack.type?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/pack', pack.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

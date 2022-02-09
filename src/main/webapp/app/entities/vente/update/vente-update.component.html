@@ -1,0 +1,115 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-vente-heading" data-cy="VenteCreateUpdateHeading" jhiTranslate="appPharmaApp.vente.home.createOrEditLabel">
+        Create or edit a Vente
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.numero" for="field_numero">Numero</label>
+          <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.dateVente" for="field_dateVente">Date Vente</label>
+          <div class="d-flex">
+            <input
+              id="field_dateVente"
+              data-cy="dateVente"
+              type="datetime-local"
+              class="form-control"
+              name="dateVente"
+              formControlName="dateVente"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.montant" for="field_montant">Montant</label>
+          <input type="number" class="form-control" name="montant" id="field_montant" data-cy="montant" formControlName="montant" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.montantAssurance" for="field_montantAssurance"
+            >Montant Assurance</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="montantAssurance"
+            id="field_montantAssurance"
+            data-cy="montantAssurance"
+            formControlName="montantAssurance"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.sommeDonne" for="field_sommeDonne">Somme Donne</label>
+          <input
+            type="number"
+            class="form-control"
+            name="sommeDonne"
+            id="field_sommeDonne"
+            data-cy="sommeDonne"
+            formControlName="sommeDonne"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.sommeRendu" for="field_sommeRendu">Somme Rendu</label>
+          <input
+            type="number"
+            class="form-control"
+            name="sommeRendu"
+            id="field_sommeRendu"
+            data-cy="sommeRendu"
+            formControlName="sommeRendu"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.avoir" for="field_avoir">Avoir</label>
+          <input type="number" class="form-control" name="avoir" id="field_avoir" data-cy="avoir" formControlName="avoir" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.vente.operateur" for="field_operateur">Operateur</label>
+          <select class="form-control" id="field_operateur" data-cy="operateur" name="operateur" formControlName="operateur">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="personneOption.id === editForm.get('operateur')!.value?.id ? editForm.get('operateur')!.value : personneOption"
+              *ngFor="let personneOption of personnesSharedCollection; trackBy: trackPersonneById"
+            >
+              {{ personneOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

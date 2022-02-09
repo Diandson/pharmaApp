@@ -1,0 +1,27 @@
+{
+  "appPharmaApp": {
+    "inventaire": {
+      "home": {
+        "title": "Inventaires",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Inventaire",
+        "createOrEditLabel": "Créer ou éditer un Inventaire",
+        "notFound": "Aucun Inventaire trouvé"
+      },
+      "created": "Un nouveau Inventaire a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Inventaire avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Inventaire avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Inventaire {{ id }} ?"
+      },
+      "detail": {
+        "title": "Inventaire"
+      },
+      "id": "ID",
+      "numero": "Numero",
+      "dateInventaire": "Date Inventaire",
+      "inventaireMedicament": "Inventaire Medicament",
+      "operateur": "Operateur"
+    }
+  }
+}

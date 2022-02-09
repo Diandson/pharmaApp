@@ -1,0 +1,26 @@
+{
+  "appPharmaApp": {
+    "commandeMedicament": {
+      "home": {
+        "title": "CommandeMedicaments",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Commande Medicament",
+        "createOrEditLabel": "Créer ou éditer un Commande Medicament",
+        "notFound": "Aucun Commande Medicament trouvé"
+      },
+      "created": "Un nouveau Commande Medicament a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Commande Medicament avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Commande Medicament avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Commande Medicament {{ id }} ?"
+      },
+      "detail": {
+        "title": "Commande Medicament"
+      },
+      "id": "ID",
+      "quantite": "Quantite",
+      "medicament": "Medicament",
+      "commande": "Commande"
+    }
+  }
+}

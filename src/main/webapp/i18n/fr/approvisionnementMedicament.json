@@ -1,0 +1,26 @@
+{
+  "appPharmaApp": {
+    "approvisionnementMedicament": {
+      "home": {
+        "title": "ApprovisionnementMedicaments",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Approvisionnement Medicament",
+        "createOrEditLabel": "Créer ou éditer un Approvisionnement Medicament",
+        "notFound": "Aucun Approvisionnement Medicament trouvé"
+      },
+      "created": "Un nouveau Approvisionnement Medicament a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Approvisionnement Medicament avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Approvisionnement Medicament avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Approvisionnement Medicament {{ id }} ?"
+      },
+      "detail": {
+        "title": "Approvisionnement Medicament"
+      },
+      "id": "ID",
+      "quantite": "Quantite",
+      "medicament": "Medicament",
+      "approvionnement": "Approvionnement"
+    }
+  }
+}

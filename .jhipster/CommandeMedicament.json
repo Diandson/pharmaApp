@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193735",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "commande_medicament",
+  "fields": [
+    {
+      "fieldName": "quantite",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "CommandeMedicament",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "medicament",
+      "otherEntityRelationshipName": "commandeMedicament",
+      "relationshipName": "medicament",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "commandeMedicament",
+      "relationshipName": "commande",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

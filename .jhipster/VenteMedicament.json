@@ -1,0 +1,37 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193739",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "vente_medicament",
+  "fields": [
+    {
+      "fieldName": "quantite",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "VenteMedicament",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "medicament",
+      "otherEntityRelationshipName": "venteMedicament",
+      "relationshipName": "medicament",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "vente",
+      "otherEntityRelationshipName": "venteMedicament",
+      "relationshipName": "vente",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

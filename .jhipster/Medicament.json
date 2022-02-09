@@ -1,0 +1,82 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193730",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "medicament",
+  "fields": [
+    {
+      "fieldName": "denomination",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dci",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "forme",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dosage",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "classe",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "codeBare",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "5000"
+    },
+    {
+      "fieldName": "prixAchat",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "prixPublic",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "stockAlerte",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "stockSecurite",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "stockTheorique",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "dateFabrication",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "dateExpiration",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Medicament",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "structure",
+      "otherEntityRelationshipName": "medicament",
+      "relationshipName": "structure",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

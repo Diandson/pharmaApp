@@ -1,0 +1,27 @@
+{
+  "appPharmaApp": {
+    "venteMedicament": {
+      "home": {
+        "title": "VenteMedicaments",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Vente Medicament",
+        "createOrEditLabel": "Créer ou éditer un Vente Medicament",
+        "notFound": "Aucun Vente Medicament trouvé"
+      },
+      "created": "Un nouveau Vente Medicament a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Vente Medicament avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Vente Medicament avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Vente Medicament {{ id }} ?"
+      },
+      "detail": {
+        "title": "Vente Medicament"
+      },
+      "id": "ID",
+      "quantite": "Quantite",
+      "montant": "Montant",
+      "medicament": "Medicament",
+      "vente": "Vente"
+    }
+  }
+}

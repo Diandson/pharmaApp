@@ -15,7 +15,42 @@
     <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193729_added_entity_Structure.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193730_added_entity_Medicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193731_added_entity_Personne.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193732_added_entity_Pack.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193733_added_entity_TypePack.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193734_added_entity_Commande.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193735_added_entity_CommandeMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193736_added_entity_Assurance.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193737_added_entity_Livraison.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193738_added_entity_Vente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193739_added_entity_VenteMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193740_added_entity_Fournisseur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193741_added_entity_Inventaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193742_added_entity_InventaireMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193743_added_entity_Client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193744_added_entity_Notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193745_added_entity_Message.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208200242_added_entity_Approvisionnement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208200243_added_entity_ApprovisionnementMedicament.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20220208193730_added_entity_constraints_Medicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193731_added_entity_constraints_Personne.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193732_added_entity_constraints_Pack.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193734_added_entity_constraints_Commande.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193735_added_entity_constraints_CommandeMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193736_added_entity_constraints_Assurance.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193737_added_entity_constraints_Livraison.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193738_added_entity_constraints_Vente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193739_added_entity_constraints_VenteMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193740_added_entity_constraints_Fournisseur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193741_added_entity_constraints_Inventaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193742_added_entity_constraints_InventaireMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193743_added_entity_constraints_Client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193744_added_entity_constraints_Notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208193745_added_entity_constraints_Message.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220208200243_added_entity_constraints_ApprovisionnementMedicament.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

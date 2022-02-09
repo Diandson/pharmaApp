@@ -1,0 +1,29 @@
+{
+  "appPharmaApp": {
+    "pack": {
+      "home": {
+        "title": "Packs",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Pack",
+        "createOrEditLabel": "Créer ou éditer un Pack",
+        "notFound": "Aucun Pack trouvé"
+      },
+      "created": "Un nouveau Pack a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Pack avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Pack avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Pack {{ id }} ?"
+      },
+      "detail": {
+        "title": "Pack"
+      },
+      "id": "ID",
+      "libelle": "Libelle",
+      "durer": "Durer",
+      "valide": "Valide",
+      "dateRenew": "Date Renew",
+      "operateur": "Operateur",
+      "type": "Type"
+    }
+  }
+}

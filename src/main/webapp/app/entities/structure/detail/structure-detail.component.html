@@ -1,0 +1,97 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="structure">
+      <h2 data-cy="structureDetailsHeading"><span jhiTranslate="appPharmaApp.structure.detail.title">Structure</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ structure.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.denomination">Denomination</span></dt>
+        <dd>
+          <span>{{ structure.denomination }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.ifu">Ifu</span></dt>
+        <dd>
+          <span>{{ structure.ifu }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.rccm">Rccm</span></dt>
+        <dd>
+          <span>{{ structure.rccm }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.codePostal">Code Postal</span></dt>
+        <dd>
+          <span>{{ structure.codePostal }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.localisation">Localisation</span></dt>
+        <dd>
+          <span>{{ structure.localisation }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.contact">Contact</span></dt>
+        <dd>
+          <span>{{ structure.contact }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.regime">Regime</span></dt>
+        <dd>
+          <span>{{ structure.regime }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.division">Division</span></dt>
+        <dd>
+          <span>{{ structure.division }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.email">Email</span></dt>
+        <dd>
+          <span>{{ structure.email }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.logo">Logo</span></dt>
+        <dd>
+          <div *ngIf="structure.logo">
+            <a (click)="openFile(structure.logo, structure.logoContentType)" jhiTranslate="entity.action.open">open</a>
+            {{ structure.logoContentType }}, {{ byteSize(structure.logo) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.cachet">Cachet</span></dt>
+        <dd>
+          <div *ngIf="structure.cachet">
+            <a (click)="openFile(structure.cachet, structure.cachetContentType)" jhiTranslate="entity.action.open">open</a>
+            {{ structure.cachetContentType }}, {{ byteSize(structure.cachet) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.signature">Signature</span></dt>
+        <dd>
+          <div *ngIf="structure.signature">
+            <a (click)="openFile(structure.signature, structure.signatureContentType)" jhiTranslate="entity.action.open">open</a>
+            {{ structure.signatureContentType }}, {{ byteSize(structure.signature) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.dateConfig">Date Config</span></dt>
+        <dd>
+          <span>{{ structure.dateConfig | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.pdg">Pdg</span></dt>
+        <dd>
+          <span>{{ structure.pdg }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.structure.type">Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'appPharmaApp.TypeStructure.' + structure.type }}">{{ structure.type }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/structure', structure.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

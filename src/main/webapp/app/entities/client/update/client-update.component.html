@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-client-heading" data-cy="ClientCreateUpdateHeading" jhiTranslate="appPharmaApp.client.home.createOrEditLabel">
+        Create or edit a Client
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.client.nom" for="field_nom">Nom</label>
+          <input type="text" class="form-control" name="nom" id="field_nom" data-cy="nom" formControlName="nom" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.client.prenom" for="field_prenom">Prenom</label>
+          <input type="text" class="form-control" name="prenom" id="field_prenom" data-cy="prenom" formControlName="prenom" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.client.telephone" for="field_telephone">Telephone</label>
+          <input type="text" class="form-control" name="telephone" id="field_telephone" data-cy="telephone" formControlName="telephone" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.client.numeroAssure" for="field_numeroAssure">Numero Assure</label>
+          <input
+            type="text"
+            class="form-control"
+            name="numeroAssure"
+            id="field_numeroAssure"
+            data-cy="numeroAssure"
+            formControlName="numeroAssure"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.client.assurance" for="field_assurance">Assurance</label>
+          <select class="form-control" id="field_assurance" data-cy="assurance" name="assurance" formControlName="assurance">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="assuranceOption.id === editForm.get('assurance')!.value?.id ? editForm.get('assurance')!.value : assuranceOption"
+              *ngFor="let assuranceOption of assurancesSharedCollection; trackBy: trackAssuranceById"
+            >
+              {{ assuranceOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.client.operateur" for="field_operateur">Operateur</label>
+          <select class="form-control" id="field_operateur" data-cy="operateur" name="operateur" formControlName="operateur">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="personneOption.id === editForm.get('operateur')!.value?.id ? editForm.get('operateur')!.value : personneOption"
+              *ngFor="let personneOption of personnesSharedCollection; trackBy: trackPersonneById"
+            >
+              {{ personneOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

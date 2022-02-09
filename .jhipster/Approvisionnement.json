@@ -1,0 +1,39 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208200242",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "approvisionnement",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "agenceApp",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "commentaire",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateCommande",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Approvisionnement",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "approvisionnementMedicament",
+      "otherEntityRelationshipName": "approvionnement",
+      "relationshipName": "approvisionnementMedicament",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

@@ -1,0 +1,49 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193742",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "inventaire_medicament",
+  "fields": [
+    {
+      "fieldName": "stockTheorique",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "stockPhysique",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "stockDifferent",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "dateFabrication",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "dateExpiration",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "InventaireMedicament",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "medicament",
+      "otherEntityRelationshipName": "inventaireMedicament",
+      "relationshipName": "medicament",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "inventaire",
+      "otherEntityRelationshipName": "inventaireMedicament",
+      "relationshipName": "inventaire",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

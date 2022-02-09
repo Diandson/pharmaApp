@@ -1,0 +1,183 @@
+
+entity Structure {
+	denomination String
+    ifu String
+    rccm String
+    codePostal String
+    localisation String
+    contact String
+    regime String
+    division String
+    email String
+    logo Blob
+    cachet Blob
+    signature Blob
+    dateConfig ZonedDateTime
+    pdg String
+    type TypeStructure
+}
+entity Medicament {
+	denomination String
+    dci String
+    forme String
+    dosage String
+    classe String
+    codeBare String maxlength(5000)
+    prixAchat Long
+    prixPublic Long
+    stockAlerte Long
+    stockSecurite Long
+    stockTheorique Long
+    dateFabrication LocalDate
+    dateExpiration LocalDate
+    image Blob
+}
+
+entity Personne {
+	nom String
+    prenom String
+    dataNaissance LocalDate
+    lieuNaissance String
+    numeroDoc String
+    profil Blob
+    telephone String
+}
+
+entity Pack {
+	libelle String
+    durer Long
+    valide Boolean
+    dateRenew ZonedDateTime
+}
+entity TypePack {
+	libelle String
+    durer Long
+    prix Long
+    annexe Long
+}
+
+entity Commande {
+	numero String
+	dateCommande ZonedDateTime
+}
+entity CommandeMedicament{
+	quantite Long
+}
+entity Approvisionnement {
+	numero String
+	agenceApp String
+	commentaire String
+	dateCommande ZonedDateTime
+}
+entity ApprovisionnementMedicament{
+	quantite Long
+
+}
+entity Assurance {
+	libelle String required
+    taux Long
+    email String
+}
+entity Livraison{
+	numero String
+    dateLivraison ZonedDateTime
+}
+
+entity Vente {
+	numero String
+	dateVente ZonedDateTime
+    montant Long
+    montantAssurance Long
+    sommeDonne Long
+    sommeRendu Long
+    avoir Long
+}
+entity VenteMedicament {
+	quantite Long
+	montant String
+}
+entity Fournisseur{
+	libelle String
+    email String
+}
+entity Inventaire{
+	numero String
+    dateInventaire String
+}
+entity InventaireMedicament{
+	stockTheorique Long
+    stockPhysique Long
+    stockDifferent Long
+    dateFabrication LocalDate
+    dateExpiration LocalDate
+}
+
+enum TypeStructure {
+	SIEGE,
+    AGENCE,
+    MAGASIN
+}
+
+entity Client {
+	Nom String
+	prenom String
+	telephone String
+    numeroAssure String
+}
+entity Notification{
+	titre String
+    content String
+    dateNotif ZonedDateTime
+    vue Boolean
+}
+
+entity Message{
+	message String
+    dateMessage ZonedDateTime
+    to String
+    vue Boolean
+}
+
+relationship OneToOne {
+	Personne{user} to User
+    Commande{livraison} to Livraison{commande}
+    Commande{fournisseur} to Fournisseur
+}
+
+relationship OneToMany {
+	Personne to Commande{operateur}
+    Personne to Assurance{operateur}
+    Personne to Vente{operateur}
+    Personne to Fournisseur{operateur}
+    Structure to Pack{operateur}
+    Personne to Client{operateur}
+    Personne to Livraison{operateur}
+    Personne to Inventaire{operateur}
+    Personne to Message{from}
+    Personne to Notification{operateur}
+    Structure to Medicament{structure}
+    Commande to CommandeMedicament{commande}
+    Approvisionnement to ApprovisionnementMedicament{approvionnement}
+    Inventaire to InventaireMedicament{inventaire}
+    Vente to VenteMedicament{vente}
+    Structure to Personne{structure}
+    TypePack to Pack{type}
+}
+
+relationship ManyToOne {
+	CommandeMedicament{medicament} to Medicament
+	ApprovisionnementMedicament{medicament} to Medicament
+    VenteMedicament{medicament} to Medicament
+    InventaireMedicament{medicament} to Medicament
+    Client{assurance} to Assurance
+}
+
+
+// Set pagination options
+paginate * with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service * with serviceClass

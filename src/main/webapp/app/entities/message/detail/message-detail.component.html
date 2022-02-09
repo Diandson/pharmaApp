@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="message">
+      <h2 data-cy="messageDetailsHeading"><span jhiTranslate="appPharmaApp.message.detail.title">Message</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ message.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.message.message">Message</span></dt>
+        <dd>
+          <span>{{ message.message }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.message.dateMessage">Date Message</span></dt>
+        <dd>
+          <span>{{ message.dateMessage | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.message.to">To</span></dt>
+        <dd>
+          <span>{{ message.to }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.message.vue">Vue</span></dt>
+        <dd>
+          <span>{{ message.vue }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.message.from">From</span></dt>
+        <dd>
+          <div *ngIf="message.from">
+            <a [routerLink]="['/personne', message.from?.id, 'view']">{{ message.from?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/message', message.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

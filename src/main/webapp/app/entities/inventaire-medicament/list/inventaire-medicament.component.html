@@ -1,0 +1,130 @@
+<div>
+  <h2 id="page-heading" data-cy="InventaireMedicamentHeading">
+    <span jhiTranslate="appPharmaApp.inventaireMedicament.home.title">Inventaire Medicaments</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appPharmaApp.inventaireMedicament.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-inventaire-medicament"
+        [routerLink]="['/inventaire-medicament/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appPharmaApp.inventaireMedicament.home.createLabel"> Create a new Inventaire Medicament </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="inventaireMedicaments?.length === 0">
+    <span jhiTranslate="appPharmaApp.inventaireMedicament.home.notFound">No inventaireMedicaments found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="inventaireMedicaments && inventaireMedicaments.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="stockTheorique">
+            <span jhiTranslate="appPharmaApp.inventaireMedicament.stockTheorique">Stock Theorique</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="stockPhysique">
+            <span jhiTranslate="appPharmaApp.inventaireMedicament.stockPhysique">Stock Physique</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="stockDifferent">
+            <span jhiTranslate="appPharmaApp.inventaireMedicament.stockDifferent">Stock Different</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="dateFabrication">
+            <span jhiTranslate="appPharmaApp.inventaireMedicament.dateFabrication">Date Fabrication</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="dateExpiration">
+            <span jhiTranslate="appPharmaApp.inventaireMedicament.dateExpiration">Date Expiration</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="medicament.id">
+            <span jhiTranslate="appPharmaApp.inventaireMedicament.medicament">Medicament</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="inventaire.id">
+            <span jhiTranslate="appPharmaApp.inventaireMedicament.inventaire">Inventaire</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inventaireMedicament of inventaireMedicaments; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/inventaire-medicament', inventaireMedicament.id, 'view']">{{ inventaireMedicament.id }}</a>
+          </td>
+          <td>{{ inventaireMedicament.stockTheorique }}</td>
+          <td>{{ inventaireMedicament.stockPhysique }}</td>
+          <td>{{ inventaireMedicament.stockDifferent }}</td>
+          <td>{{ inventaireMedicament.dateFabrication | formatMediumDate }}</td>
+          <td>{{ inventaireMedicament.dateExpiration | formatMediumDate }}</td>
+          <td>
+            <div *ngIf="inventaireMedicament.medicament">
+              <a [routerLink]="['/medicament', inventaireMedicament.medicament?.id, 'view']">{{ inventaireMedicament.medicament?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="inventaireMedicament.inventaire">
+              <a [routerLink]="['/inventaire', inventaireMedicament.inventaire?.id, 'view']">{{ inventaireMedicament.inventaire?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/inventaire-medicament', inventaireMedicament.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/inventaire-medicament', inventaireMedicament.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(inventaireMedicament)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="inventaireMedicaments && inventaireMedicaments.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

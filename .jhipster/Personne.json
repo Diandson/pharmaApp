@@ -1,0 +1,113 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193731",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "personne",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "prenom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dataNaissance",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "lieuNaissance",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numeroDoc",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "profil",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "telephone",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Personne",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "personne",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "commande",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "assurance",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "assurance",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "vente",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "vente",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "fournisseur",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "fournisseur",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "client",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "livraison",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "livraison",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "inventaire",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "inventaire",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "message",
+      "otherEntityRelationshipName": "from",
+      "relationshipName": "message",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "notification",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "notification",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "structure",
+      "otherEntityRelationshipName": "personne",
+      "relationshipName": "structure",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

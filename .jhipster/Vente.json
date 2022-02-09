@@ -1,0 +1,57 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193738",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "vente",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateVente",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "montantAssurance",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "sommeDonne",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "sommeRendu",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "avoir",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Vente",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "venteMedicament",
+      "otherEntityRelationshipName": "vente",
+      "relationshipName": "venteMedicament",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "vente",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

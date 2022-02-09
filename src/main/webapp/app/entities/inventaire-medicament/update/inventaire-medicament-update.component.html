@@ -1,0 +1,160 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-inventaire-medicament-heading"
+        data-cy="InventaireMedicamentCreateUpdateHeading"
+        jhiTranslate="appPharmaApp.inventaireMedicament.home.createOrEditLabel"
+      >
+        Create or edit a Inventaire Medicament
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.inventaireMedicament.stockTheorique" for="field_stockTheorique"
+            >Stock Theorique</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="stockTheorique"
+            id="field_stockTheorique"
+            data-cy="stockTheorique"
+            formControlName="stockTheorique"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.inventaireMedicament.stockPhysique" for="field_stockPhysique"
+            >Stock Physique</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="stockPhysique"
+            id="field_stockPhysique"
+            data-cy="stockPhysique"
+            formControlName="stockPhysique"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.inventaireMedicament.stockDifferent" for="field_stockDifferent"
+            >Stock Different</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="stockDifferent"
+            id="field_stockDifferent"
+            data-cy="stockDifferent"
+            formControlName="stockDifferent"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.inventaireMedicament.dateFabrication" for="field_dateFabrication"
+            >Date Fabrication</label
+          >
+          <div class="input-group">
+            <input
+              id="field_dateFabrication"
+              data-cy="dateFabrication"
+              type="text"
+              class="form-control"
+              name="dateFabrication"
+              ngbDatepicker
+              #dateFabricationDp="ngbDatepicker"
+              formControlName="dateFabrication"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="dateFabricationDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.inventaireMedicament.dateExpiration" for="field_dateExpiration"
+            >Date Expiration</label
+          >
+          <div class="input-group">
+            <input
+              id="field_dateExpiration"
+              data-cy="dateExpiration"
+              type="text"
+              class="form-control"
+              name="dateExpiration"
+              ngbDatepicker
+              #dateExpirationDp="ngbDatepicker"
+              formControlName="dateExpiration"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="dateExpirationDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.inventaireMedicament.medicament" for="field_medicament"
+            >Medicament</label
+          >
+          <select class="form-control" id="field_medicament" data-cy="medicament" name="medicament" formControlName="medicament">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                medicamentOption.id === editForm.get('medicament')!.value?.id ? editForm.get('medicament')!.value : medicamentOption
+              "
+              *ngFor="let medicamentOption of medicamentsSharedCollection; trackBy: trackMedicamentById"
+            >
+              {{ medicamentOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="appPharmaApp.inventaireMedicament.inventaire" for="field_inventaire"
+            >Inventaire</label
+          >
+          <select class="form-control" id="field_inventaire" data-cy="inventaire" name="inventaire" formControlName="inventaire">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                inventaireOption.id === editForm.get('inventaire')!.value?.id ? editForm.get('inventaire')!.value : inventaireOption
+              "
+              *ngFor="let inventaireOption of inventairesSharedCollection; trackBy: trackInventaireById"
+            >
+              {{ inventaireOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

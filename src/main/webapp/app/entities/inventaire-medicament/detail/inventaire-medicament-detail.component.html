@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="inventaireMedicament">
+      <h2 data-cy="inventaireMedicamentDetailsHeading">
+        <span jhiTranslate="appPharmaApp.inventaireMedicament.detail.title">Inventaire Medicament</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ inventaireMedicament.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.inventaireMedicament.stockTheorique">Stock Theorique</span></dt>
+        <dd>
+          <span>{{ inventaireMedicament.stockTheorique }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.inventaireMedicament.stockPhysique">Stock Physique</span></dt>
+        <dd>
+          <span>{{ inventaireMedicament.stockPhysique }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.inventaireMedicament.stockDifferent">Stock Different</span></dt>
+        <dd>
+          <span>{{ inventaireMedicament.stockDifferent }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.inventaireMedicament.dateFabrication">Date Fabrication</span></dt>
+        <dd>
+          <span>{{ inventaireMedicament.dateFabrication | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.inventaireMedicament.dateExpiration">Date Expiration</span></dt>
+        <dd>
+          <span>{{ inventaireMedicament.dateExpiration | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.inventaireMedicament.medicament">Medicament</span></dt>
+        <dd>
+          <div *ngIf="inventaireMedicament.medicament">
+            <a [routerLink]="['/medicament', inventaireMedicament.medicament?.id, 'view']">{{ inventaireMedicament.medicament?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.inventaireMedicament.inventaire">Inventaire</span></dt>
+        <dd>
+          <div *ngIf="inventaireMedicament.inventaire">
+            <a [routerLink]="['/inventaire', inventaireMedicament.inventaire?.id, 'view']">{{ inventaireMedicament.inventaire?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/inventaire-medicament', inventaireMedicament.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

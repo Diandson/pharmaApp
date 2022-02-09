@@ -1,0 +1,99 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193729",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "structure",
+  "fields": [
+    {
+      "fieldName": "denomination",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ifu",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rccm",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "codePostal",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "localisation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "contact",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "regime",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "division",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "logo",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "cachet",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "signature",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "dateConfig",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "pdg",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "TypeStructure",
+      "fieldValues": "SIEGE,AGENCE,MAGASIN"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Structure",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "pack",
+      "otherEntityRelationshipName": "operateur",
+      "relationshipName": "pack",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "medicament",
+      "otherEntityRelationshipName": "structure",
+      "relationshipName": "medicament",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "structure",
+      "relationshipName": "personne",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

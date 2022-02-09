@@ -1,0 +1,51 @@
+{
+  "applications": "*",
+  "changelogDate": "20220208193734",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "commande",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateCommande",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Commande",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "livraison",
+      "otherEntityRelationshipName": "commande",
+      "ownerSide": true,
+      "relationshipName": "livraison",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "fournisseur",
+      "otherEntityRelationshipName": "commande",
+      "ownerSide": true,
+      "relationshipName": "fournisseur",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "commandeMedicament",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "commandeMedicament",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "personne",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}
