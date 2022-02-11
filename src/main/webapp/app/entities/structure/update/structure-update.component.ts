@@ -1,32 +1,32 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
-import {DATE_TIME_FORMAT} from 'app/config/input.constants';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
-import {IStructure, Structure} from '../structure.model';
-import {StructureService} from '../service/structure.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {EventManager, EventWithContent} from 'app/core/util/event-manager.service';
-import {DataUtils, FileLoadError} from 'app/core/util/data-util.service';
-import {TypeStructure} from 'app/entities/enumerations/type-structure.model';
-import {IPersonne, Personne} from "../../personne/personne.model";
-import {createMask} from "@ngneat/input-mask";
-import {PackService} from "../../pack/service/pack.service";
-import {MatDialog} from "@angular/material/dialog";
-import {NzModalService} from "ng-zorro-antd/modal";
-import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
-import {IPack} from "../../pack/pack.model";
-import {User} from "../../../admin/user-management/user-management.model";
+import { IStructure, Structure } from '../structure.model';
+import { StructureService } from '../service/structure.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { TypeStructure } from 'app/entities/enumerations/type-structure.model';
+import { IPersonne, Personne } from '../../personne/personne.model';
+import { createMask } from '@ngneat/input-mask';
+import { PackService } from '../../pack/service/pack.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { ProgressDialogComponent } from '../../../shared/progress-dialog/progress-dialog.component';
+import { IPack } from '../../pack/pack.model';
+import { User } from '../../../admin/user-management/user-management.model';
 
 @Component({
   selector: 'jhi-structure-update',
   templateUrl: './structure-update.component.html',
-  styleUrls: ['../structure.component.scss']
+  styleUrls: ['../structure.component.scss'],
 })
 export class StructureUpdateComponent implements OnInit {
   isSaving = false;
@@ -96,7 +96,6 @@ export class StructureUpdateComponent implements OnInit {
     },
   });
 
-
   constructor(
     protected dataUtils: DataUtils,
     protected eventManager: EventManager,
@@ -152,59 +151,63 @@ export class StructureUpdateComponent implements OnInit {
     // this.isSaving = true;
     const structure = this.createFromForm();
     const dialogRef = this.dialog.open(ProgressDialogComponent);
-    this.structureService.create(structure).subscribe(res => {
-      if (res.body){
-        this.success('Configuration éffectuer avec succès!\n Veuillez vous connecter avec vos identifiants!');
-        dialogRef.close();
-        this.router.navigate(['login'])
-      }else {
-        this.warning('Une erreur est survenue');
+    this.structureService.create(structure).subscribe(
+      res => {
+        if (res.body) {
+          this.success('Configuration éffectuer avec succès!\n Veuillez vous connecter avec vos identifiants!');
+          dialogRef.close();
+          this.router.navigate(['login']);
+        } else {
+          this.warning('Une erreur est survenue');
+          dialogRef.close();
+          this.isSaving = false;
+        }
+      },
+      () => {
+        this.error('Veuillez verifiez votre connexion!');
         dialogRef.close();
         this.isSaving = false;
       }
-    }, () => {
-      this.error('Veuillez verifiez votre connexion!');
-      dialogRef.close();
-      this.isSaving = false;
-    });
+    );
   }
 
   getLicence(): void {
     const dialogRef = this.dialog.open(ProgressDialogComponent);
 
-    this.packService.findKeys(this.licence!).subscribe(res => {
-      if (res.body){
-        this.pack = res.body;
-        dialogRef.close()
-      }else {
-        this.warning('Une erreur est survenue');
+    this.packService.findKeys(this.licence!).subscribe(
+      res => {
+        if (res.body) {
+          this.pack = res.body;
+          dialogRef.close();
+        } else {
+          this.warning('Une erreur est survenue');
+          dialogRef.close();
+        }
+      },
+      () => {
+        this.error('Veuillez verifiez votre connexion!');
         dialogRef.close();
       }
-    }, () => {
-      this.error('Veuillez verifiez votre connexion!');
-      dialogRef.close();
-    });
-
+    );
   }
 
   getTypeStruck($event: any): void {
     this.authoritiesSelected = [];
-    alert($event)
-    if ($event === 'SIEGE'){
+    if ($event === 'SIEGE') {
       const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes('ROLE_USER'.toLowerCase()));
       const role = this.authorities.find(a => a.toString().toLowerCase().includes('STRUCTURE_ADMIN'.toLowerCase()));
       if (roleUser != null && role != null) {
         this.authoritiesSelected.push(roleUser);
         this.authoritiesSelected.push(role);
       }
-    }else if ($event === 'AGENCE'){
+    } else if ($event === 'AGENCE') {
       const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes('ROLE_USER'.toLowerCase()));
       const role = this.authorities.find(a => a.toString().toLowerCase().includes('AGENCE_ADMIN'.toLowerCase()));
       if (roleUser != null && role != null) {
         this.authoritiesSelected.push(roleUser);
         this.authoritiesSelected.push(role);
       }
-    }else if ($event === 'MAGASIN'){
+    } else if ($event === 'MAGASIN') {
       const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes('ROLE_USER'.toLowerCase()));
       const role = this.authorities.find(a => a.toString().toLowerCase().includes('MAGASIN_ADMIN'.toLowerCase()));
       if (roleUser != null && role != null) {
@@ -212,29 +215,28 @@ export class StructureUpdateComponent implements OnInit {
         this.authoritiesSelected.push(role);
       }
     }
-
   }
 
-  success(msg: string): void{
+  success(msg: string): void {
     this.modal.success({
       nzContent: msg,
       nzTitle: 'SUCCESS',
-      nzOkText: 'OK'
-    })
+      nzOkText: 'OK',
+    });
   }
-  warning(msg: string): void{
+  warning(msg: string): void {
     this.modal.warning({
       nzContent: msg,
       nzTitle: 'ATTENTION',
-      nzOkText: 'OK'
-    })
+      nzOkText: 'OK',
+    });
   }
-  error(msg: string): void{
+  error(msg: string): void {
     this.modal.error({
       nzContent: msg,
       nzTitle: 'ERROR',
-      nzOkText: 'OK'
-    })
+      nzOkText: 'OK',
+    });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IStructure>>): void {
@@ -301,7 +303,7 @@ export class StructureUpdateComponent implements OnInit {
       type: this.editForm.get(['type'])!.value,
       personne: this.createFromFormPresonne(),
       userDTO: this.updateUser(),
-      packDTO: this.pack
+      packDTO: this.pack,
     };
   }
   protected createFromFormPresonne(): IPersonne {
@@ -323,8 +325,7 @@ export class StructureUpdateComponent implements OnInit {
       login: this.editForm.get(['login'])!.value,
       email: this.editForm.get(['email'])!.value,
       password: this.editForm.get(['password'])!.value,
-      authorities: this.authoritiesSelected
-    }
+      authorities: this.authoritiesSelected,
+    };
   }
-
 }

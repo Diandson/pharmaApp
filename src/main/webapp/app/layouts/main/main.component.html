@@ -22,10 +22,11 @@
   </nb-layout-column>
 </nb-layout>
 
-
-<div *ngIf="!structure">
-  <jhi-getstarted></jhi-getstarted>
-</div>
+<nb-layout *ngIf="!structure" [hidden]="structure">
+  <nb-layout-column>
+    <jhi-getstarted></jhi-getstarted>
+  </nb-layout-column>
+</nb-layout>
 
 <div *ngIf="structure && !isAuthenticated()">
   <jhi-login></jhi-login>

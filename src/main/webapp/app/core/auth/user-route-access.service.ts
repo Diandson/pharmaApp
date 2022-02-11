@@ -5,14 +5,16 @@ import { map } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { StateStorageService } from './state-storage.service';
-import {StructureService} from "../../entities/structure/service/structure.service";
+import { StructureService } from '../../entities/structure/service/structure.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserRouteAccessService implements CanActivate {
-  constructor(private router: Router,
-              private accountService: AccountService,
-              private structueService: StructureService,
-              private stateStorageService: StateStorageService) {}
+  constructor(
+    private router: Router,
+    private accountService: AccountService,
+    private structueService: StructureService,
+    private stateStorageService: StateStorageService
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.structueService.findOnly().pipe(
@@ -39,9 +41,11 @@ export class UserRouteAccessService implements CanActivate {
               return false;
             })
           );
+        } else {
+          return true;
         }
 
-        return true;
+        return false;
       })
     );
   }

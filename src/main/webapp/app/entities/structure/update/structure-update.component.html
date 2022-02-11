@@ -1,12 +1,9 @@
-
 <div class="center-screen">
   <div class="col-md-10 center-div-deux">
     <form name="editForm" role="form" novalidate (ngSubmit)="saveConfig()" [formGroup]="editForm">
       <nb-card class="col-md-12">
         <nb-card-header>
-          <h2 id="jhi-structure-heading" data-cy="StructureCreateUpdateHeading">
-            Configuration du logiciel
-          </h2>
+          <h2 id="jhi-structure-heading" data-cy="StructureCreateUpdateHeading">Configuration du logiciel</h2>
         </nb-card-header>
         <nb-card-body>
           <nb-stepper orientation="horizontal" class="col-md-12">
@@ -16,54 +13,99 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="form-control-label">Dénomination</label>
-                    <input nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="denomination"/>
+                    <input
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="denomination"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Numéro Ifu</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="ifu" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="ifu"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Numéro Rccm</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="rccm" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="rccm"
+                    />
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="form-control-label">Code Postal</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="codePostal"/>
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="codePostal"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Contact</label>
-                    <input nbInput status="primary" [inputMask]="telephoneInputMask" placeholder="XX-XX-XX-XX"
-                           fullWidth fieldSize="small" formControlName="contact"/>
+                    <input
+                      nbInput
+                      status="primary"
+                      [inputMask]="telephoneInputMask"
+                      placeholder="XX-XX-XX-XX"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="contact"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Régime</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="regime" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="regime"
+                    />
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="form-control-label">Division</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="division" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="division"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Email</label>
-                    <input type="text" nbInput status="primary"
-                           fullWidth fieldSize="small" formControlName="email" />
+                    <input type="text" nbInput status="primary" fullWidth fieldSize="small" formControlName="email" />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Type Structure</label>
-                    <nb-select status="primary" fullWidth size="small"
-                               formControlName="type" (selectedChange)="getTypeStruck($event)">
-                      <nb-option *ngFor="let typeStructure of typeStructureValues"
-                                 [value]="typeStructure">{{typeStructure}}</nb-option>
+                    <nb-select status="primary" fullWidth size="small" formControlName="type" (selectedChange)="getTypeStruck($event)">
+                      <nb-option *ngFor="let typeStructure of typeStructureValues" [value]="typeStructure">{{ typeStructure }}</nb-option>
                     </nb-select>
                   </div>
                 </div>
@@ -76,9 +118,11 @@
                           class="pull-left"
                           (click)="openFile(editForm.get('logo')!.value, editForm.get('logoContentType')!.value)"
                           jhiTranslate="entity.action.open"
-                        >open</a
+                          >open</a
                         ><br />
-                        <span class="pull-left">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span>
+                        <span class="pull-left"
+                          >{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span
+                        >
                         <button
                           type="button"
                           (click)="editForm.patchValue({ logo: null }); editForm.patchValue({ logoContentType: null })"
@@ -89,7 +133,10 @@
                       </div>
                       <input
                         type="file"
-                        nbInput status="primary" fullWidth fieldSize="small"
+                        nbInput
+                        status="primary"
+                        fullWidth
+                        fieldSize="small"
                         (change)="setFileData($event, 'logo', false)"
                         jhiTranslate="entity.action.addblob"
                       />
@@ -105,9 +152,11 @@
                           class="pull-left"
                           (click)="openFile(editForm.get('cachet')!.value, editForm.get('cachetContentType')!.value)"
                           jhiTranslate="entity.action.open"
-                        >open</a
+                          >open</a
                         ><br />
-                        <span class="pull-left">{{ editForm.get('cachetContentType')!.value }}, {{ byteSize(editForm.get('cachet')!.value) }}</span>
+                        <span class="pull-left"
+                          >{{ editForm.get('cachetContentType')!.value }}, {{ byteSize(editForm.get('cachet')!.value) }}</span
+                        >
                         <button
                           type="button"
                           (click)="editForm.patchValue({ cachet: null }); editForm.patchValue({ cachetContentType: null })"
@@ -118,14 +167,16 @@
                       </div>
                       <input
                         type="file"
-                        nbInput status="primary" fullWidth fieldSize="small"
+                        nbInput
+                        status="primary"
+                        fullWidth
+                        fieldSize="small"
                         (change)="setFileData($event, 'cachet', false)"
                         jhiTranslate="entity.action.addblob"
                       />
                     </div>
                     <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachet" />
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachetContentType"/>
-
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachetContentType" />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Signature</label>
@@ -135,10 +186,10 @@
                           class="pull-left"
                           (click)="openFile(editForm.get('signature')!.value, editForm.get('signatureContentType')!.value)"
                           jhiTranslate="entity.action.open"
-                        >open</a
+                          >open</a
                         ><br />
                         <span class="pull-left"
-                        >{{ editForm.get('signatureContentType')!.value }}, {{ byteSize(editForm.get('signature')!.value) }}</span
+                          >{{ editForm.get('signatureContentType')!.value }}, {{ byteSize(editForm.get('signature')!.value) }}</span
                         >
                         <button
                           type="button"
@@ -150,26 +201,23 @@
                       </div>
                       <input
                         type="file"
-                        nbInput status="primary" fullWidth fieldSize="small"
+                        nbInput
+                        status="primary"
+                        fullWidth
+                        fieldSize="small"
                         (change)="setFileData($event, 'signature', false)"
                         jhiTranslate="entity.action.addblob"
                       />
                     </div>
                     <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="signature" />
-                    <input
-                      type="hidden"
-                      nbInput status="primary" fullWidth fieldSize="small"
-                      formControlName="signatureContentType"
-                    />
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="signatureContentType" />
                   </div>
                 </div>
               </div>
 
-              <nb-card-footer class="row justify-content-end">
-                <button type="button" nbStepperNext nbButton size="tiny">
-                  suivant
-                </button>
-              </nb-card-footer>
+              <div class="row justify-content-end">
+                <button type="button" nbStepperNext nbButton size="tiny">suivant</button>
+              </div>
             </nb-step>
             <nb-step [label]="labelTwo">
               <ng-template #labelTwo>Administrateur</ng-template>
@@ -177,33 +225,66 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="form-control-label">Nom</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="nom" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="nom"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Prenom</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="prenom" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="prenom"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Numéro CNIB</label>
-                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
-                           fullWidth fieldSize="small" formControlName="numeroDoc" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      style="text-transform: uppercase"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="numeroDoc"
+                    />
                   </div>
-
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="form-control-label">Téléphone</label>
-                    <input type="text" nbInput status="primary" [inputMask]="telephoneInputMask" placeholder="XX-XX-XX-XX"
-                           fullWidth fieldSize="small" formControlName="telephone" />
+                    <input
+                      type="text"
+                      nbInput
+                      status="primary"
+                      [inputMask]="telephoneInputMask"
+                      placeholder="XX-XX-XX-XX"
+                      fullWidth
+                      fieldSize="small"
+                      formControlName="telephone"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Data Naissance</label>
                     <div class="input-group">
-                      <input nbInput status="primary" fullWidth fieldSize="small"
-                             [inputMask]="dateInputMask" placeholder="dd/mm/yyyy"
-                             formControlName="dataNaissance"
+                      <input
+                        nbInput
+                        status="primary"
+                        fullWidth
+                        fieldSize="small"
+                        [inputMask]="dateInputMask"
+                        placeholder="dd/mm/yyyy"
+                        formControlName="dataNaissance"
                       />
                     </div>
                   </div>
@@ -215,9 +296,11 @@
                           class="pull-left"
                           (click)="openFile(editForm.get('profil')!.value, editForm.get('profilContentType')!.value)"
                           jhiTranslate="entity.action.open"
-                        >open</a
+                          >open</a
                         ><br />
-                        <span class="pull-left">{{ editForm.get('profilContentType')!.value }}, {{ byteSize(editForm.get('profil')!.value) }}</span>
+                        <span class="pull-left"
+                          >{{ editForm.get('profilContentType')!.value }}, {{ byteSize(editForm.get('profil')!.value) }}</span
+                        >
                         <button
                           type="button"
                           (click)="editForm.patchValue({ profil: null }); editForm.patchValue({ profilContentType: null })"
@@ -228,24 +311,22 @@
                       </div>
                       <input
                         type="file"
-                        nbInput status="primary" fullWidth fieldSize="small"
+                        nbInput
+                        status="primary"
+                        fullWidth
+                        fieldSize="small"
                         (change)="setFileData($event, 'profil', false)"
                         jhiTranslate="entity.action.addblob"
                       />
                     </div>
                     <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="profil" />
-                    <input
-                      type="hidden"
-                      nbInput status="primary" fullWidth fieldSize="small"
-                      formControlName="profilContentType"
-                    />
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="profilContentType" />
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="form-control-label">Nom d'utilisateur</label>
-                    <input type="text" nbInput status="primary" fullWidth fieldSize="small"
-                           formControlName="login"/>
+                    <input type="text" nbInput status="primary" fullWidth fieldSize="small" formControlName="login" />
 
                     <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
                       <small
@@ -283,8 +364,7 @@
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Email</label>
-                    <input type="email" nbInput status="primary"
-                           fullWidth fieldSize="small" formControlName="emailU"/>
+                    <input type="email" nbInput status="primary" fullWidth fieldSize="small" formControlName="emailU" />
 
                     <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
                       <small
@@ -324,7 +404,7 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="form-control-label" jhiTranslate="global.form.newpassword.label">New password</label>
-                    <input type="password" nbInput status="primary" fullWidth fieldSize="small" formControlName="password"/>
+                    <input type="password" nbInput status="primary" fullWidth fieldSize="small" formControlName="password" />
 
                     <div
                       *ngIf="editForm.get('password')!.invalid && (editForm.get('password')!.dirty || editForm.get('password')!.touched)"
@@ -358,13 +438,13 @@
                   </div>
                   <div class="form-group">
                     <label class="form-control-label" jhiTranslate="global.form.confirmpassword.label">New password confirmation</label>
-                    <input type="password" nbInput status="primary" fullWidth fieldSize="small" formControlName="confirmPassword"/>
+                    <input type="password" nbInput status="primary" fullWidth fieldSize="small" formControlName="confirmPassword" />
 
                     <div
                       *ngIf="
-                          editForm.get('confirmPassword')!.invalid &&
-                          (editForm.get('confirmPassword')!.dirty || editForm.get('confirmPassword')!.touched)
-                        "
+                        editForm.get('confirmPassword')!.invalid &&
+                        (editForm.get('confirmPassword')!.dirty || editForm.get('confirmPassword')!.touched)
+                      "
                     >
                       <small
                         class="form-text text-danger"
@@ -394,10 +474,10 @@
                 </div>
               </div>
 
-              <nb-card-footer class="row justify-content-between">
+              <div class="row justify-content-between">
                 <button type="button" nbButton nbStepperPrevious size="tiny">précedent</button>
                 <button type="button" nbButton nbStepperNext size="tiny">suivant</button>
-              </nb-card-footer>
+              </div>
             </nb-step>
             <nb-step [label]="labelTree">
               <ng-template #labelTree>Licence</ng-template>
@@ -405,44 +485,51 @@
                 <div class="case-deux">
                   <div class="form-group">
                     <label class="form-control-label">Entrer la clé de la licence</label>
-                    <input nbInput status="primary" fullWidth fieldSize="small" [(ngModel)]="licence"
-                           style="text-transform:uppercase" (keydown.enter)="getLicence()" [ngModelOptions]="{standalone: true}"
-                           [inputMask]="licenseInputMask" placeholder="XXXX-XXXX-XXXX-XXXX"/>
+                    <input
+                      nbInput
+                      status="primary"
+                      fullWidth
+                      fieldSize="small"
+                      [(ngModel)]="licence"
+                      style="text-transform: uppercase"
+                      (keydown.enter)="getLicence()"
+                      [ngModelOptions]="{ standalone: true }"
+                      [inputMask]="licenseInputMask"
+                      placeholder="XXXX-XXXX-XXXX-XXXX"
+                    />
                   </div>
                 </div>
                 <div class="case-deux">
                   <div class="col-12">
                     <ul class="list-group" *ngIf="pack">
-                      <li class="list-group-item text-muted"> Code licence : {{pack!.libelle}}<i class="fa fa-dashboard fa-1x"></i></li>
+                      <li class="list-group-item text-muted">Code licence : {{ pack!.libelle }}<i class="fa fa-dashboard fa-1x"></i></li>
                       <li class="list-group-item text-right text-danger">
-                        <span class="float-left text-black-50"><strong>Type de licence</strong></span> {{pack!.type!.libelle}}
+                        <span class="float-left text-black-50"><strong>Type de licence</strong></span> {{ pack!.type!.libelle }}
                       </li>
                       <li class="list-group-item text-right text-danger">
-                        <span class="float-left text-black-50"><strong>Validité</strong></span> {{pack!.durer + ' jours'}}
+                        <span class="float-left text-black-50"><strong>Validité</strong></span> {{ pack!.durer + ' jours' }}
                       </li>
                       <li class="list-group-item text-right text-danger">
-                        <span class="float-left text-black-50"><strong>Nombres d'agences</strong></span> {{pack!.type!.annexe}}
+                        <span class="float-left text-black-50"><strong>Nombres d'agences</strong></span> {{ pack!.type!.annexe }}
                       </li>
                       <li class="list-group-item text-right text-danger">
-                        <span class="float-left text-black-50"><strong>Montant</strong></span> {{pack!.type!.prix | currency: 'XOF'}}
+                        <span class="float-left text-black-50"><strong>Montant</strong></span> {{ pack!.type!.prix | currency: 'XOF' }}
                       </li>
                     </ul>
                   </div>
                 </div>
-
               </div>
 
-              <nb-card-footer class="row justify-content-between">
+              <div class="row justify-content-between mt-4">
                 <!--                <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">-->
                 <!--                  <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>-->
                 <!--                </button>-->
                 <button type="button" nbButton nbStepperPrevious size="tiny">précedent</button>
 
-                <button type="submit" mat-raised-button color="primary"
-                        [disabled]="!pack || isSaving">
-                  <fa-icon icon="save"></fa-icon>&nbsp;<span >Valider</span>
+                <button type="submit" mat-raised-button color="primary" [disabled]="!pack || isSaving">
+                  <fa-icon icon="save"></fa-icon>&nbsp;<span>Valider</span>
                 </button>
-              </nb-card-footer>
+              </div>
             </nb-step>
           </nb-stepper>
         </nb-card-body>

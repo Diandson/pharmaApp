@@ -27,42 +27,46 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import {
   NbActionsModule,
-  NbButtonModule, NbContextMenuModule, NbIconModule,
-  NbLayoutModule, NbMenuModule,
+  NbButtonModule,
+  NbContextMenuModule,
+  NbIconModule,
+  NbLayoutModule,
+  NbMenuModule,
   NbSelectModule,
   NbThemeModule,
-  NbUserModule
+  NbUserModule,
 } from '@nebular/theme';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {ExtendedModule, FlexModule} from "@angular/flex-layout";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatDividerModule} from "@angular/material/divider";
-import {NbEvaIconsModule} from "@nebular/eva-icons";
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { ExtendedModule, FlexModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { GetstartedComponent } from './entities/getstarted/getstarted.component';
-import {NzModalService} from "ng-zorro-antd/modal";
-import {NzSpinModule} from "ng-zorro-antd/spin";
-import {ProgressDialogComponent} from "./shared/progress-dialog/progress-dialog.component";
-import {MatDialogModule} from "@angular/material/dialog";
-import {LoginModule} from "./login/login.module";
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { ProgressDialogComponent } from './shared/progress-dialog/progress-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { LoginModule } from './login/login.module';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @NgModule({
   imports: [
     BrowserModule,
     SharedModule,
     HomeModule,
-    NbThemeModule.forRoot(),
+    NbThemeModule.forRoot({ name: 'dark' }),
     NbMenuModule.forRoot(),
     BrowserAnimationsModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: false}),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
-    NgxWebstorageModule.forRoot({prefix: 'jhi', separator: '-', caseSensitive: true}),
+    NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
     NbLayoutModule,
     NzLayoutModule,
@@ -82,17 +86,27 @@ import {LoginModule} from "./login/login.module";
     NbIconModule,
     NzSpinModule,
     MatDialogModule,
-    LoginModule
+    LoginModule,
   ],
   providers: [
     Title,
     NzModalService,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
+    OverlayContainer,
     httpInterceptorProviders,
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, GetstartedComponent, ProgressDialogComponent,
-    PageRibbonComponent, ActiveMenuDirective, FooterComponent, GetstartedComponent],
+  declarations: [
+    MainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    GetstartedComponent,
+    ProgressDialogComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent,
+    GetstartedComponent,
+  ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
