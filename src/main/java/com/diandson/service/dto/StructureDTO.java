@@ -51,6 +51,12 @@ public class StructureDTO implements Serializable {
 
     private TypeStructure type;
 
+    private PersonneDTO personne;
+
+    private AdminUserDTO userDTO;
+
+    private PackDTO packDTO;
+
     public Long getId() {
         return id;
     }
@@ -201,6 +207,30 @@ public class StructureDTO implements Serializable {
 
     public void setType(TypeStructure type) {
         this.type = type;
+    }
+
+    public PersonneDTO getPersonne() {
+        return personne;
+    }
+
+    public void setPersonne(PersonneDTO personne) {
+        this.personne = personne;
+    }
+
+    public AdminUserDTO getUserDTO() {
+        return userDTO;
+    }
+
+    public void setUserDTO(AdminUserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
+
+    public PackDTO getPackDTO() {
+        return packDTO;
+    }
+
+    public void setPackDTO(PackDTO packDTO) {
+        this.packDTO = packDTO;
     }
 
     @Override

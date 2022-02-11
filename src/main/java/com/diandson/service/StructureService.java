@@ -1,16 +1,31 @@
 package com.diandson.service;
 
-import com.diandson.domain.Structure;
-import com.diandson.repository.StructureRepository;
+import com.diandson.domain.*;
+import com.diandson.repository.*;
+import com.diandson.security.AuthoritiesConstants;
+import com.diandson.service.dto.PersonneDTO;
 import com.diandson.service.dto.StructureDTO;
+import com.diandson.service.mapper.PackMapper;
+import com.diandson.service.mapper.PersonneMapper;
 import com.diandson.service.mapper.StructureMapper;
+
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.diandson.service.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tech.jhipster.security.RandomUtil;
 
 /**
  * Service Implementation for managing {@link Structure}.
@@ -24,6 +39,22 @@ public class StructureService {
     private final StructureRepository structureRepository;
 
     private final StructureMapper structureMapper;
+    @Autowired
+    private PersonneMapper personneMapper;
+    @Autowired
+    private PersonneRepository personneRepository;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PackMapper packMapper;
+    @Autowired
+    private PackRepository packRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     public StructureService(StructureRepository structureRepository, StructureMapper structureMapper) {
         this.structureRepository = structureRepository;
@@ -39,7 +70,43 @@ public class StructureService {
     public StructureDTO save(StructureDTO structureDTO) {
         log.debug("Request to save Structure : {}", structureDTO);
         Structure structure = structureMapper.toEntity(structureDTO);
+        structure.setDenomination(structureDTO.getDenomination().toLowerCase());
+        Personne personne = personneMapper.toEntity(structureDTO.getPersonne());
+        personne.setNom(structureDTO.getPersonne().getNom().toLowerCase());
+        personne.setPrenom(structureDTO.getPersonne().getPrenom().toLowerCase());
+        User user = userMapper.userDTOToUser(structureDTO.getUserDTO());
+        Pack pack = packMapper.toEntity(structureDTO.getPackDTO());
+        String encryptedPassword = passwordEncoder.encode(structureDTO.getUserDTO().getPassword());
+        // new user gets initially a generated password
+        user.setPassword(encryptedPassword);
+        user.setActivationKey(RandomUtil.generateActivationKey());
+        user.setFirstName(personne.getNom());
+        user.setLastName(personne.getPrenom());
+        user.setActivated(true);
+        structure.setPdg(personne.getNom() + " " + personne.getPrenom());
         structure = structureRepository.save(structure);
+        pack.setStructure(structure);
+        pack.setDateRenew(ZonedDateTime.now());
+        pack = packRepository.save(pack);
+        switch (structure.getType().name()) {
+            case "SIEGE":
+                user.getAuthorities().add(authorityRepository.getById(AuthoritiesConstants.USER));
+                user.getAuthorities().add(authorityRepository.getById(AuthoritiesConstants.STRUCTURE_ADMIN));
+                break;
+            case "AGENCE":
+                user.getAuthorities().add(authorityRepository.getById(AuthoritiesConstants.USER));
+                user.getAuthorities().add(authorityRepository.getById(AuthoritiesConstants.AGENCE_ADMIN));
+                break;
+            case "MAGASIN":
+                user.getAuthorities().add(authorityRepository.getById(AuthoritiesConstants.USER));
+                user.getAuthorities().add(authorityRepository.getById(AuthoritiesConstants.MAGASIN_ADMIN));
+                break;
+        }
+        user = userRepository.save(user);
+        personne.setUser(user);
+        personne.setStructure(structure);
+        personne = personneRepository.save(personne);
+
         return structureMapper.toDto(structure);
     }
 
@@ -95,5 +162,13 @@ public class StructureService {
     public void delete(Long id) {
         log.debug("Request to delete Structure : {}", id);
         structureRepository.deleteById(id);
+    }
+
+    public StructureDTO findOneOnly() {
+        List<Structure> structureList = structureRepository.findAll();
+        if (structureList.size() == 1) {
+            return structureList.stream().map(structureMapper::toDto)
+                .collect(Collectors.toList()).get(0);
+        }else return null;
     }
 }

@@ -39,6 +39,12 @@
       "otherEntityRelationshipName": "pack",
       "relationshipName": "type",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "structure",
+      "relationshipName": "structure",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceClass"

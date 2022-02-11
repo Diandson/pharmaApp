@@ -12,13 +12,23 @@
 <!--  <jhi-footer></jhi-footer>-->
 <!--</div>-->
 
-<nb-layout windowMode>
+<nb-layout [hidden]="!structure" *ngIf="structure && isAuthenticated()">
   <nb-layout-header>
     <router-outlet name="navbar"></router-outlet>
   </nb-layout-header>
+
   <nb-layout-column>
     <router-outlet></router-outlet>
   </nb-layout-column>
 </nb-layout>
+
+
+<div *ngIf="!structure">
+  <jhi-getstarted></jhi-getstarted>
+</div>
+
+<div *ngIf="structure && !isAuthenticated()">
+  <jhi-login></jhi-login>
+</div>
 
 <nz-layout [hidden]="true"></nz-layout>

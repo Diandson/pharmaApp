@@ -23,14 +23,14 @@ export class UserManagementResolve implements Resolve<IUser> {
 
 export const userManagementRoute: Routes = [
   {
-    path: '',
+    path: 'all',
     component: UserManagementComponent,
     data: {
       defaultSort: 'id,asc',
     },
   },
   {
-    path: ':login/view',
+    path: 'all:login/view',
     component: UserManagementDetailComponent,
     resolve: {
       user: UserManagementResolve,

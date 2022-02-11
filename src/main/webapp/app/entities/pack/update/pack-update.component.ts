@@ -14,6 +14,9 @@ import { IStructure } from 'app/entities/structure/structure.model';
 import { StructureService } from 'app/entities/structure/service/structure.service';
 import { ITypePack } from 'app/entities/type-pack/type-pack.model';
 import { TypePackService } from 'app/entities/type-pack/service/type-pack.service';
+import {MatDialog} from "@angular/material/dialog";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
 
 @Component({
   selector: 'jhi-pack-update',
@@ -34,12 +37,15 @@ export class PackUpdateComponent implements OnInit {
     operateur: [],
     type: [],
   });
+  typePack?: ITypePack;
 
   constructor(
     protected packService: PackService,
     protected structureService: StructureService,
     protected typePackService: TypePackService,
     protected activatedRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private modal: NzModalService,
     protected fb: FormBuilder
   ) {}
 
@@ -70,12 +76,54 @@ export class PackUpdateComponent implements OnInit {
     }
   }
 
+  saveGenerer(): void {
+    this.isSaving = true;
+    const dialogRef = this.dialog.open(ProgressDialogComponent);
+    this.packService.findTypePack(this.typePack?.id).subscribe(res => {
+      if (res.body){
+        this.success('Licences générer avec succès');
+        this.isSaving = false;
+        dialogRef.close();
+      }else {
+        this.warning('Une erreur est survenue!')
+        this.isSaving = false;
+        dialogRef.close();
+      }
+    }, () => {
+      this.error('Verifiez votre connexion internet!')
+      this.isSaving = false;
+      dialogRef.close();
+    });
+  }
+
   trackStructureById(index: number, item: IStructure): number {
     return item.id!;
   }
 
   trackTypePackById(index: number, item: ITypePack): number {
     return item.id!;
+  }
+
+  success(msg: string): void{
+    this.modal.success({
+      nzContent: msg,
+      nzTitle: 'SUCCESS',
+      nzOkText: 'OK'
+    })
+  }
+  warning(msg: string): void{
+    this.modal.warning({
+      nzContent: msg,
+      nzTitle: 'ATTENTION',
+      nzOkText: 'OK'
+    })
+  }
+  error(msg: string): void{
+    this.modal.error({
+      nzContent: msg,
+      nzTitle: 'ERROR',
+      nzOkText: 'OK'
+    })
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPack>>): void {

@@ -23,6 +23,8 @@ public class PackDTO implements Serializable {
 
     private TypePackDTO type;
 
+    private StructureDTO structure;
+
     public Long getId() {
         return id;
     }
@@ -79,6 +81,14 @@ public class PackDTO implements Serializable {
         this.type = type;
     }
 
+    public StructureDTO getStructure() {
+        return structure;
+    }
+
+    public void setStructure(StructureDTO structure) {
+        this.structure = structure;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -111,6 +121,7 @@ public class PackDTO implements Serializable {
             ", dateRenew='" + getDateRenew() + "'" +
             ", operateur=" + getOperateur() +
             ", type=" + getType() +
+            ", structure=" + getStructure() +
             "}";
     }
 }

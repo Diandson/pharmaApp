@@ -12,15 +12,18 @@ import { SettingsComponent } from './settings/settings.component';
 import { accountState } from './account.route';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(accountState)],
-  declarations: [
-    ActivateComponent,
-    RegisterComponent,
-    PasswordComponent,
-    PasswordStrengthBarComponent,
-    PasswordResetInitComponent,
-    PasswordResetFinishComponent,
-    SettingsComponent,
-  ],
+    imports: [SharedModule, RouterModule.forChild(accountState)],
+    declarations: [
+        ActivateComponent,
+        RegisterComponent,
+        PasswordComponent,
+        PasswordStrengthBarComponent,
+        PasswordResetInitComponent,
+        PasswordResetFinishComponent,
+        SettingsComponent,
+    ],
+    exports: [
+        PasswordStrengthBarComponent
+    ]
 })
 export class AccountModule {}

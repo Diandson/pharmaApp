@@ -1,237 +1,452 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-structure-heading" data-cy="StructureCreateUpdateHeading" jhiTranslate="appPharmaApp.structure.home.createOrEditLabel">
-        Create or edit a Structure
-      </h2>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+<div class="center-screen">
+  <div class="col-md-10 center-div-deux">
+    <form name="editForm" role="form" novalidate (ngSubmit)="saveConfig()" [formGroup]="editForm">
+      <nb-card class="col-md-12">
+        <nb-card-header>
+          <h2 id="jhi-structure-heading" data-cy="StructureCreateUpdateHeading">
+            Configuration du logiciel
+          </h2>
+        </nb-card-header>
+        <nb-card-body>
+          <nb-stepper orientation="horizontal" class="col-md-12">
+            <nb-step [label]="labelOne">
+              <ng-template #labelOne>Structure</ng-template>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label">Dénomination</label>
+                    <input nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="denomination"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Numéro Ifu</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="ifu" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Numéro Rccm</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="rccm" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label">Code Postal</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="codePostal"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Contact</label>
+                    <input nbInput status="primary" [inputMask]="telephoneInputMask" placeholder="XX-XX-XX-XX"
+                           fullWidth fieldSize="small" formControlName="contact"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Régime</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="regime" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label">Division</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="division" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Email</label>
+                    <input type="text" nbInput status="primary"
+                           fullWidth fieldSize="small" formControlName="email" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Type Structure</label>
+                    <nb-select status="primary" fullWidth size="small"
+                               formControlName="type" (selectedChange)="getTypeStruck($event)">
+                      <nb-option *ngFor="let typeStructure of typeStructureValues"
+                                 [value]="typeStructure">{{typeStructure}}</nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label">Logo</label>
+                    <div>
+                      <div *ngIf="editForm.get('logo')!.value" class="form-text text-danger clearfix">
+                        <a
+                          class="pull-left"
+                          (click)="openFile(editForm.get('logo')!.value, editForm.get('logoContentType')!.value)"
+                          jhiTranslate="entity.action.open"
+                        >open</a
+                        ><br />
+                        <span class="pull-left">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span>
+                        <button
+                          type="button"
+                          (click)="editForm.patchValue({ logo: null }); editForm.patchValue({ logoContentType: null })"
+                          class="btn btn-secondary btn-xs pull-right"
+                        >
+                          <fa-icon icon="times"></fa-icon>
+                        </button>
+                      </div>
+                      <input
+                        type="file"
+                        nbInput status="primary" fullWidth fieldSize="small"
+                        (change)="setFileData($event, 'logo', false)"
+                        jhiTranslate="entity.action.addblob"
+                      />
+                    </div>
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="logo" />
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="logoContentType" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Cachet</label>
+                    <div>
+                      <div *ngIf="editForm.get('cachet')!.value" class="form-text text-danger clearfix">
+                        <a
+                          class="pull-left"
+                          (click)="openFile(editForm.get('cachet')!.value, editForm.get('cachetContentType')!.value)"
+                          jhiTranslate="entity.action.open"
+                        >open</a
+                        ><br />
+                        <span class="pull-left">{{ editForm.get('cachetContentType')!.value }}, {{ byteSize(editForm.get('cachet')!.value) }}</span>
+                        <button
+                          type="button"
+                          (click)="editForm.patchValue({ cachet: null }); editForm.patchValue({ cachetContentType: null })"
+                          class="btn btn-secondary btn-xs pull-right"
+                        >
+                          <fa-icon icon="times"></fa-icon>
+                        </button>
+                      </div>
+                      <input
+                        type="file"
+                        nbInput status="primary" fullWidth fieldSize="small"
+                        (change)="setFileData($event, 'cachet', false)"
+                        jhiTranslate="entity.action.addblob"
+                      />
+                    </div>
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachet" />
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachetContentType"/>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Signature</label>
+                    <div>
+                      <div *ngIf="editForm.get('signature')!.value" class="form-text text-danger clearfix">
+                        <a
+                          class="pull-left"
+                          (click)="openFile(editForm.get('signature')!.value, editForm.get('signatureContentType')!.value)"
+                          jhiTranslate="entity.action.open"
+                        >open</a
+                        ><br />
+                        <span class="pull-left"
+                        >{{ editForm.get('signatureContentType')!.value }}, {{ byteSize(editForm.get('signature')!.value) }}</span
+                        >
+                        <button
+                          type="button"
+                          (click)="editForm.patchValue({ signature: null }); editForm.patchValue({ signatureContentType: null })"
+                          class="btn btn-secondary btn-xs pull-right"
+                        >
+                          <fa-icon icon="times"></fa-icon>
+                        </button>
+                      </div>
+                      <input
+                        type="file"
+                        nbInput status="primary" fullWidth fieldSize="small"
+                        (change)="setFileData($event, 'signature', false)"
+                        jhiTranslate="entity.action.addblob"
+                      />
+                    </div>
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="signature" />
+                    <input
+                      type="hidden"
+                      nbInput status="primary" fullWidth fieldSize="small"
+                      formControlName="signatureContentType"
+                    />
+                  </div>
+                </div>
+              </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.denomination" for="field_denomination">Denomination</label>
-          <input
-            type="text"
-            class="form-control"
-            name="denomination"
-            id="field_denomination"
-            data-cy="denomination"
-            formControlName="denomination"
-          />
-        </div>
+              <nb-card-footer class="row justify-content-end">
+                <button type="button" nbStepperNext nbButton size="tiny">
+                  suivant
+                </button>
+              </nb-card-footer>
+            </nb-step>
+            <nb-step [label]="labelTwo">
+              <ng-template #labelTwo>Administrateur</ng-template>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label">Nom</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="nom" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Prenom</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="prenom" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Numéro CNIB</label>
+                    <input type="text" nbInput status="primary" style="text-transform:uppercase"
+                           fullWidth fieldSize="small" formControlName="numeroDoc" />
+                  </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.ifu" for="field_ifu">Ifu</label>
-          <input type="text" class="form-control" name="ifu" id="field_ifu" data-cy="ifu" formControlName="ifu" />
-        </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label">Téléphone</label>
+                    <input type="text" nbInput status="primary" [inputMask]="telephoneInputMask" placeholder="XX-XX-XX-XX"
+                           fullWidth fieldSize="small" formControlName="telephone" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Data Naissance</label>
+                    <div class="input-group">
+                      <input nbInput status="primary" fullWidth fieldSize="small"
+                             [inputMask]="dateInputMask" placeholder="dd/mm/yyyy"
+                             formControlName="dataNaissance"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Profil</label>
+                    <div>
+                      <div *ngIf="editForm.get('profil')!.value" class="form-text text-danger clearfix">
+                        <a
+                          class="pull-left"
+                          (click)="openFile(editForm.get('profil')!.value, editForm.get('profilContentType')!.value)"
+                          jhiTranslate="entity.action.open"
+                        >open</a
+                        ><br />
+                        <span class="pull-left">{{ editForm.get('profilContentType')!.value }}, {{ byteSize(editForm.get('profil')!.value) }}</span>
+                        <button
+                          type="button"
+                          (click)="editForm.patchValue({ profil: null }); editForm.patchValue({ profilContentType: null })"
+                          class="btn btn-secondary btn-xs pull-right"
+                        >
+                          <fa-icon icon="times"></fa-icon>
+                        </button>
+                      </div>
+                      <input
+                        type="file"
+                        nbInput status="primary" fullWidth fieldSize="small"
+                        (change)="setFileData($event, 'profil', false)"
+                        jhiTranslate="entity.action.addblob"
+                      />
+                    </div>
+                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="profil" />
+                    <input
+                      type="hidden"
+                      nbInput status="primary" fullWidth fieldSize="small"
+                      formControlName="profilContentType"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label">Nom d'utilisateur</label>
+                    <input type="text" nbInput status="primary" fullWidth fieldSize="small"
+                           formControlName="login"/>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.rccm" for="field_rccm">Rccm</label>
-          <input type="text" class="form-control" name="rccm" id="field_rccm" data-cy="rccm" formControlName="rccm" />
-        </div>
+                    <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('login')?.errors?.required"
+                        jhiTranslate="register.messages.validate.login.required"
+                      >
+                        Your username is required.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.codePostal" for="field_codePostal">Code Postal</label>
-          <input
-            type="text"
-            class="form-control"
-            name="codePostal"
-            id="field_codePostal"
-            data-cy="codePostal"
-            formControlName="codePostal"
-          />
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('login')?.errors?.minlength"
+                        jhiTranslate="register.messages.validate.login.minlength"
+                      >
+                        Your username is required to be at least 1 character.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.localisation" for="field_localisation">Localisation</label>
-          <input
-            type="text"
-            class="form-control"
-            name="localisation"
-            id="field_localisation"
-            data-cy="localisation"
-            formControlName="localisation"
-          />
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('login')?.errors?.maxlength"
+                        jhiTranslate="register.messages.validate.login.maxlength"
+                      >
+                        Your username cannot be longer than 50 characters.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.contact" for="field_contact">Contact</label>
-          <input type="text" class="form-control" name="contact" id="field_contact" data-cy="contact" formControlName="contact" />
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('login')?.errors?.pattern"
+                        jhiTranslate="register.messages.validate.login.pattern"
+                      >
+                        Your username can only contain letters and digits.
+                      </small>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Email</label>
+                    <input type="email" nbInput status="primary"
+                           fullWidth fieldSize="small" formControlName="emailU"/>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.regime" for="field_regime">Regime</label>
-          <input type="text" class="form-control" name="regime" id="field_regime" data-cy="regime" formControlName="regime" />
-        </div>
+                    <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('email')?.errors?.required"
+                        jhiTranslate="global.messages.validate.email.required"
+                      >
+                        Your email is required.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.division" for="field_division">Division</label>
-          <input type="text" class="form-control" name="division" id="field_division" data-cy="division" formControlName="division" />
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('email')?.errors?.invalid"
+                        jhiTranslate="global.messages.validate.email.invalid"
+                      >
+                        Your email is invalid.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.email" for="field_email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('email')?.errors?.minlength"
+                        jhiTranslate="global.messages.validate.email.minlength"
+                      >
+                        Your email is required to be at least 5 characters.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.logo" for="field_logo">Logo</label>
-          <div>
-            <div *ngIf="editForm.get('logo')!.value" class="form-text text-danger clearfix">
-              <a
-                class="pull-left"
-                (click)="openFile(editForm.get('logo')!.value, editForm.get('logoContentType')!.value)"
-                jhiTranslate="entity.action.open"
-                >open</a
-              ><br />
-              <span class="pull-left">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span>
-              <button
-                type="button"
-                (click)="editForm.patchValue({ logo: null }); editForm.patchValue({ logoContentType: null })"
-                class="btn btn-secondary btn-xs pull-right"
-              >
-                <fa-icon icon="times"></fa-icon>
-              </button>
-            </div>
-            <input
-              type="file"
-              id="file_logo"
-              data-cy="logo"
-              (change)="setFileData($event, 'logo', false)"
-              jhiTranslate="entity.action.addblob"
-            />
-          </div>
-          <input type="hidden" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
-          <input type="hidden" class="form-control" name="logoContentType" id="field_logoContentType" formControlName="logoContentType" />
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('email')?.errors?.maxlength"
+                        jhiTranslate="global.messages.validate.email.maxlength"
+                      >
+                        Your email cannot be longer than 100 characters.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="global.form.newpassword.label">New password</label>
+                    <input type="password" nbInput status="primary" fullWidth fieldSize="small" formControlName="password"/>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.cachet" for="field_cachet">Cachet</label>
-          <div>
-            <div *ngIf="editForm.get('cachet')!.value" class="form-text text-danger clearfix">
-              <a
-                class="pull-left"
-                (click)="openFile(editForm.get('cachet')!.value, editForm.get('cachetContentType')!.value)"
-                jhiTranslate="entity.action.open"
-                >open</a
-              ><br />
-              <span class="pull-left">{{ editForm.get('cachetContentType')!.value }}, {{ byteSize(editForm.get('cachet')!.value) }}</span>
-              <button
-                type="button"
-                (click)="editForm.patchValue({ cachet: null }); editForm.patchValue({ cachetContentType: null })"
-                class="btn btn-secondary btn-xs pull-right"
-              >
-                <fa-icon icon="times"></fa-icon>
-              </button>
-            </div>
-            <input
-              type="file"
-              id="file_cachet"
-              data-cy="cachet"
-              (change)="setFileData($event, 'cachet', false)"
-              jhiTranslate="entity.action.addblob"
-            />
-          </div>
-          <input type="hidden" class="form-control" name="cachet" id="field_cachet" data-cy="cachet" formControlName="cachet" />
-          <input
-            type="hidden"
-            class="form-control"
-            name="cachetContentType"
-            id="field_cachetContentType"
-            formControlName="cachetContentType"
-          />
-        </div>
+                    <div
+                      *ngIf="editForm.get('password')!.invalid && (editForm.get('password')!.dirty || editForm.get('password')!.touched)"
+                    >
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('password')?.errors?.required"
+                        jhiTranslate="global.messages.validate.newpassword.required"
+                      >
+                        Your password is required.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.signature" for="field_signature">Signature</label>
-          <div>
-            <div *ngIf="editForm.get('signature')!.value" class="form-text text-danger clearfix">
-              <a
-                class="pull-left"
-                (click)="openFile(editForm.get('signature')!.value, editForm.get('signatureContentType')!.value)"
-                jhiTranslate="entity.action.open"
-                >open</a
-              ><br />
-              <span class="pull-left"
-                >{{ editForm.get('signatureContentType')!.value }}, {{ byteSize(editForm.get('signature')!.value) }}</span
-              >
-              <button
-                type="button"
-                (click)="editForm.patchValue({ signature: null }); editForm.patchValue({ signatureContentType: null })"
-                class="btn btn-secondary btn-xs pull-right"
-              >
-                <fa-icon icon="times"></fa-icon>
-              </button>
-            </div>
-            <input
-              type="file"
-              id="file_signature"
-              data-cy="signature"
-              (change)="setFileData($event, 'signature', false)"
-              jhiTranslate="entity.action.addblob"
-            />
-          </div>
-          <input type="hidden" class="form-control" name="signature" id="field_signature" data-cy="signature" formControlName="signature" />
-          <input
-            type="hidden"
-            class="form-control"
-            name="signatureContentType"
-            id="field_signatureContentType"
-            formControlName="signatureContentType"
-          />
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('password')?.errors?.minlength"
+                        jhiTranslate="global.messages.validate.newpassword.minlength"
+                      >
+                        Your password is required to be at least 4 characters.
+                      </small>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.dateConfig" for="field_dateConfig">Date Config</label>
-          <div class="d-flex">
-            <input
-              id="field_dateConfig"
-              data-cy="dateConfig"
-              type="datetime-local"
-              class="form-control"
-              name="dateConfig"
-              formControlName="dateConfig"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('password')?.errors?.maxlength"
+                        jhiTranslate="global.messages.validate.newpassword.maxlength"
+                      >
+                        Your password cannot be longer than 50 characters.
+                      </small>
+                    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.pdg" for="field_pdg">Pdg</label>
-          <input type="text" class="form-control" name="pdg" id="field_pdg" data-cy="pdg" formControlName="pdg" />
-        </div>
+                    <jhi-password-strength-bar [passwordToCheck]="editForm.get('password')!.value"></jhi-password-strength-bar>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="global.form.confirmpassword.label">New password confirmation</label>
+                    <input type="password" nbInput status="primary" fullWidth fieldSize="small" formControlName="confirmPassword"/>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.structure.type" for="field_type">Type</label>
-          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
-            <option [ngValue]="null">{{ 'appPharmaApp.TypeStructure.null' | translate }}</option>
-            <option *ngFor="let typeStructure of typeStructureValues" [value]="typeStructure">
-              {{ 'appPharmaApp.TypeStructure.' + typeStructure | translate }}
-            </option>
-          </select>
-        </div>
-      </div>
+                    <div
+                      *ngIf="
+                          editForm.get('confirmPassword')!.invalid &&
+                          (editForm.get('confirmPassword')!.dirty || editForm.get('confirmPassword')!.touched)
+                        "
+                    >
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('confirmPassword')?.errors?.required"
+                        jhiTranslate="global.messages.validate.confirmpassword.required"
+                      >
+                        Your confirmation password is required.
+                      </small>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('confirmPassword')?.errors?.minlength"
+                        jhiTranslate="global.messages.validate.confirmpassword.minlength"
+                      >
+                        Your confirmation password is required to be at least 4 characters.
+                      </small>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-      </div>
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="editForm.get('confirmPassword')?.errors?.maxlength"
+                        jhiTranslate="global.messages.validate.confirmpassword.maxlength"
+                      >
+                        Your confirmation password cannot be longer than 50 characters.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <nb-card-footer class="row justify-content-between">
+                <button type="button" nbButton nbStepperPrevious size="tiny">précedent</button>
+                <button type="button" nbButton nbStepperNext size="tiny">suivant</button>
+              </nb-card-footer>
+            </nb-step>
+            <nb-step [label]="labelTree">
+              <ng-template #labelTree>Licence</ng-template>
+              <div class="row">
+                <div class="case-deux">
+                  <div class="form-group">
+                    <label class="form-control-label">Entrer la clé de la licence</label>
+                    <input nbInput status="primary" fullWidth fieldSize="small" [(ngModel)]="licence"
+                           style="text-transform:uppercase" (keydown.enter)="getLicence()" [ngModelOptions]="{standalone: true}"
+                           [inputMask]="licenseInputMask" placeholder="XXXX-XXXX-XXXX-XXXX"/>
+                  </div>
+                </div>
+                <div class="case-deux">
+                  <div class="col-12">
+                    <ul class="list-group" *ngIf="pack">
+                      <li class="list-group-item text-muted"> Code licence : {{pack!.libelle}}<i class="fa fa-dashboard fa-1x"></i></li>
+                      <li class="list-group-item text-right text-danger">
+                        <span class="float-left text-black-50"><strong>Type de licence</strong></span> {{pack!.type!.libelle}}
+                      </li>
+                      <li class="list-group-item text-right text-danger">
+                        <span class="float-left text-black-50"><strong>Validité</strong></span> {{pack!.durer + ' jours'}}
+                      </li>
+                      <li class="list-group-item text-right text-danger">
+                        <span class="float-left text-black-50"><strong>Nombres d'agences</strong></span> {{pack!.type!.annexe}}
+                      </li>
+                      <li class="list-group-item text-right text-danger">
+                        <span class="float-left text-black-50"><strong>Montant</strong></span> {{pack!.type!.prix | currency: 'XOF'}}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+
+              <nb-card-footer class="row justify-content-between">
+                <!--                <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">-->
+                <!--                  <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>-->
+                <!--                </button>-->
+                <button type="button" nbButton nbStepperPrevious size="tiny">précedent</button>
+
+                <button type="submit" mat-raised-button color="primary"
+                        [disabled]="!pack || isSaving">
+                  <fa-icon icon="save"></fa-icon>&nbsp;<span >Valider</span>
+                </button>
+              </nb-card-footer>
+            </nb-step>
+          </nb-stepper>
+        </nb-card-body>
+      </nb-card>
     </form>
   </div>
 </div>

@@ -10,6 +10,7 @@ export interface IPack {
   dateRenew?: dayjs.Dayjs | null;
   operateur?: IStructure | null;
   type?: ITypePack | null;
+  structure?: IStructure | null;
 }
 
 export class Pack implements IPack {
@@ -20,7 +21,8 @@ export class Pack implements IPack {
     public valide?: boolean | null,
     public dateRenew?: dayjs.Dayjs | null,
     public operateur?: IStructure | null,
-    public type?: ITypePack | null
+    public type?: ITypePack | null,
+    public structure?: IStructure | null
   ) {
     this.valide = this.valide ?? false;
   }

@@ -11,5 +11,6 @@ import org.mapstruct.*;
 public interface PackMapper extends EntityMapper<PackDTO, Pack> {
     @Mapping(target = "operateur", source = "operateur", qualifiedByName = "id")
     @Mapping(target = "type", source = "type", qualifiedByName = "id")
+    @Mapping(target = "structure", source = "structure", qualifiedByName = "id")
     PackDTO toDto(Pack s);
 }

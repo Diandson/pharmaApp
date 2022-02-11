@@ -40,6 +40,8 @@ public class AdminUserDTO {
 
     private String createdBy;
 
+    private String password;
+
     private Instant createdDate;
 
     private String lastModifiedBy;
@@ -170,6 +172,14 @@ public class AdminUserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     // prettier-ignore

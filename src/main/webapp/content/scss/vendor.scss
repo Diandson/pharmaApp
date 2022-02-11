@@ -8,10 +8,14 @@ eg $input-color: red;
 @import 'bootstrap-variables';
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
-
-@import 'themes';
+@import "themes";
 
 @import '~@nebular/theme/styles/globals';
+@import '~@nebular/theme/styles/prebuilt/default.css';
+@import '~@nebular/theme/styles/prebuilt/dark.css';
+@import '~@nebular/theme/styles/prebuilt/corporate.css';
+@import '~@nebular/theme/styles/prebuilt/cosmic.css';
+
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 @import '~ng-zorro-antd/ng-zorro-antd.compact.css';
@@ -20,5 +24,9 @@ eg $input-color: red;
 @import '~primeng/resources/primeng.css';
 @import '~primeng/resources/themes/lara-light-blue/theme.css';
 @import '~primeicons/primeicons.css';
+
+@import '~tailwindcss/base.css';
+@import '~tailwindcss/components.css';
+@import '~tailwindcss/utilities.css';
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

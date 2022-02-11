@@ -42,6 +42,12 @@
             <a [routerLink]="['/type-pack', pack.type?.id, 'view']">{{ pack.type?.id }}</a>
           </div>
         </dd>
+        <dt><span jhiTranslate="appPharmaApp.pack.structure">Structure</span></dt>
+        <dd>
+          <div *ngIf="pack.structure">
+            <a [routerLink]="['/structure', pack.structure?.id, 'view']">{{ pack.structure?.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

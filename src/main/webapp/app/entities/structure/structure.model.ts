@@ -3,6 +3,7 @@ import { IPack } from 'app/entities/pack/pack.model';
 import { IMedicament } from 'app/entities/medicament/medicament.model';
 import { IPersonne } from 'app/entities/personne/personne.model';
 import { TypeStructure } from 'app/entities/enumerations/type-structure.model';
+import {User} from "../../admin/user-management/user-management.model";
 
 export interface IStructure {
   id?: number;
@@ -27,6 +28,9 @@ export interface IStructure {
   packs?: IPack[] | null;
   medicaments?: IMedicament[] | null;
   personnes?: IPersonne[] | null;
+  personne?: IPersonne | null;
+  userDTO?: User | null;
+  packDTO?: IPack | null;
 }
 
 export class Structure implements IStructure {
@@ -52,7 +56,10 @@ export class Structure implements IStructure {
     public type?: TypeStructure | null,
     public packs?: IPack[] | null,
     public medicaments?: IMedicament[] | null,
-    public personnes?: IPersonne[] | null
+    public personnes?: IPersonne[] | null,
+    public personne?: IPersonne | null,
+    public userDTO?: User | null,
+    public packDTO?: IPack | null
   ) {}
 }
 

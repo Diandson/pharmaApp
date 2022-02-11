@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,8 @@ import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import {UserManagementUpdateComponent} from "../update/user-management-update.component";
+
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -24,6 +26,7 @@ export class UserManagementComponent implements OnInit {
   page!: number;
   predicate!: string;
   ascending!: boolean;
+  search?: string;
 
   constructor(
     private userService: UserManagementService,
@@ -35,7 +38,8 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
-    this.handleNavigation();
+    // this.handleNavigation();
+    this.loadAll();
   }
 
   setActive(user: User, isActivated: boolean): void {
@@ -56,22 +60,24 @@ export class UserManagementComponent implements OnInit {
       }
     });
   }
+  createOrUpdateUser(user?: User): void {
+    const modalRef = this.modalService.open(UserManagementUpdateComponent, { size: 'xl', backdrop: 'static' });
+    if (user){
+      modalRef.componentInstance.user = user;
+    }
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'deleted') {
+        this.loadAll();
+      }
+    });
+  }
 
   loadAll(): void {
     this.isLoading = true;
     this.userService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe({
-        next: (res: HttpResponse<User[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers);
-        },
-        error: () => (this.isLoading = false),
-      });
+      .query()
+      .subscribe(res => this.users = res.body);
   }
 
   transition(): void {

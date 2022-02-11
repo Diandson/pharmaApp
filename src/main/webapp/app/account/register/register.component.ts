@@ -13,6 +13,7 @@ import { RegisterService } from './register.service';
 export class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
   login?: ElementRef;
+  authorities: string[] = [];
 
   doNotMatch = false;
   error = false;
@@ -35,7 +36,8 @@ export class RegisterComponent implements AfterViewInit {
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
 
-  constructor(private translateService: TranslateService, private registerService: RegisterService, private fb: FormBuilder) {}
+  constructor(private translateService: TranslateService,
+              private registerService: RegisterService, private fb: FormBuilder) {}
 
   ngAfterViewInit(): void {
     if (this.login) {
@@ -50,13 +52,14 @@ export class RegisterComponent implements AfterViewInit {
     this.errorUserExists = false;
 
     const password = this.registerForm.get(['password'])!.value;
+    this.authorities.push("ROLE_USER");
     if (password !== this.registerForm.get(['confirmPassword'])!.value) {
       this.doNotMatch = true;
     } else {
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
       this.registerService
-        .save({ login, email, password, langKey: this.translateService.currentLang })
+        .save({ login, email, password, langKey: this.translateService.currentLang, authorities: this.authorities })
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }

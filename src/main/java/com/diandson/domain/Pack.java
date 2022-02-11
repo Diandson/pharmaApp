@@ -43,6 +43,10 @@ public class Pack implements Serializable {
     @JsonIgnoreProperties(value = { "packs" }, allowSetters = true)
     private TypePack type;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "packs", "medicaments", "personnes" }, allowSetters = true)
+    private Structure structure;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -133,6 +137,19 @@ public class Pack implements Serializable {
 
     public Pack type(TypePack typePack) {
         this.setType(typePack);
+        return this;
+    }
+
+    public Structure getStructure() {
+        return this.structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+    }
+
+    public Pack structure(Structure structure) {
+        this.setStructure(structure);
         return this;
     }
 

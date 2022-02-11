@@ -44,6 +44,16 @@ export class PackService {
       .get<IPack>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
+  findKeys(id: string): Observable<EntityResponseType> {
+    return this.http
+      .get<IPack>(`${this.resourceUrl}/keys/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+  findTypePack(id?: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IPack>(`${this.resourceUrl}/generer/${id!}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);

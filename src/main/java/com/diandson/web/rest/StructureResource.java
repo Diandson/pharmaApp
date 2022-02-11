@@ -163,6 +163,11 @@ public class StructureResource {
         return ResponseUtil.wrapOrNotFound(structureDTO);
     }
 
+    @GetMapping("/structures/only")
+    public StructureDTO getOnlyStructure() {
+        return structureService.findOneOnly();
+    }
+
     /**
      * {@code DELETE  /structures/:id} : delete the "id" structure.
      *

@@ -161,6 +161,16 @@ public class PackResource {
         return ResponseUtil.wrapOrNotFound(packDTO);
     }
 
+    @GetMapping("/packs/generer/{id}")
+    public PackDTO getPackGenerer(@PathVariable Long id) {
+        return packService.findOneGenerer(id);
+    }
+
+    @GetMapping("/packs/keys/{id}")
+    public PackDTO getPackGenerer(@PathVariable String id) {
+        return packService.findOneKeys(id);
+    }
+
     /**
      * {@code DELETE  /packs/:id} : delete the "id" pack.
      *

@@ -23,7 +23,8 @@
       "valide": "Valide",
       "dateRenew": "Date Renew",
       "operateur": "Operateur",
-      "type": "Type"
+      "type": "Type",
+      "structure": "Structure"
     }
   }
 }

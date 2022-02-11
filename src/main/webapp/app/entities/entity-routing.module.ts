@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {GetstartedComponent} from "./getstarted/getstarted.component";
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'structure',
-        data: { pageTitle: 'appPharmaApp.structure.home.title' },
+        data: { pageTitle: 'Structure' },
         loadChildren: () => import('./structure/structure.module').then(m => m.StructureModule),
+      },
+      {
+        path: 'getstarted',
+        data: { pageTitle: 'Configuration' },
+        component: GetstartedComponent
       },
       {
         path: 'medicament',

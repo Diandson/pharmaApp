@@ -54,10 +54,12 @@ describe('Pack Management Update Component', () => {
       const pack: IPack = { id: 456 };
       const operateur: IStructure = { id: 94316 };
       pack.operateur = operateur;
+      const structure: IStructure = { id: 93276 };
+      pack.structure = structure;
 
-      const structureCollection: IStructure[] = [{ id: 93276 }];
+      const structureCollection: IStructure[] = [{ id: 45498 }];
       jest.spyOn(structureService, 'query').mockReturnValue(of(new HttpResponse({ body: structureCollection })));
-      const additionalStructures = [operateur];
+      const additionalStructures = [operateur, structure];
       const expectedCollection: IStructure[] = [...additionalStructures, ...structureCollection];
       jest.spyOn(structureService, 'addStructureToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -90,8 +92,10 @@ describe('Pack Management Update Component', () => {
 
     it('Should update editForm', () => {
       const pack: IPack = { id: 456 };
-      const operateur: IStructure = { id: 45498 };
+      const operateur: IStructure = { id: 56164 };
       pack.operateur = operateur;
+      const structure: IStructure = { id: 34142 };
+      pack.structure = structure;
       const type: ITypePack = { id: 86648 };
       pack.type = type;
 
@@ -100,6 +104,7 @@ describe('Pack Management Update Component', () => {
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(pack));
       expect(comp.structuresSharedCollection).toContain(operateur);
+      expect(comp.structuresSharedCollection).toContain(structure);
       expect(comp.typePacksSharedCollection).toContain(type);
     });
   });

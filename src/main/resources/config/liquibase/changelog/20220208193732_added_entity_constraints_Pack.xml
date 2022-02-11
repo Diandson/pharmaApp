@@ -19,5 +19,11 @@
                                  constraintName="fk_pack__type_id"
                                  referencedColumnNames="id"
                                  referencedTableName="type_pack"/>
+
+        <addForeignKeyConstraint baseColumnNames="structure_id"
+                                 baseTableName="pack"
+                                 constraintName="fk_pack__structure_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="structure"/>
     </changeSet>
 </databaseChangeLog>
