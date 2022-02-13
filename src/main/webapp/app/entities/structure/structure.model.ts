@@ -31,6 +31,7 @@ export interface IStructure {
   personne?: IPersonne | null;
   userDTO?: User | null;
   packDTO?: IPack | null;
+  mere?: string | null;
 }
 
 export class Structure implements IStructure {
@@ -59,7 +60,8 @@ export class Structure implements IStructure {
     public personnes?: IPersonne[] | null,
     public personne?: IPersonne | null,
     public userDTO?: User | null,
-    public packDTO?: IPack | null
+    public packDTO?: IPack | null,
+    public mere?: string | null
   ) {}
 }
 

@@ -89,6 +89,9 @@ class StructureResourceIT {
     private static final TypeStructure DEFAULT_TYPE = TypeStructure.SIEGE;
     private static final TypeStructure UPDATED_TYPE = TypeStructure.AGENCE;
 
+    private static final String DEFAULT_MERE = "AAAAAAAAAA";
+    private static final String UPDATED_MERE = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/structures";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -134,7 +137,8 @@ class StructureResourceIT {
             .signatureContentType(DEFAULT_SIGNATURE_CONTENT_TYPE)
             .dateConfig(DEFAULT_DATE_CONFIG)
             .pdg(DEFAULT_PDG)
-            .type(DEFAULT_TYPE);
+            .type(DEFAULT_TYPE)
+            .mere(DEFAULT_MERE);
         return structure;
     }
 
@@ -163,7 +167,8 @@ class StructureResourceIT {
             .signatureContentType(UPDATED_SIGNATURE_CONTENT_TYPE)
             .dateConfig(UPDATED_DATE_CONFIG)
             .pdg(UPDATED_PDG)
-            .type(UPDATED_TYPE);
+            .type(UPDATED_TYPE)
+            .mere(UPDATED_MERE);
         return structure;
     }
 
@@ -204,6 +209,7 @@ class StructureResourceIT {
         assertThat(testStructure.getDateConfig()).isEqualTo(DEFAULT_DATE_CONFIG);
         assertThat(testStructure.getPdg()).isEqualTo(DEFAULT_PDG);
         assertThat(testStructure.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testStructure.getMere()).isEqualTo(DEFAULT_MERE);
     }
 
     @Test
@@ -254,7 +260,8 @@ class StructureResourceIT {
             .andExpect(jsonPath("$.[*].signature").value(hasItem(Base64Utils.encodeToString(DEFAULT_SIGNATURE))))
             .andExpect(jsonPath("$.[*].dateConfig").value(hasItem(sameInstant(DEFAULT_DATE_CONFIG))))
             .andExpect(jsonPath("$.[*].pdg").value(hasItem(DEFAULT_PDG)))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].mere").value(hasItem(DEFAULT_MERE)));
     }
 
     @Test
@@ -286,7 +293,8 @@ class StructureResourceIT {
             .andExpect(jsonPath("$.signature").value(Base64Utils.encodeToString(DEFAULT_SIGNATURE)))
             .andExpect(jsonPath("$.dateConfig").value(sameInstant(DEFAULT_DATE_CONFIG)))
             .andExpect(jsonPath("$.pdg").value(DEFAULT_PDG))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.mere").value(DEFAULT_MERE));
     }
 
     @Test
@@ -326,7 +334,8 @@ class StructureResourceIT {
             .signatureContentType(UPDATED_SIGNATURE_CONTENT_TYPE)
             .dateConfig(UPDATED_DATE_CONFIG)
             .pdg(UPDATED_PDG)
-            .type(UPDATED_TYPE);
+            .type(UPDATED_TYPE)
+            .mere(UPDATED_MERE);
         StructureDTO structureDTO = structureMapper.toDto(updatedStructure);
 
         restStructureMockMvc
@@ -359,6 +368,7 @@ class StructureResourceIT {
         assertThat(testStructure.getDateConfig()).isEqualTo(UPDATED_DATE_CONFIG);
         assertThat(testStructure.getPdg()).isEqualTo(UPDATED_PDG);
         assertThat(testStructure.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testStructure.getMere()).isEqualTo(UPDATED_MERE);
     }
 
     @Test
@@ -446,7 +456,8 @@ class StructureResourceIT {
             .logoContentType(UPDATED_LOGO_CONTENT_TYPE)
             .cachet(UPDATED_CACHET)
             .cachetContentType(UPDATED_CACHET_CONTENT_TYPE)
-            .pdg(UPDATED_PDG);
+            .pdg(UPDATED_PDG)
+            .mere(UPDATED_MERE);
 
         restStructureMockMvc
             .perform(
@@ -478,6 +489,7 @@ class StructureResourceIT {
         assertThat(testStructure.getDateConfig()).isEqualTo(DEFAULT_DATE_CONFIG);
         assertThat(testStructure.getPdg()).isEqualTo(UPDATED_PDG);
         assertThat(testStructure.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testStructure.getMere()).isEqualTo(UPDATED_MERE);
     }
 
     @Test
@@ -510,7 +522,8 @@ class StructureResourceIT {
             .signatureContentType(UPDATED_SIGNATURE_CONTENT_TYPE)
             .dateConfig(UPDATED_DATE_CONFIG)
             .pdg(UPDATED_PDG)
-            .type(UPDATED_TYPE);
+            .type(UPDATED_TYPE)
+            .mere(UPDATED_MERE);
 
         restStructureMockMvc
             .perform(
@@ -542,6 +555,7 @@ class StructureResourceIT {
         assertThat(testStructure.getDateConfig()).isEqualTo(UPDATED_DATE_CONFIG);
         assertThat(testStructure.getPdg()).isEqualTo(UPDATED_PDG);
         assertThat(testStructure.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testStructure.getMere()).isEqualTo(UPDATED_MERE);
     }
 
     @Test

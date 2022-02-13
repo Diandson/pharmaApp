@@ -1,161 +1,121 @@
 <div>
-  <h2 id="page-heading" data-cy="MedicamentHeading">
-    <span jhiTranslate="appPharmaApp.medicament.home.title">Medicaments</span>
+  <nb-card>
+    <nb-card-header>
+      <h2 id="page-heading" data-cy="MedicamentHeading">
+        <span jhiTranslate="appPharmaApp.medicament.home.title">Medicaments</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appPharmaApp.medicament.home.refreshListLabel">Refresh List</span>
-      </button>
+        <button nbButton size="small" status="success"
+          class="float-right" [routerLink]="['/medicament/new']">
+          <fa-icon icon="plus"></fa-icon>
+          <span > Charger un fichier </span>
+        </button>
+        <button nbButton size="small" status="primary"
+          class="float-right jh-create-entity create-medicament mr-2" [routerLink]="['/medicament/new']">
+          <fa-icon icon="plus"></fa-icon>
+          <span > Ajouter nouveau </span>
+        </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-medicament"
-        [routerLink]="['/medicament/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appPharmaApp.medicament.home.createLabel"> Create a new Medicament </span>
-      </button>
-    </div>
-  </h2>
+        <button nbButton size="small" class="float-right mr-2" (click)="loadPage()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          <span></span>
+        </button>
+      </h2>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="card">
+        <p-table #dt1 [value]="medicaments!" dataKey="id"
+                 [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500,1000]"
+                 styleClass="p-datatable-gridlines p-datatable-sm" [sortField]="'denomination'" [sortMode]="'1'"
+                 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [globalFilterFields]="['denomination','dci','forme','dosage', 'classe', 'dateExpiration']">
+          <ng-template pTemplate="caption">
+            <div class="flex">
 
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="medicaments?.length === 0">
-    <span jhiTranslate="appPharmaApp.medicament.home.notFound">No medicaments found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="medicaments && medicaments.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="denomination">
-            <span jhiTranslate="appPharmaApp.medicament.denomination">Denomination</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dci"><span jhiTranslate="appPharmaApp.medicament.dci">Dci</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="forme">
-            <span jhiTranslate="appPharmaApp.medicament.forme">Forme</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dosage">
-            <span jhiTranslate="appPharmaApp.medicament.dosage">Dosage</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="classe">
-            <span jhiTranslate="appPharmaApp.medicament.classe">Classe</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="codeBare">
-            <span jhiTranslate="appPharmaApp.medicament.codeBare">Code Bare</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="prixAchat">
-            <span jhiTranslate="appPharmaApp.medicament.prixAchat">Prix Achat</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="prixPublic">
-            <span jhiTranslate="appPharmaApp.medicament.prixPublic">Prix Public</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="stockAlerte">
-            <span jhiTranslate="appPharmaApp.medicament.stockAlerte">Stock Alerte</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="stockSecurite">
-            <span jhiTranslate="appPharmaApp.medicament.stockSecurite">Stock Securite</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="stockTheorique">
-            <span jhiTranslate="appPharmaApp.medicament.stockTheorique">Stock Theorique</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dateFabrication">
-            <span jhiTranslate="appPharmaApp.medicament.dateFabrication">Date Fabrication</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dateExpiration">
-            <span jhiTranslate="appPharmaApp.medicament.dateExpiration">Date Expiration</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="image">
-            <span jhiTranslate="appPharmaApp.medicament.image">Image</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="structure.id">
-            <span jhiTranslate="appPharmaApp.medicament.structure">Structure</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let medicament of medicaments; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/medicament', medicament.id, 'view']">{{ medicament.id }}</a>
-          </td>
-          <td>{{ medicament.denomination }}</td>
-          <td>{{ medicament.dci }}</td>
-          <td>{{ medicament.forme }}</td>
-          <td>{{ medicament.dosage }}</td>
-          <td>{{ medicament.classe }}</td>
-          <td>{{ medicament.codeBare }}</td>
-          <td>{{ medicament.prixAchat }}</td>
-          <td>{{ medicament.prixPublic }}</td>
-          <td>{{ medicament.stockAlerte }}</td>
-          <td>{{ medicament.stockSecurite }}</td>
-          <td>{{ medicament.stockTheorique }}</td>
-          <td>{{ medicament.dateFabrication | formatMediumDate }}</td>
-          <td>{{ medicament.dateExpiration | formatMediumDate }}</td>
-          <td>
-            <a *ngIf="medicament.image" (click)="openFile(medicament.image, medicament.imageContentType)" jhiTranslate="entity.action.open"
-              >open</a
-            >
-            <span *ngIf="medicament.image">{{ medicament.imageContentType }}, {{ byteSize(medicament.image) }}</span>
-          </td>
-          <td>
-            <div *ngIf="medicament.structure">
-              <a [routerLink]="['/structure', medicament.structure?.id, 'view']">{{ medicament.structure?.id }}</a>
+              <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="search"
+                           (input)="dt1.filterGlobal(search, 'startsWith')"
+                           placeholder="Recherche ..." />
+                </span>
             </div>
-          </td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/medicament', medicament.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Dénomination</th>
+              <th>DCI</th>
+              <th>Forme</th>
+              <th>Dosage</th>
+              <th>Classe</th>
+              <th>Prix achat</th>
+              <th>Prix public</th>
+              <th>Stock disponible</th>
+              <th>Expiration</th>
+              <th style="width: 4rem"> </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-medicament>
+            <tr>
+              <td>{{ medicament.denomination }}</td>
+              <td>{{ medicament.dci }}</td>
+              <td>{{ medicament.forme }}</td>
+              <td>{{ medicament.dosage }}</td>
+              <td>{{ medicament.classe }}</td>
+              <td>{{ medicament.prixAchat }}</td>
+              <td>{{ medicament.prixPublic }}</td>
+              <td>{{ medicament.stockTheorique }}</td>
+              <td>{{ medicament.dateExpiration | formatMediumDate }}</td>
+              <td class="text-right">
+                <div class="btn-group">
+                  <button type="submit"
+                    [routerLink]="['/medicament', medicament.id, 'view']" class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"><fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline"></span>
+                  </button>
 
-              <button
-                type="submit"
-                [routerLink]="['/medicament', medicament.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
+                  <button type="submit"
+                    [routerLink]="['/medicament', medicament.id, 'edit']"
+                    class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline"></span>
+                  </button>
 
-              <button type="submit" (click)="delete(medicament)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="medicaments && medicaments.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
-    </div>
-  </div>
+                  <button type="submit" (click)="delete(medicament)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline"></span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">Pas de données trouver.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </nb-card-body>
+  </nb-card>
 </div>
+
+
+<nz-modal [nzClosable]="false" nzWidth="480px"
+          nzTitle="Veuillez selectionner le fichier!" [(nzVisible)]="isModal">
+  <div class="col-12" *nzModalContent>
+    <div class="clearfix">
+      <nz-upload nzFileType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                 [(nzFileList)]="defaultFileList">
+        <button nz-button nzType="default">
+          <i nz-icon nzType="upload"></i>
+          Choisir le fichier
+        </button>
+      </nz-upload>
+    </div>
+  </div>
+  <div *nzModalFooter class="row justify-content-between">
+    <button mat-raised-button color="accent" (click)="isModal = false">Fermer</button>
+    <button mat-raised-button color="primary" (click)="uploadFile()"
+            *ngIf="defaultFileList.length > 0">Valider</button>
+  </div>
+</nz-modal>
+

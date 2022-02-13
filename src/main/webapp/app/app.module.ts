@@ -51,14 +51,13 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { ProgressDialogComponent } from './shared/progress-dialog/progress-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginModule } from './login/login.module';
-import { OverlayContainer } from '@angular/cdk/overlay';
 
 @NgModule({
   imports: [
     BrowserModule,
     SharedModule,
     HomeModule,
-    NbThemeModule.forRoot({ name: 'dark' }),
+    NbThemeModule.forRoot(),
     NbMenuModule.forRoot(),
     BrowserAnimationsModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
@@ -93,7 +92,6 @@ import { OverlayContainer } from '@angular/cdk/overlay';
     NzModalService,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
-    OverlayContainer,
     httpInterceptorProviders,
   ],
   declarations: [

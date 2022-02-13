@@ -1,0 +1,14 @@
+
+::ng-deep .cdk-overlay-container {
+  position: fixed;
+  z-index: 99999;
+}
+
+.modal-backdrop {
+  background-color: transparent !important;
+}
+
+::ng-deep .myCustomModalClass .modal-dialog {
+  max-width: 0;
+}
+

@@ -84,9 +84,12 @@ public class Structure implements Serializable {
     @Column(name = "type")
     private TypeStructure type;
 
+    @Column(name = "mere")
+    private String mere;
+
     @OneToMany(mappedBy = "operateur")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "operateur", "type" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "operateur", "type", "structure" }, allowSetters = true)
     private Set<Pack> packs = new HashSet<>();
 
     @OneToMany(mappedBy = "structure")
@@ -363,6 +366,19 @@ public class Structure implements Serializable {
         this.type = type;
     }
 
+    public String getMere() {
+        return this.mere;
+    }
+
+    public Structure mere(String mere) {
+        this.setMere(mere);
+        return this;
+    }
+
+    public void setMere(String mere) {
+        this.mere = mere;
+    }
+
     public Set<Pack> getPacks() {
         return this.packs;
     }
@@ -498,6 +514,7 @@ public class Structure implements Serializable {
             ", dateConfig='" + getDateConfig() + "'" +
             ", pdg='" + getPdg() + "'" +
             ", type='" + getType() + "'" +
+            ", mere='" + getMere() + "'" +
             "}";
     }
 }

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LANGUAGES } from 'app/config/language.constants';
 import { User } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {createMask} from "@ngneat/input-mask";
 import {DataUtils, FileLoadError} from "../../../core/util/data-util.service";
 import {EventManager, EventWithContent} from "../../../core/util/event-manager.service";
@@ -13,17 +13,20 @@ import {AlertError} from "../../../shared/alert/alert-error.model";
 import {MatDialog} from "@angular/material/dialog";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {IPersonne, Personne} from "../../../entities/personne/personne.model";
+import {AccountService} from "../../../core/auth/account.service";
+import {Authority} from "../../../config/authority.constants";
+import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
 
 @Component({
   selector: 'jhi-user-mgmt-update',
   templateUrl: './user-management-update.component.html',
+  styleUrls: ['../user.component.scss']
 })
 export class UserManagementUpdateComponent implements OnInit {
   user?: User;
   languages = LANGUAGES;
   authorities: string[] = [];
   isSaving = false;
-  licenseInputMask = createMask('****-****-****-****');
   telephoneInputMask = createMask('99-99-99-99');
   dateInputMask = createMask<Date>({
     alias: 'datetime',
@@ -36,6 +39,8 @@ export class UserManagementUpdateComponent implements OnInit {
       return new Date(year, month, date);
     },
   });
+  acteur = "";
+  authoritiesSelected: string[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -77,6 +82,8 @@ export class UserManagementUpdateComponent implements OnInit {
     protected eventManager: EventManager,
     private dialog: MatDialog,
     private modal: NzModalService,
+    private accountService: AccountService,
+    private modalService: NgbModal,
     private fb: FormBuilder
   ) {}
 
@@ -104,18 +111,109 @@ export class UserManagementUpdateComponent implements OnInit {
   }
 
   save(): void {
-    this.isSaving = true;
-    this.updateUser(this.user!);
-    if (this.user!.id !== undefined) {
-      this.userService.update(this.user!).subscribe({
-        next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError(),
-      });
+    const dialogRef = this.modalService.open(ProgressDialogComponent,
+      { backdrop: 'static', centered: true, windowClass: 'myCustomModalClass' });
+
+    // this.isSaving = true;
+    const user = this.updateUser();
+    const userMaj = this.updateUserMaj();
+    if (user.id !== undefined) {
+      this.userService.update(userMaj).subscribe(res => {
+          if (res.login) {
+            this.success('Utilisateur mis à jour avec succès');
+            dialogRef.close();
+            this.activeModal.close('saved');
+          } else {
+            this.warning('Une erreur est survenue');
+            dialogRef.close();
+          }
+        },
+        () => {
+          this.error('Veuillez verifiez votre connexion!');
+          dialogRef.close();
+        });
     } else {
-      this.userService.create(this.user!).subscribe({
-        next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError(),
-      });
+      this.userService.create(user).subscribe(res => {
+          if (res.login) {
+            this.success('Utilisateur ajouté avec succès')
+            dialogRef.close();
+            this.activeModal.close('saved');
+          } else {
+            this.warning('Une erreur est survenue');
+            dialogRef.close();
+          }
+        },
+        () => {
+          this.error('Veuillez verifiez votre connexion!');
+          dialogRef.close();
+        });
+    }
+  }
+
+  setAdmin(): void{
+    if (this.accountService.hasAnyAuthority(Authority.STRUCTURE_ADMIN)){
+      const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.USER.toLowerCase()));
+      const role = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.STRUCTURE_ADMIN.toLowerCase()));
+      if (roleUser != null && role != null) {
+        this.authoritiesSelected.push(roleUser);
+        this.authoritiesSelected.push(role);
+        this.acteur = 'ADMIN';
+      }
+    }else if (this.accountService.hasAnyAuthority(Authority.AGENCE_ADMIN)){
+      const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.USER.toLowerCase()));
+      const role = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.AGENCE_ADMIN.toLowerCase()));
+      if (roleUser != null && role != null) {
+        this.authoritiesSelected.push(roleUser);
+        this.authoritiesSelected.push(role);
+        this.acteur = 'ADMIN';
+      }
+    }
+    else{
+      const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.USER.toLowerCase()));
+      const role = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.ADMIN.toLowerCase()));
+      if (roleUser != null && role != null) {
+        this.authoritiesSelected.push(roleUser);
+        this.authoritiesSelected.push(role);
+        this.acteur = 'ADMIN';
+      }
+    }
+  }
+  setServeur(): void{
+    if (this.accountService.hasAnyAuthority(Authority.STRUCTURE_ADMIN)){
+      const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.USER.toLowerCase()));
+      const role = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.SERVEUR.toLowerCase()));
+      if (roleUser != null && role != null) {
+        this.authoritiesSelected.push(roleUser);
+        this.authoritiesSelected.push(role);
+        this.acteur = 'SERVEUR';
+      }
+    }else if (this.accountService.hasAnyAuthority(Authority.AGENCE_ADMIN)){
+      const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.USER.toLowerCase()));
+      const role = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.SERVEUR.toLowerCase()));
+      if (roleUser != null && role != null) {
+        this.authoritiesSelected.push(roleUser);
+        this.authoritiesSelected.push(role);
+        this.acteur = 'SERVEUR';
+      }
+    }
+  }
+  setCaisse(): void{
+    if (this.accountService.hasAnyAuthority(Authority.STRUCTURE_ADMIN)){
+      const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.USER.toLowerCase()));
+      const role = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.STRUCTURE_CAISSE.toLowerCase()));
+      if (roleUser != null && role != null) {
+        this.authoritiesSelected.push(roleUser);
+        this.authoritiesSelected.push(role);
+        this.acteur = 'CAISSE';
+      }
+    }else if (this.accountService.hasAnyAuthority(Authority.AGENCE_ADMIN)){
+      const roleUser = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.USER.toLowerCase()));
+      const role = this.authorities.find(a => a.toString().toLowerCase().includes(Authority.STRUCTURE_CAISSE.toLowerCase()));
+      if (roleUser != null && role != null) {
+        this.authoritiesSelected.push(roleUser);
+        this.authoritiesSelected.push(role);
+        this.acteur = 'CAISSE';
+      }
     }
   }
 
@@ -182,14 +280,32 @@ export class UserManagementUpdateComponent implements OnInit {
     });
   }
 
-  private updateUser(user: User): void {
-    user.login = this.editForm.get(['login'])!.value;
-    user.firstName = this.editForm.get(['firstName'])!.value;
-    user.lastName = this.editForm.get(['lastName'])!.value;
-    user.email = this.editForm.get(['email'])!.value;
-    user.activated = this.editForm.get(['activated'])!.value;
-    user.langKey = this.editForm.get(['langKey'])!.value;
-    user.authorities = this.editForm.get(['authorities'])!.value;
+  private updateUser(): User {
+    return {
+      ...new User(),
+      id: this.editForm.get(['id'])!.value,
+      login: this.editForm.get(['login'])!.value,
+      firstName: this.editForm.get(['nom'])!.value,
+      lastName: this.editForm.get(['prenom'])!.value,
+      email: this.editForm.get(['email'])!.value,
+      activated: this.editForm.get(['activated'])!.value,
+      langKey: this.editForm.get(['langKey'])!.value,
+      authorities: this.authoritiesSelected,
+      personne: this.createFromFormPresonne()
+    }
+  }
+  private updateUserMaj(): User {
+    return {
+      ...new User(),
+      id: this.editForm.get(['id'])!.value,
+      login: this.editForm.get(['login'])!.value,
+      firstName: this.editForm.get(['firstName'])!.value,
+      lastName: this.editForm.get(['lastName'])!.value,
+      email: this.editForm.get(['email'])!.value,
+      activated: this.editForm.get(['activated'])!.value,
+      langKey: this.editForm.get(['langKey'])!.value,
+      authorities: this.editForm.get(['authorities'])!.value,
+    }
   }
 
   private onSaveSuccess(): void {

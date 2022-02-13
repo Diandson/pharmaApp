@@ -57,6 +57,8 @@ public class StructureDTO implements Serializable {
 
     private PackDTO packDTO;
 
+    private String mere;
+
     public Long getId() {
         return id;
     }
@@ -231,6 +233,14 @@ public class StructureDTO implements Serializable {
 
     public void setPackDTO(PackDTO packDTO) {
         this.packDTO = packDTO;
+    }
+
+    public String getMere() {
+        return mere;
+    }
+
+    public void setMere(String mere) {
+        this.mere = mere;
     }
 
     @Override

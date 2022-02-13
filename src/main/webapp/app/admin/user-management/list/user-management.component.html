@@ -43,8 +43,8 @@
               <th>Email</th>
               <th>Etat</th>
               <th>Profiles</th>
+              <th>Créer le</th>
               <th>Modifier par</th>
-              <th>Modifier le</th>
               <th style="width: 4rem"> </th>
             </tr>
           </ng-template>
@@ -79,10 +79,9 @@
               </td>
               <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
               <td>{{ user.lastModifiedBy }}</td>
-              <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
               <td class="text-right">
                 <div class="btn-group">
-                  <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
+                  <button type="submit" (click)="detailsUser(user)" class="btn btn-info btn-sm">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline"></span>
                   </button>
@@ -107,7 +106,7 @@
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="7">No customers found.</td>
+              <td colspan="7">Pas de données trouver.</td>
             </tr>
           </ng-template>
         </p-table>

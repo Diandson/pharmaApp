@@ -4,6 +4,7 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {ProgressDialogComponent} from "../../shared/progress-dialog/progress-dialog.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-getstarted',
@@ -17,6 +18,7 @@ export class GetstartedComponent implements OnInit {
     private structueService: StructureService,
     private router: Router,
     private dialog: MatDialog,
+    private modalService: NgbModal,
     private modal: NzModalService
   ) {
   }
@@ -27,18 +29,19 @@ export class GetstartedComponent implements OnInit {
   }
 
   getStarted(): void{
-    const dialogRef = this.dialog.open(ProgressDialogComponent);
+    const modalRef = this.modalService.open(ProgressDialogComponent,
+      { backdrop: 'static', centered: true, windowClass: 'myCustomModalClass' });
     this.structueService.findOnly().subscribe(res => {
       if (res.body){
         this.warning('Veuillez rafraichir la page svp!');
-        dialogRef.close();
+        modalRef.close();
       }else {
         this.router.navigate(['structure/new']);
-        dialogRef.close();
+        modalRef.close();
       }
     }, () => {
       this.router.navigate(['structure/new']);
-      dialogRef.close();
+      modalRef.close();
     })
   }
 

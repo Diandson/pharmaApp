@@ -81,7 +81,7 @@
 
     </nb-action>
     <nb-action class="user-action">
-      <nb-user [nbContextMenu]="userMenu"
+      <nb-user [nbContextMenu]="userMenu" [nbContextMenuTag]="'userTags'"
                name="{{account!.firstName + ' ' + account!.lastName}}"
                [onlyPicture]="userPictureOnly">
       </nb-user>

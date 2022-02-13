@@ -113,21 +113,20 @@
                   <div class="form-group">
                     <label class="form-control-label">Logo</label>
                     <div>
-                      <div *ngIf="editForm.get('logo')!.value" class="form-text text-danger clearfix">
+                      <div [hidden]="true" *ngIf="editForm.get('logo')!.value" class="form-text text-danger clearfix">
                         <a
-                          class="pull-left"
+                          class="pull-left" [hidden]="true"
                           (click)="openFile(editForm.get('logo')!.value, editForm.get('logoContentType')!.value)"
                           jhiTranslate="entity.action.open"
                           >open</a
                         ><br />
-                        <span class="pull-left"
+                        <span class="pull-left" [hidden]="true"
                           >{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span
                         >
                         <button
                           type="button"
                           (click)="editForm.patchValue({ logo: null }); editForm.patchValue({ logoContentType: null })"
-                          class="btn btn-secondary btn-xs pull-right"
-                        >
+                          class="btn btn-secondary btn-xs pull-right">
                           <fa-icon icon="times"></fa-icon>
                         </button>
                       </div>
@@ -141,20 +140,20 @@
                         jhiTranslate="entity.action.addblob"
                       />
                     </div>
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="logo" />
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="logoContentType" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="logo" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="logoContentType" />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Cachet</label>
                     <div>
-                      <div *ngIf="editForm.get('cachet')!.value" class="form-text text-danger clearfix">
+                      <div [hidden]="true" *ngIf="editForm.get('cachet')!.value" class="form-text text-danger clearfix">
                         <a
-                          class="pull-left"
+                          class="pull-left" [hidden]="true"
                           (click)="openFile(editForm.get('cachet')!.value, editForm.get('cachetContentType')!.value)"
                           jhiTranslate="entity.action.open"
                           >open</a
                         ><br />
-                        <span class="pull-left"
+                        <span class="pull-left" [hidden]="true"
                           >{{ editForm.get('cachetContentType')!.value }}, {{ byteSize(editForm.get('cachet')!.value) }}</span
                         >
                         <button
@@ -175,20 +174,20 @@
                         jhiTranslate="entity.action.addblob"
                       />
                     </div>
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachet" />
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachetContentType" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachet" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="cachetContentType" />
                   </div>
                   <div class="form-group">
                     <label class="form-control-label">Signature</label>
                     <div>
-                      <div *ngIf="editForm.get('signature')!.value" class="form-text text-danger clearfix">
+                      <div [hidden]="true" *ngIf="editForm.get('signature')!.value" class="form-text text-danger clearfix">
                         <a
-                          class="pull-left"
+                          class="pull-left" [hidden]="true"
                           (click)="openFile(editForm.get('signature')!.value, editForm.get('signatureContentType')!.value)"
                           jhiTranslate="entity.action.open"
                           >open</a
                         ><br />
-                        <span class="pull-left"
+                        <span class="pull-left" [hidden]="true"
                           >{{ editForm.get('signatureContentType')!.value }}, {{ byteSize(editForm.get('signature')!.value) }}</span
                         >
                         <button
@@ -209,8 +208,8 @@
                         jhiTranslate="entity.action.addblob"
                       />
                     </div>
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="signature" />
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="signatureContentType" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="signature" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="signatureContentType" />
                   </div>
                 </div>
               </div>
@@ -291,21 +290,17 @@
                   <div class="form-group">
                     <label class="form-control-label">Profil</label>
                     <div>
-                      <div *ngIf="editForm.get('profil')!.value" class="form-text text-danger clearfix">
-                        <a
-                          class="pull-left"
+                      <div [hidden]="true" *ngIf="editForm.get('profil')!.value" class="form-text text-danger clearfix">
+                        <a class="pull-left" [hidden]="true"
                           (click)="openFile(editForm.get('profil')!.value, editForm.get('profilContentType')!.value)"
-                          jhiTranslate="entity.action.open"
-                          >open</a
-                        ><br />
-                        <span class="pull-left"
+                          jhiTranslate="entity.action.open">open</a><br />
+                        <span class="pull-left" [hidden]="true"
                           >{{ editForm.get('profilContentType')!.value }}, {{ byteSize(editForm.get('profil')!.value) }}</span
                         >
                         <button
-                          type="button"
+                          type="button" [hidden]="true"
                           (click)="editForm.patchValue({ profil: null }); editForm.patchValue({ profilContentType: null })"
-                          class="btn btn-secondary btn-xs pull-right"
-                        >
+                          class="btn btn-secondary btn-xs pull-right">
                           <fa-icon icon="times"></fa-icon>
                         </button>
                       </div>
@@ -319,8 +314,8 @@
                         jhiTranslate="entity.action.addblob"
                       />
                     </div>
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="profil" />
-                    <input type="hidden" nbInput status="primary" fullWidth fieldSize="small" formControlName="profilContentType" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="profil" />
+                    <input type="hidden" [hidden]="true" nbInput status="primary" fullWidth fieldSize="small" formControlName="profilContentType" />
                   </div>
                 </div>
                 <div class="col-md-3">

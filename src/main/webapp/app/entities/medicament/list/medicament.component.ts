@@ -10,6 +10,9 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants
 import { MedicamentService } from '../service/medicament.service';
 import { MedicamentDeleteDialogComponent } from '../delete/medicament-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import {NzUploadFile} from "ng-zorro-antd/upload";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
 
 @Component({
   selector: 'jhi-medicament',
@@ -24,12 +27,16 @@ export class MedicamentComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  search?: string;
+  isModal = false;
+  defaultFileList: NzUploadFile[] = [];
 
   constructor(
     protected medicamentService: MedicamentService,
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
     protected router: Router,
+    private modal: NzModalService,
     protected modalService: NgbModal
   ) {}
 
@@ -79,6 +86,57 @@ export class MedicamentComponent implements OnInit {
       if (reason === 'deleted') {
         this.loadPage();
       }
+    });
+  }
+
+  uploadFile(): void {
+    const dialogRef = this.modalService.open(ProgressDialogComponent,
+      { backdrop: 'static', centered: true, windowClass: 'myCustomModalClass' });
+
+    this.isModal = false;
+    this.medicamentService.upload(this.defaultFileList[0].originFileObj).subscribe(
+      res => {
+        if (res.body) {
+          dialogRef.close();
+          this.succes('Ajouté avec succès!');
+        } else {
+          this.isModal = true;
+          dialogRef.close();
+          this.warning('Un problème est survenu!');
+        }
+      },
+      () => {
+        this.isModal = true;
+        dialogRef.close();
+        this.error('Erreur de connexion au serveur!');
+      }
+    );
+  }
+
+  succes(msg: string): void {
+    this.modal.success({
+      nzTitle: 'SUCCESS',
+      nzContent: msg,
+      nzClosable: false,
+      nzOkText: 'OK',
+    });
+  }
+
+  error(msg: string): void {
+    this.modal.error({
+      nzTitle: 'ERREUR',
+      nzContent: msg,
+      nzClosable: false,
+      nzOkText: 'OK',
+    });
+  }
+
+  warning(msg: string): void {
+    this.modal.warning({
+      nzTitle: 'ATTENTION',
+      nzContent: msg,
+      nzClosable: false,
+      nzOkText: 'OK',
     });
   }
 

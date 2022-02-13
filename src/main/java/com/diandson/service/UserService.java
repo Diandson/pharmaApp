@@ -2,8 +2,12 @@ package com.diandson.service;
 
 import com.diandson.config.Constants;
 import com.diandson.domain.Authority;
+import com.diandson.domain.Personne;
+import com.diandson.domain.Structure;
 import com.diandson.domain.User;
 import com.diandson.repository.AuthorityRepository;
+import com.diandson.repository.PersonneRepository;
+import com.diandson.repository.StructureRepository;
 import com.diandson.repository.UserRepository;
 import com.diandson.security.AuthoritiesConstants;
 import com.diandson.security.SecurityUtils;
@@ -13,8 +17,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.diandson.service.mapper.PersonneMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +47,12 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
+    @Autowired
+    private StructureRepository structureRepository;
+    @Autowired
+    private PersonneRepository personneRepository;
+    @Autowired
+    private PersonneMapper personneMapper;
 
     public UserService(
         UserRepository userRepository,
@@ -110,6 +123,7 @@ public class UserService {
                     throw new EmailAlreadyUsedException();
                 }
             });
+
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin().toLowerCase());
@@ -151,6 +165,11 @@ public class UserService {
     }
 
     public User createUser(AdminUserDTO userDTO) {
+        Personne personne = personneRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin().get());
+        Personne newPersonne = personneMapper.toEntity(userDTO.getPersonne());
+        newPersonne.setNom(userDTO.getPersonne().getNom().toUpperCase());
+        newPersonne.setNom(userDTO.getPersonne().getPrenom().toUpperCase());
+        newPersonne.setStructure(personne.getStructure());
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
@@ -180,6 +199,8 @@ public class UserService {
             user.setAuthorities(authorities);
         }
         userRepository.save(user);
+        newPersonne.setUser(user);
+        personneRepository.save(newPersonne);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
@@ -277,8 +298,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AdminUserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAll(pageable).map(AdminUserDTO::new);
+    public List<AdminUserDTO> getAllManagedUsers(Pageable pageable) {
+        Personne personne = personneRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin().get());
+        return userRepository.findAll().stream()
+            .map(AdminUserDTO::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

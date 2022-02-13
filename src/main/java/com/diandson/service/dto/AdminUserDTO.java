@@ -50,6 +50,8 @@ public class AdminUserDTO {
 
     private Set<String> authorities;
 
+    private PersonneDTO personne;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -180,6 +182,14 @@ public class AdminUserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public PersonneDTO getPersonne() {
+        return personne;
+    }
+
+    public void setPersonne(PersonneDTO personne) {
+        this.personne = personne;
     }
 
     // prettier-ignore

@@ -1,18 +1,21 @@
 <div *ngIf="user">
   <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-    <h2 id="myUserLabel">Modification de : {{user!.login}}</h2>
+    <div class="modal-header">
+      <h2 id="myUserLabel">Modification de : {{user!.login}}</h2>
+    </div>
 
-    <div *ngIf="user">
-      <jhi-alert-error></jhi-alert-error>
+    <div class="modal-body" *ngIf="user">
 
       <div class="form-group" [hidden]="!user.id">
         <label jhiTranslate="global.field.id">ID</label>
-        <input type="text" class="form-control" name="id" formControlName="id" readonly />
+        <input type="text" nbInput status="primary" size="small" fullWidth
+               formControlName="id" readonly />
       </div>
 
       <div class="form-group">
         <label class="form-control-label" jhiTranslate="userManagement.login">Login</label>
-        <input type="text" class="form-control" name="login" formControlName="login" />
+        <input type="text" nbInput status="primary" size="small" fullWidth
+               formControlName="login" />
 
         <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get('login')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -40,7 +43,8 @@
 
       <div class="form-group">
         <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name</label>
-        <input type="text" class="form-control" name="firstName" formControlName="firstName" />
+        <input type="text" nbInput status="primary" size="small" fullWidth
+               formControlName="firstName" />
 
         <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
           <small
@@ -56,7 +60,7 @@
 
       <div class="form-group">
         <label jhiTranslate="userManagement.lastName">Last Name</label>
-        <input type="text" class="form-control" name="lastName" formControlName="lastName" />
+        <input type="text" nbInput status="primary" size="small" fullWidth formControlName="lastName" />
 
         <div *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
           <small
@@ -72,7 +76,8 @@
 
       <div class="form-group">
         <label class="form-control-label" jhiTranslate="userManagement.email">Email</label>
-        <input type="email" class="form-control" name="email" formControlName="email" />
+        <input type="email" nbInput status="primary" size="small" fullWidth
+               formControlName="email" />
 
         <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -107,53 +112,45 @@
         </div>
       </div>
 
-      <div class="form-check">
-        <label class="form-check-label" for="activated">
-          <input
-            class="form-check-input"
-            [attr.disabled]="user.id === undefined ? 'disabled' : null"
-            type="checkbox"
-            id="activated"
-            name="activated"
-            formControlName="activated"
-          />
-          <span jhiTranslate="userManagement.activated">Activated</span>
-        </label>
-      </div>
-
-      <div class="form-group" *ngIf="languages && languages.length > 0">
-        <label jhiTranslate="userManagement.langKey">Lang Key</label>
-        <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
-          <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label jhiTranslate="userManagement.profiles">Profiles</label>
-        <select class="form-control" multiple name="authority" formControlName="authorities">
-          <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
-        </select>
-      </div>
+<!--      <div class="form-group">-->
+<!--        <label jhiTranslate="userManagement.profiles">Profiles</label>-->
+<!--        <select class="form-control" multiple name="authority" formControlName="authorities">-->
+<!--          <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>-->
+<!--        </select>-->
+<!--      </div>-->
     </div>
 
-    <div *ngIf="user">
-      <button type="button" class="btn btn-secondary" (click)="previousState()">
-        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+    <div class="modal-footer justify-content-between">
+      <button type="button" mat-raised-button color="accent" (click)="previousState()">
+        Fermer
       </button>
 
-      <button type="submit" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+      <button type="submit" mat-raised-button color="primary">
         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
       </button>
     </div>
   </form>
 </div>
+
+
 <div *ngIf="!user">
   <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-    <div class="modal-header">
-      <h2 >Nouveau utilisateur</h2>
+    <div class="modal-header justify-content-between">
+      <h2 >
+        <span>Nouveau utilisateur</span>
+      </h2>
+      <nb-button-group type="button" *jhiHasAnyAuthority="['STRUCTURE_ADMIN', 'AGENCE_ADMIN']"
+                       size="medium">
+        <button type="button" nbButtonToggle (click)="setAdmin()"
+                value="ADMIN">ADMIN</button>
+        <button type="button" nbButtonToggle (click)="setServeur()"
+                value="SERVEUR">SERVEUR</button>
+        <button type="button" nbButtonToggle (click)="setCaisse()"
+                value="CAISSE">CAISSE</button>
+      </nb-button-group>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body" *ngIf="acteur != ''">
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
@@ -191,14 +188,14 @@
           <div class="form-group">
             <label class="form-control-label">Profil</label>
             <div>
-              <div *ngIf="editForm.get('profil')!.value" class="form-text text-danger clearfix">
+              <div [hidden]="true" *ngIf="editForm.get('profil')!.value" class="form-text text-danger clearfix">
                 <a
-                  class="pull-left"
+                  class="pull-left" [hidden]="true"
                   (click)="openFile(editForm.get('profil')!.value, editForm.get('profilContentType')!.value)"
                   jhiTranslate="entity.action.open"
                 >open</a
                 ><br />
-                <span class="pull-left">{{ editForm.get('profilContentType')!.value }}, {{ byteSize(editForm.get('profil')!.value) }}</span>
+                <span [hidden]="true" class="pull-left">{{ editForm.get('profilContentType')!.value }}, {{ byteSize(editForm.get('profil')!.value) }}</span>
                 <button
                   type="button"
                   (click)="editForm.patchValue({ profil: null }); editForm.patchValue({ profilContentType: null })"
@@ -374,12 +371,12 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label jhiTranslate="userManagement.profiles">Profiles</label>
-        <select class="form-control" multiple name="authority" formControlName="authorities">
-          <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
-        </select>
-      </div>
+<!--      <div class="form-group">-->
+<!--        <label jhiTranslate="userManagement.profiles">Profiles</label>-->
+<!--        <select class="form-control" multiple name="authority" formControlName="authorities">-->
+<!--          <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>-->
+<!--        </select>-->
+<!--      </div>-->
     </div>
 
     <div class="modal-footer justify-content-between">
@@ -388,7 +385,7 @@
       </button>
 
       <button type="submit" [disabled]="editForm.invalid || isSaving"
-              mat-raised-button color="primary">
+              mat-raised-button color="primary" *ngIf="acteur != ''">
         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
       </button>
     </div>

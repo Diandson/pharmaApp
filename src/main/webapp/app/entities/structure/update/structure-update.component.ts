@@ -22,6 +22,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { ProgressDialogComponent } from '../../../shared/progress-dialog/progress-dialog.component';
 import { IPack } from '../../pack/pack.model';
 import { User } from '../../../admin/user-management/user-management.model';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-structure-update',
@@ -104,6 +105,7 @@ export class StructureUpdateComponent implements OnInit {
     protected packService: PackService,
     private dialog: MatDialog,
     private modal: NzModalService,
+    private modalService: NgbModal,
     private router: Router,
     protected fb: FormBuilder
   ) {}
@@ -150,7 +152,8 @@ export class StructureUpdateComponent implements OnInit {
   saveConfig(): void {
     // this.isSaving = true;
     const structure = this.createFromForm();
-    const dialogRef = this.dialog.open(ProgressDialogComponent);
+    const dialogRef = this.modalService.open(ProgressDialogComponent,
+      { backdrop: 'static', centered: true, windowClass: 'myCustomModalClass' });
     this.structureService.create(structure).subscribe(
       res => {
         if (res.body) {
@@ -172,7 +175,8 @@ export class StructureUpdateComponent implements OnInit {
   }
 
   getLicence(): void {
-    const dialogRef = this.dialog.open(ProgressDialogComponent);
+    const dialogRef = this.modalService.open(ProgressDialogComponent,
+      { backdrop: 'static', centered: true, windowClass: 'myCustomModalClass' });
 
     this.packService.findKeys(this.licence!).subscribe(
       res => {

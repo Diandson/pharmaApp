@@ -44,6 +44,7 @@ describe('Structure Service', () => {
       dateConfig: currentDate,
       pdg: 'AAAAAAA',
       type: TypeStructure.SIEGE,
+      mere: 'AAAAAAA',
     };
   });
 
@@ -105,6 +106,7 @@ describe('Structure Service', () => {
           dateConfig: currentDate.format(DATE_TIME_FORMAT),
           pdg: 'BBBBBB',
           type: 'BBBBBB',
+          mere: 'BBBBBB',
         },
         elemDefault
       );
@@ -137,6 +139,7 @@ describe('Structure Service', () => {
           dateConfig: currentDate.format(DATE_TIME_FORMAT),
           pdg: 'BBBBBB',
           type: 'BBBBBB',
+          mere: 'BBBBBB',
         },
         new Structure()
       );
@@ -176,6 +179,7 @@ describe('Structure Service', () => {
           dateConfig: currentDate.format(DATE_TIME_FORMAT),
           pdg: 'BBBBBB',
           type: 'BBBBBB',
+          mere: 'BBBBBB',
         },
         elemDefault
       );
@@ -232,7 +236,7 @@ describe('Structure Service', () => {
       });
 
       it('should add only unique Structure to an array', () => {
-        const structureArray: IStructure[] = [{ id: 123 }, { id: 456 }, { id: 94117 }];
+        const structureArray: IStructure[] = [{ id: 123 }, { id: 456 }, { id: 96297 }];
         const structureCollection: IStructure[] = [{ id: 123 }];
         expectedResult = service.addStructureToCollectionIfMissing(structureCollection, ...structureArray);
         expect(expectedResult).toHaveLength(3);

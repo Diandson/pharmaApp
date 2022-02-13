@@ -68,6 +68,10 @@
       "fieldName": "type",
       "fieldType": "TypeStructure",
       "fieldValues": "SIEGE,AGENCE,MAGASIN"
+    },
+    {
+      "fieldName": "mere",
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,

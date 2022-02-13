@@ -40,6 +40,12 @@ export class MedicamentService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  upload(file: any): Observable<EntityResponseType> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return this.http.post<IMedicament>(this.resourceUrl + '/upload', formdata, { observe: 'response' });
+  }
+
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<IMedicament>(`${this.resourceUrl}/${id}`, { observe: 'response' })

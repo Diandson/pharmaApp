@@ -11,6 +11,7 @@ import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
 import {UserManagementUpdateComponent} from "../update/user-management-update.component";
+import {UserManagementDetailComponent} from "../detail/user-management-detail.component";
 
 
 @Component({
@@ -67,7 +68,18 @@ export class UserManagementComponent implements OnInit {
     }
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
-      if (reason === 'deleted') {
+      if (reason === 'saved') {
+        this.loadAll();
+      }
+    });
+  }
+  detailsUser(user: User): void {
+    const modalRef = this.modalService.open(UserManagementDetailComponent,
+      { size: 'lg', backdrop: 'static', centered: true });
+    modalRef.componentInstance.user = user;
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'saved') {
         this.loadAll();
       }
     });
@@ -75,9 +87,10 @@ export class UserManagementComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-    this.userService
-      .query()
-      .subscribe(res => this.users = res.body);
+    this.userService.query().subscribe(res => {
+      this.users = res.body
+      this.isLoading = false;
+    });
   }
 
   transition(): void {

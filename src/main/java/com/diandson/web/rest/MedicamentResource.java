@@ -4,6 +4,8 @@ import com.diandson.repository.MedicamentRepository;
 import com.diandson.service.MedicamentService;
 import com.diandson.service.dto.MedicamentDTO;
 import com.diandson.web.rest.errors.BadRequestAlertException;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -64,6 +67,16 @@ public class MedicamentResource {
         MedicamentDTO result = medicamentService.save(medicamentDTO);
         return ResponseEntity
             .created(new URI("/api/medicaments/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    @PostMapping("/materiels/upload")
+    public ResponseEntity<MedicamentDTO> createMaterielUpload(@RequestParam("file") MultipartFile file)
+        throws URISyntaxException, IOException {
+        MedicamentDTO result = medicamentService.saveUpload(file);
+        return ResponseEntity
+            .created(new URI("/api/materiels/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }

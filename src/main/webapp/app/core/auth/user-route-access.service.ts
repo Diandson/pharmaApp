@@ -17,35 +17,36 @@ export class UserRouteAccessService implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.structueService.findOnly().pipe(
-      map(value => {
-        if (value.body) {
-          this.accountService.identity().pipe(
-            map(account => {
-              if (account) {
-                const authorities = route.data['authorities'];
+    // return this.structueService.findOnly().pipe(
+    //   map(value => {
+    //     if (value.body) {
+    //
+    //     } else {
+    //       return true;
+    //     }
+    //
+    //     return true;
+    //   })
+    // );
+    return this.accountService.identity().pipe(
+      map(account => {
+        if (account) {
+          const authorities = route.data['authorities'];
 
-                if (!authorities || authorities.length === 0 || this.accountService.hasAnyAuthority(authorities)) {
-                  return true;
-                }
+          if (!authorities || authorities.length === 0 || this.accountService.hasAnyAuthority(authorities)) {
+            return true;
+          }
 
-                if (isDevMode()) {
-                  console.error('User has not any of required authorities: ', authorities);
-                }
-                this.router.navigate(['accessdenied']);
-                return false;
-              }
-
-              this.stateStorageService.storeUrl(state.url);
-              this.router.navigate(['/login']);
-              return false;
-            })
-          );
-        } else {
-          return true;
+          if (isDevMode()) {
+            console.error('User has not any of required authorities: ', authorities);
+          }
+          this.router.navigate(['accessdenied']);
+          return false;
         }
 
-        return false;
+        this.stateStorageService.storeUrl(state.url);
+        // this.router.navigate(['/login']);
+        return true;
       })
     );
   }

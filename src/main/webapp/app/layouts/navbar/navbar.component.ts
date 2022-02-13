@@ -4,14 +4,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { SessionStorageService } from 'ngx-webstorage';
 
 import { VERSION } from 'app/app.constants';
-import { LANGUAGES } from 'app/config/language.constants';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import {NbMediaBreakpointsService, NbMenuItem, NbMenuService, NbThemeService} from "@nebular/theme";
-import {map, takeUntil} from "rxjs/operators";
+import {filter, map, takeUntil} from "rxjs/operators";
 import { Subject} from "rxjs";
 
 @Component({
@@ -20,10 +19,7 @@ import { Subject} from "rxjs";
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  inProduction?: boolean;
   isNavbarCollapsed = true;
-  languages = LANGUAGES;
-  openAPIEnabled?: boolean;
   version = '';
   account: Account | null = null;
   entitiesNavbarItems: any[] = [];
@@ -33,38 +29,38 @@ export class NavbarComponent implements OnInit {
     {
       title: 'Gestion des médicaments',
       link: 'medicament',
+      pathMatch: "full",
+      icon: 'archive'
     },
     {
       title: 'Gestion des Utilisateurs',
       link: 'admin/user-management/all',
+      pathMatch: "full",
+      icon: 'people'
     },
     {
       title: 'Surveillance d\'activitées',
       link: 'admin/tracker',
+      pathMatch: "full",
+      icon: 'monitor'
     }
   ];
-  themes = [
+  userMenu: NbMenuItem[] = [
     {
-      value: 'default',
-      name: 'Light',
+      title: 'Profile',
+      pathMatch: "full",
+      link: 'account/settings',
+      icon: 'people'
     },
     {
-      value: 'dark',
-      name: 'Dark',
-    },
-    {
-      value: 'cosmic',
-      name: 'Cosmic',
-    },
-    {
-      value: 'corporate',
-      name: 'Corporate',
+      title: 'Déconnexion',
+      pathMatch: "full",
+      icon: 'power'
     },
   ];
 
   currentTheme?: string = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Déconnexion' } ];
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -105,6 +101,17 @@ export class NavbarComponent implements OnInit {
         takeUntil(this.destroy$),
         )
       .subscribe(themeName => this.currentTheme = themeName);
+
+    this.menuService.onItemClick()
+      .pipe(
+        filter(({ tag }) => tag === 'userTags'),
+        map(({ item: { title } }) => title),
+      )
+      .subscribe(title => {
+        if (title === 'Déconnexion'){
+          this.logout();
+        }
+      });
   }
 
   changeLanguage(languageKey: string): void {
