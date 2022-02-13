@@ -3,6 +3,7 @@ package com.diandson.service;
 import com.diandson.domain.*;
 import com.diandson.repository.*;
 import com.diandson.security.AuthoritiesConstants;
+import com.diandson.security.SecurityUtils;
 import com.diandson.service.dto.PersonneDTO;
 import com.diandson.service.dto.StructureDTO;
 import com.diandson.service.mapper.PackMapper;
@@ -168,6 +169,15 @@ public class StructureService {
         List<Structure> structureList = structureRepository.findAll();
         if (structureList.size() == 1) {
             return structureList.stream().map(structureMapper::toDto)
+                .collect(Collectors.toList()).get(0);
+        }else return null;
+    }
+    public StructureDTO findOneOnlyAuth() {
+        List<Structure> structureList = structureRepository.findAll();
+        if (structureList.size() == 1) {
+            return structureList.stream().map(structureMapper::toDto)
+                .peek(structureDTO ->
+                    structureDTO.setPersonne(personneMapper.toDto(personneRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin().get()))))
                 .collect(Collectors.toList()).get(0);
         }else return null;
     }

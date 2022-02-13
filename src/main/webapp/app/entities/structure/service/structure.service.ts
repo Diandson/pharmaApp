@@ -49,6 +49,11 @@ export class StructureService {
       .get<IStructure>(`${this.resourceUrl}/only`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
+  findOnlyAuth(): Observable<EntityResponseType> {
+    return this.http
+      .get<IStructure>(`${this.resourceUrl}/only/auth`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);

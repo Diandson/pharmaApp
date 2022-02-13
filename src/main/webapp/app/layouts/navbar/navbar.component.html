@@ -81,9 +81,10 @@
 
     </nb-action>
     <nb-action class="user-action">
-      <nb-user [nbContextMenu]="userMenu" [nbContextMenuTag]="'userTags'"
+      <nb-user [nbContextMenu]="userMenu" [nbContextMenuTag]="'userTags'" showTitle
                name="{{account!.firstName + ' ' + account!.lastName}}"
-               [onlyPicture]="userPictureOnly">
+               [picture]="'data:image/jpeg;base64,' + structure.personne?.profil"
+               size="large" title="{{structure!.denomination!.toUpperCase()}}">
       </nb-user>
     </nb-action>
   </nb-actions>

@@ -167,6 +167,10 @@ public class StructureResource {
     public StructureDTO getOnlyStructure() {
         return structureService.findOneOnly();
     }
+    @GetMapping("/structures/only/auth")
+    public StructureDTO getOnlyStructureAuth() {
+        return structureService.findOneOnlyAuth();
+    }
 
     /**
      * {@code DELETE  /structures/:id} : delete the "id" structure.

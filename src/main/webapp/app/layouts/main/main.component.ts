@@ -8,6 +8,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import {StructureService} from "../../entities/structure/service/structure.service";
 import {IStructure} from "../../entities/structure/structure.model";
 import dayjs from "dayjs";
+import {DataService} from "../../shared/data/DataService";
 
 @Component({
   selector: 'jhi-main',
@@ -25,6 +26,7 @@ export class MainComponent implements OnInit {
     private translateService: TranslateService,
     private primengConfig: PrimeNGConfig,
     private structureService: StructureService,
+    private dataService: DataService,
     rootRenderer: RendererFactory2
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
@@ -54,8 +56,7 @@ export class MainComponent implements OnInit {
       }
     }, () => {
       this.router.navigate(['getstarted']);
-    })
-
+    });
   }
 
   isAuthenticated(): boolean{

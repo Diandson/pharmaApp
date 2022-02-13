@@ -12,6 +12,9 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import {NbMediaBreakpointsService, NbMenuItem, NbMenuService, NbThemeService} from "@nebular/theme";
 import {filter, map, takeUntil} from "rxjs/operators";
 import { Subject} from "rxjs";
+import {DataService} from "../../shared/data/DataService";
+import {IStructure, Structure} from "../../entities/structure/structure.model";
+import {StructureService} from "../../entities/structure/service/structure.service";
 
 @Component({
   selector: 'jhi-navbar',
@@ -60,6 +63,7 @@ export class NavbarComponent implements OnInit {
   ];
 
   currentTheme?: string = 'default';
+  structure: IStructure = new Structure();
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -72,6 +76,8 @@ export class NavbarComponent implements OnInit {
     private breakpointService: NbMediaBreakpointsService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
+    private dataService: DataService,
+    private structureService: StructureService,
     private router: Router
   ) {
     if (VERSION) {
@@ -86,6 +92,18 @@ export class NavbarComponent implements OnInit {
       this.account = account;
     });
 
+    if (this.isAuthenticated()){
+      this.structureService.findOnlyAuth().subscribe(res => {
+        if (res.body){
+          this.structure = res.body;
+          this.dataService.actializeStructure(this.structure);
+        }else {
+          this.router.navigate(['login']);
+        }
+      }, () => {
+        this.router.navigate(['login']);
+      })
+    }
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
