@@ -17,6 +17,7 @@ import {DataService} from "../../shared/data/DataService";
 })
 export class MainComponent implements OnInit {
   structure?: IStructure;
+  mainSidebarOpen: any;
   private renderer: Renderer2;
 
   constructor(
@@ -61,6 +62,10 @@ export class MainComponent implements OnInit {
 
   isAuthenticated(): boolean{
     return this.accountService.isAuthenticated();
+  }
+
+  hoverEffect($event: any): void {
+    this.mainSidebarOpen = $event.type === 'mouseover' ? 'main-sidebar-open' : '';
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {

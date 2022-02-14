@@ -9,12 +9,14 @@ eg $input-color: red;
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
 @import "themes";
+@import "../css/style.css";
 
 @import '~@nebular/theme/styles/globals';
+//@import "../css/nebular-default.css";
 @import '~@nebular/theme/styles/prebuilt/default.css';
-@import '~@nebular/theme/styles/prebuilt/dark.css';
-@import '~@nebular/theme/styles/prebuilt/corporate.css';
-@import '~@nebular/theme/styles/prebuilt/cosmic.css';
+//@import '~@nebular/theme/styles/prebuilt/dark.css';
+//@import '~@nebular/theme/styles/prebuilt/corporate.css';
+//@import '~@nebular/theme/styles/prebuilt/cosmic.css';
 
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 

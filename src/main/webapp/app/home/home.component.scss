@@ -22,22 +22,41 @@ Main page styles
   }
 }
 
-/* CSS reset */
-*,
-*::after,
-*::before {
-  box-sizing: inherit;
-  margin: 0;
-  padding: 0;
+.global-search-item {
+  display: flex;
 }
 
-/* This is to keep the card centered (within its container) when opened */
-.card:hover {
-  box-shadow: -0.1rem 1.7rem 6.6rem -3.2rem rgba(0, 0, 0, 0.75);
-  width: 300px;
+.global-search-item-desc {
+  flex: auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
-.card {
+.global-search-item-count {
+  flex: none;
+}
+.center-screen {
+  //margin: 30px auto;
+  //display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: rgb(132, 217, 179);
+  background: linear-gradient(160deg, rgb(236, 147, 161) 0%, rgb(229, 241, 212) 24%, rgb(215, 226, 175) 40%, rgb(141, 191, 149) 48%, rgba(69,129,147,1) 64%, rgba(195,165,107,1) 83%, rgba(139,198,68,1) 91%, rgba(252,176,69,1) 100%);
+  min-height: 85vh;
+}
+
+.certain-search-item-count {
+  position: absolute;
+  color: #999;
+  right: 16px;
+}
+
+.more-link {
+  float: right;
+}
+
+.cardh {
   //margin: 30px auto;
   width: 260px;
   height: 120px;
@@ -47,20 +66,20 @@ Main page styles
   transition: 0.4s;
 }
 
-.card .card_image {
+.cardh .card_image {
   width: inherit;
   height: inherit;
   border-radius: 10px;
 }
 
-.card .card_image img {
+.cardh .card_image img {
   width: inherit;
   height: inherit;
   border-radius: 10px;
   object-fit: cover;
 }
 
-.card .card_title {
+.cardh .card_title {
   text-align: center;
   border-radius: 0px 0px 40px 40px;
   font-family: sans-serif;
@@ -71,9 +90,10 @@ Main page styles
   height: 40px;
 }
 
-.card:hover {
+.cardh:hover {
   transform: scale(0.9, 0.9);
   box-shadow: 3px 3px 15px 5px rgba(0, 0, 0, 0.25), -3px -3px 15px 5px rgba(0, 0, 0, 0.22);
+  width: 300px;
 }
 
 .title-white {
@@ -89,4 +109,9 @@ Main page styles
     /* On small screens, we are no longer using row direction but column */
     flex-direction: column;
   }
+}
+
+.taille-heigth{
+  min-height: 600px;
+  background-color: #c9d0cf;
 }

@@ -1,13 +1,15 @@
+
 <div class="header-container">
   <div class="logo-container">
     <a class="logo" routerLink="">My-<span>PHARMA</span></a>
   </div>
-<!--  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">-->
-<!--    <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>-->
-<!--  </nb-select>-->
+  <!--  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">-->
+  <!--    <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>-->
+  <!--  </nb-select>-->
 </div>
 
-<div class="header-container">
+
+<div class="header-container main-header-right">
   <nb-actions size="small">
     <nb-action >
       <ul class="navbar-nav ml-auto" [ngSwitch]="isAuthenticated()">
@@ -69,23 +71,62 @@
         </li>
       </ul>
     </nb-action>
-    <nb-action class="control-item" icon="email-outline">
 
+    <nb-action >
+      <div ngbDropdown class="main-header-notification">
+        <nb-icon ngbDropdownToggle class="dropdown-toggle"
+                 icon="bell-outline" class="header-icons"></nb-icon>
+        <div ngbDropdownMenu>
+          <div class="header-navheading">
+            <p class="main-notification-text">3 new Messages</p>
+          </div>
+          <div class="main-notification-list">
+            <div class="media new">
+              <div class="main-img-user online"><img alt="avatar" src="../../../content/assets/img/users/10.jpg" /></div>
+              <div class="media-body">
+                <p>
+                  Paul Molive
+                  <span>I'm sorry but i'm not sure how...</span>
+                </p>
+              </div>
+            </div>
+            <div class="media">
+              <div class="main-img-user"><img alt="avatar" src="../../../content/assets/img/users/8.jpg" /></div>
+              <div class="media-body">
+                <p>
+                  Sahar DaryAll
+                  <span>set ! Now, time to get to you now...</span>
+                </p>
+              </div>
+            </div>
+            <div class="media">
+              <div class="main-img-user online"><img alt="avatar" src="../../../content/assets/img/users/11.jpg" /></div>
+              <div class="media-body">
+                <p>
+                  Barney Cull
+                  <span>Here are some products ...</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="dropdown-footer">
+            <a href="javascript:void(0)">View All</a>
+          </div>
+        </div>
+      </div>
     </nb-action>
-    <nb-action class="control-item" icon="bell-outline">
 
-    </nb-action>
     <nb-action class="control-item"
                [nbContextMenu]="itemsMenu"
                icon="settings-outline">
-
     </nb-action>
     <nb-action class="user-action">
       <nb-user [nbContextMenu]="userMenu" [nbContextMenuTag]="'userTags'" showTitle
                name="{{account!.firstName + ' ' + account!.lastName}}"
                [picture]="'data:image/jpeg;base64,' + structure.personne?.profil"
-               size="large" title="{{structure!.denomination!.toUpperCase()}}">
+               size="large" title="{{structure.denomination?.toUpperCase()}}">
       </nb-user>
     </nb-action>
   </nb-actions>
 </div>
+

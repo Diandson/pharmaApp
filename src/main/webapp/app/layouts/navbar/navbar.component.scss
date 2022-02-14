@@ -75,6 +75,44 @@ Navbar
   }
 }
 
+::ng-deep {
+  .mobileIcon {
+    display: none;
+  }
+
+  @media screen and (min-width: 0px) and (max-width: 786px) {
+    .mobileIcon {
+      display: block;
+    }
+    .deskIcon {
+      display: none;
+    }
+  }
+
+  .dropdown-toggle::after {
+    display:none;
+  }
+
+  @media (max-width: 339px) {
+    .responsive-navbar.navbar .navbar-collapse {
+      padding-left: 0rem;
+    }
+  }
+  .dark-theme {
+    .main-profile-menu .dropdown-item:hover,
+    .main-profile-menu .dropdown-item:focus {
+      background-color: #3f3f58 !important;
+    }
+    .flag-dropdown .dropdown-item {
+      color: #eee !important;
+    }
+  }
+}
+
+.notification-width{
+  width: 300px;
+}
+
 
 .navbar-version {
   font-size: 0.65em;

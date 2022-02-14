@@ -12,7 +12,7 @@
 <!--  <jhi-footer></jhi-footer>-->
 <!--</div>-->
 
-<nb-layout>
+<nb-layout [ngClass]="mainSidebarOpen">
   <nb-layout-header *ngIf="structure && isAuthenticated()">
     <router-outlet name="navbar"></router-outlet>
   </nb-layout-header>

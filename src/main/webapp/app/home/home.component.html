@@ -1,52 +1,111 @@
 <div class="container-fluid">
-  <div class="col-md-12">
-    <div class="row" *jhiHasAnyAuthority="['STRUCTURE_CAISSE', 'AGENCE_CAISSE']">
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card_image">
-            <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
+  <div>
+    <div  *jhiHasAnyAuthority="['STRUCTURE_CAISSE', 'AGENCE_CAISSE']">
+      <div >
+        <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+          <div nz-col [nzSpan]="19">
+            <nb-card size="large">
+              <nb-card-header>
+                <h3>Les prescriptions en attente</h3>
+              </nb-card-header>
+              <nb-card-body>
+
+              </nb-card-body>
+            </nb-card>
+
           </div>
-          <div class="card_title title-white">
-            <span>Recouvrement</span>
+
+          <div nz-col [nzSpan]="5">
+            <div class="form-group">
+              <div class="cardh">
+                <div class="card_image">
+                  <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
+                </div>
+                <div class="card_title title-white">
+                  <span>Depenses</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="cardh">
+                <div class="card_image">
+                  <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
+                </div>
+                <div class="card_title title-white">
+                  <span>Versement</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="cardh">
+                <div class="card_image">
+                  <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
+                </div>
+                <div class="card_title title-white">
+                  <span>Rapports</span>
+                </div>
+              </div>
+            </div>
           </div>
+
+        </div>
+
+        <div class="row justify-content-between">
+
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card_image">
-            <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
-          </div>
-          <div class="card_title title-white">
-            <span>Depenses</span>
-          </div>
-        </div>
-      </div>
+    </div>
 
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card_image">
-            <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
-          </div>
-          <div class="card_title title-white">
-            <span>Versement</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card_image">
-            <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
-          </div>
-          <div class="card_title title-white">
-            <span>Rapports</span>
-          </div>
+    <div class="container-fluid" *jhiHasAnyAuthority="['SERVEUR', 'STRUCTURE_ADMIN']">
+      <div class="row justify-content-center center-screen">
+        <div class="col-md-6">
+          <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
+            <input
+              placeholder="input here"
+              nz-input
+              [(ngModel)]="inputValue"
+              (input)="onChange($event)"
+              [nzAutocomplete]="auto"
+            />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSize="large" nzSearch>
+              <i nz-icon nzType="search" nzTheme="outline"></i>
+            </button>
+          </ng-template>
+          <nz-autocomplete #auto>
+            <nz-auto-option class="global-search-item" *ngFor="let option of options" [nzValue]="option.category">
+              Found {{ option.value }} on
+              <a
+                class="global-search-item-desc"
+                [href]="'https://s.taobao.com/search?q=' + option.value"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ option.category }}
+              </a>
+              <span class="global-search-item-count">{{ option.count }} results</span>
+            </nz-auto-option>
+          </nz-autocomplete>
         </div>
       </div>
     </div>
 
-    <div class="row" *jhiHasAnyAuthority="['SERVEUR']"></div>
+    <div class="container-fluid" *ngIf="!account">
+      <div class="row justify-content-center center-screen">
+        <button type="button" class="cardh" (click)="login()">
+          <div class="card_image">
+            <img src="https://i.redd.it/b3esnz5ra34y.jpg" />
+          </div>
+          <div class="card_title title-white">
+            <span>Se Connecter</span>
+          </div>
+        </button>
+      </div>
+    </div>
 
     <div class="row" *jhiHasAnyAuthority="['STRUCTURE_ADMIN', 'AGENCE_ADMIN']"></div>
   </div>
