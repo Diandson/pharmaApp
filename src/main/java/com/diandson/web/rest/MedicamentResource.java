@@ -71,7 +71,7 @@ public class MedicamentResource {
             .body(result);
     }
 
-    @PostMapping("/materiels/upload")
+    @PostMapping("/medicaments/upload")
     public ResponseEntity<MedicamentDTO> createMaterielUpload(@RequestParam("file") MultipartFile file)
         throws URISyntaxException, IOException {
         MedicamentDTO result = medicamentService.saveUpload(file);
@@ -160,9 +160,8 @@ public class MedicamentResource {
     @GetMapping("/medicaments")
     public ResponseEntity<List<MedicamentDTO>> getAllMedicaments(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Medicaments");
-        Page<MedicamentDTO> page = medicamentService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        List<MedicamentDTO> page = medicamentService.findAll(pageable);
+        return ResponseEntity.ok().body(page);
     }
 
     /**

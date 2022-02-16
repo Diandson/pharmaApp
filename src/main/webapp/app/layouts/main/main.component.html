@@ -12,12 +12,14 @@
 <!--  <jhi-footer></jhi-footer>-->
 <!--</div>-->
 
-<nb-layout [ngClass]="mainSidebarOpen">
+<nb-layout windowMode *ngIf="isAuthenticated()">
   <nb-layout-header *ngIf="structure && isAuthenticated()">
     <router-outlet name="navbar"></router-outlet>
   </nb-layout-header>
-
-  <nb-layout-column>
+  <nb-layout-column *ngIf="!isAuthenticated()">
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+  <nb-layout-column *ngIf="isAuthenticated()">
     <router-outlet></router-outlet>
   </nb-layout-column>
 </nb-layout>

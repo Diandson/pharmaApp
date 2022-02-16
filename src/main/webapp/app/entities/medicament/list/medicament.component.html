@@ -5,7 +5,7 @@
         <span jhiTranslate="appPharmaApp.medicament.home.title">Medicaments</span>
 
         <button nbButton size="small" status="success"
-          class="float-right" [routerLink]="['/medicament/new']">
+          class="float-right" (click)="isModal = true">
           <fa-icon icon="plus"></fa-icon>
           <span > Charger un fichier </span>
         </button>
@@ -113,7 +113,7 @@
     </div>
   </div>
   <div *nzModalFooter class="row justify-content-between">
-    <button mat-raised-button color="accent" (click)="isModal = false">Fermer</button>
+    <button mat-raised-button color="accent" (click)="close()">Fermer</button>
     <button mat-raised-button color="primary" (click)="uploadFile()"
             *ngIf="defaultFileList.length > 0">Valider</button>
   </div>

@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -78,18 +79,18 @@ public class MedicamentService {
                 XSSFRow row = worksheet.getRow(index);
 
                 medicament.setDenomination(row.getCell(0).getStringCellValue());
-                medicament.setDci(row.getCell(1).getStringCellValue());
-                medicament.setForme(row.getCell(2).getStringCellValue());
-                medicament.setDosage(row.getCell(3).getStringCellValue());
-                medicament.setClasse(row.getCell(4).getStringCellValue());
-                medicament.setCodeBare(row.getCell(5).getStringCellValue());
-                medicament.setPrixAchat((long) row.getCell(6).getNumericCellValue());
-                medicament.setPrixPublic((long) row.getCell(7).getNumericCellValue());
-                medicament.setStockAlerte((long) row.getCell(8).getNumericCellValue());
-                medicament.setStockSecurite((long) row.getCell(9).getNumericCellValue());
-                medicament.setStockTheorique((long) row.getCell(10).getNumericCellValue());
-                medicament.setDateFabrication(LocalDate.parse(row.getCell(11).getStringCellValue(), formatter));
-                medicament.setDateExpiration(LocalDate.parse(row.getCell(12).getStringCellValue(), formatter));
+                medicament.setDci(row.getCell(0).getStringCellValue());
+                medicament.setForme(row.getCell(1).getStringCellValue());
+                medicament.setDosage(row.getCell(2).toString());
+                medicament.setClasse(row.getCell(3).getStringCellValue());
+                medicament.setCodeBare(row.getCell(4).getStringCellValue());
+                medicament.setPrixAchat((long) row.getCell(5).getNumericCellValue());
+                medicament.setPrixPublic((long) row.getCell(6).getNumericCellValue());
+                medicament.setStockAlerte((long) row.getCell(7).getNumericCellValue());
+                medicament.setStockSecurite((long) row.getCell(8).getNumericCellValue());
+                medicament.setStockTheorique((long) row.getCell(9).getNumericCellValue());
+//                medicament.setDateFabrication(LocalDate.parse(row.getCell(10).toString(), formatter));
+//                medicament.setDateExpiration(LocalDate.parse(row.getCell(11).toString(), formatter));
                 medicament.setStructure(personne.getStructure());
 
                 medicamentList.add(medicament);
@@ -128,9 +129,10 @@ public class MedicamentService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<MedicamentDTO> findAll(Pageable pageable) {
+    public List<MedicamentDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Medicaments");
-        return medicamentRepository.findAll(pageable).map(medicamentMapper::toDto);
+        return medicamentRepository.findAll().stream()
+            .map(medicamentMapper::toDto).collect(Collectors.toList());
     }
 
     /**

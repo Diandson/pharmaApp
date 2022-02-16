@@ -8,7 +8,6 @@ import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
-import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import {NbMediaBreakpointsService, NbMenuItem, NbMenuService, NbThemeService} from "@nebular/theme";
 import {filter, map, takeUntil} from "rxjs/operators";
 import { Subject} from "rxjs";
@@ -86,7 +85,6 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.entitiesNavbarItems = EntityNavbarItems;
 
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;

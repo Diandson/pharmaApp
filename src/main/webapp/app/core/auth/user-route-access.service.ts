@@ -17,17 +17,6 @@ export class UserRouteAccessService implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    // return this.structueService.findOnly().pipe(
-    //   map(value => {
-    //     if (value.body) {
-    //
-    //     } else {
-    //       return true;
-    //     }
-    //
-    //     return true;
-    //   })
-    // );
     return this.accountService.identity().pipe(
       map(account => {
         if (account) {
@@ -42,9 +31,23 @@ export class UserRouteAccessService implements CanActivate {
           }
           this.router.navigate(['accessdenied']);
           return false;
+        }else {
+          this.structueService.findOnly().pipe(
+            map(value => {
+              if (value.body) {
+                // this.stateStorageService.storeUrl(state.url);
+                // this.router.navigate(['/login']);
+                return true;
+              } else {
+                this.stateStorageService.storeUrl(state.url);
+                this.router.navigate(['/login']);
+                return false;
+              }
+            })
+          );
         }
 
-        this.stateStorageService.storeUrl(state.url);
+        // this.stateStorageService.storeUrl(state.url);
         // this.router.navigate(['/login']);
         return true;
       })

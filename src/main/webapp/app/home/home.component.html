@@ -60,41 +60,40 @@
     </div>
 
     <div class="container-fluid" *jhiHasAnyAuthority="['SERVEUR', 'STRUCTURE_ADMIN']">
-      <div class="row justify-content-center center-screen">
-        <div class="col-md-6">
-          <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
-            <input
-              placeholder="input here"
-              nz-input
-              [(ngModel)]="inputValue"
-              (input)="onChange($event)"
-              [nzAutocomplete]="auto"
-            />
-          </nz-input-group>
-          <ng-template #suffixIconButton>
-            <button nz-button nzType="primary" nzSize="large" nzSearch>
-              <i nz-icon nzType="search" nzTheme="outline"></i>
-            </button>
-          </ng-template>
-          <nz-autocomplete #auto>
-            <nz-auto-option class="global-search-item" *ngFor="let option of options" [nzValue]="option.category">
-              Found {{ option.value }} on
-              <a
-                class="global-search-item-desc"
-                [href]="'https://s.taobao.com/search?q=' + option.value"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {{ option.category }}
-              </a>
-              <span class="global-search-item-count">{{ option.count }} results</span>
-            </nz-auto-option>
-          </nz-autocomplete>
+      <div class="row justify-content-center center-screen" nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+        <div nz-col class="gutter-row" [nzSpan]="12">
+          <nb-card>
+            <nb-card-body>
+              <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
+                <nz-select nzShowSearch nzAllowClear class="selet" nzSize="large"
+                           [nzNotFoundContent]="'Aucun resultat'" [nzAutoFocus]="true"
+                           [nzShowArrow]="false" (ngModelChange)="getSelectedMedicament($event)"
+                           nzPlaceHolder="Rechercher ..." [(ngModel)]="medicamentSelect">
+                  <nz-option *ngFor="let medic of medicaments" [nzValue]="medic"
+                             [nzLabel]="medic.dci + ' ' + medic.dosage" ></nz-option>
+                </nz-select>
+              </nz-input-group>
+              <ng-template #suffixIconButton>
+                <button nz-button nzType="primary" nzSize="large" nzSearch>
+                  <i nz-icon nzType="search" nzTheme="outline"></i>
+                </button>
+              </ng-template>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }" *ngIf="medicamentList">
+        <div nz-col class="gutter-row" [nzSpan]="12">
+          <nb-card>
+            <nb-card-body>
+
+            </nb-card-body>
+          </nb-card>
         </div>
       </div>
     </div>
 
-    <div class="container-fluid" *ngIf="!account">
+    <div class="container-fluid" *ngIf="!isAuthenticated()">
       <div class="row justify-content-center center-screen">
         <button type="button" class="cardh" (click)="login()">
           <div class="card_image">

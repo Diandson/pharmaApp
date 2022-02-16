@@ -31,11 +31,11 @@ export class MainComponent implements OnInit {
     rootRenderer: RendererFactory2
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
+    this.accountService.identity().subscribe();
   }
 
   ngOnInit(): void {
     // try to log in automatically
-    this.accountService.identity().subscribe();
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -62,6 +62,9 @@ export class MainComponent implements OnInit {
 
   isAuthenticated(): boolean{
     return this.accountService.isAuthenticated();
+  }
+  login(): void {
+    this.router.navigate(['/login']);
   }
 
   hoverEffect($event: any): void {

@@ -5,7 +5,7 @@
   text-align: center;
   background: rgb(161,121,189);
   background: linear-gradient(160deg, rgba(161,121,189,1) 0%, rgba(94,117,200,1) 24%, rgba(80,171,90,1) 40%, rgba(56,186,79,1) 48%, rgba(69,129,147,1) 64%, rgba(195,165,107,1) 83%, rgba(139,198,68,1) 91%, rgba(252,176,69,1) 100%);
-  min-height: 100vh;
+  min-height: calc(100vh - 4.75rem);
 }
 
 .title-bien{

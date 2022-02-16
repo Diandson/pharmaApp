@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,6 +17,7 @@ import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-
 @Component({
   selector: 'jhi-medicament',
   templateUrl: './medicament.component.html',
+  styleUrls: ['../medicament.component.scss']
 })
 export class MedicamentComponent implements OnInit {
   medicaments?: IMedicament[];
@@ -40,30 +41,16 @@ export class MedicamentComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
-    this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
+  loadPage(): void {
 
     this.medicamentService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe({
-        next: (res: HttpResponse<IMedicament[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        error: () => {
-          this.isLoading = false;
-          this.onError();
-        },
-      });
+      .query()
+      .subscribe( res => this.medicaments = res.body ?? [])
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    // this.handleNavigation();
+    this.loadPage();
   }
 
   trackId(index: number, item: IMedicament): number {
@@ -93,20 +80,22 @@ export class MedicamentComponent implements OnInit {
     const dialogRef = this.modalService.open(ProgressDialogComponent,
       { backdrop: 'static', centered: true, windowClass: 'myCustomModalClass' });
 
-    this.isModal = false;
     this.medicamentService.upload(this.defaultFileList[0].originFileObj).subscribe(
       res => {
         if (res.body) {
+          close();
           dialogRef.close();
           this.succes('Ajouté avec succès!');
+          this.loadPage();
+          close();
         } else {
-          this.isModal = true;
+          close()
           dialogRef.close();
           this.warning('Un problème est survenu!');
         }
       },
       () => {
-        this.isModal = true;
+        this.isModal = false;
         dialogRef.close();
         this.error('Erreur de connexion au serveur!');
       }
@@ -139,6 +128,10 @@ export class MedicamentComponent implements OnInit {
       nzOkText: 'OK',
     });
   }
+  close(): void {
+    this.defaultFileList = [];
+    this.isModal = false;
+  }
 
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
@@ -158,7 +151,7 @@ export class MedicamentComponent implements OnInit {
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;
-        this.loadPage(pageNumber, true);
+        // this.loadPage(pageNumber, true);
       }
     });
   }
