@@ -38,12 +38,42 @@ Main page styles
 .center-screen {
   //margin: 30px auto;
   //display: flex;
+  //justify-content: center;
+  //align-items: center;
+  //text-align: center;
+  background: rgb(132, 217, 179);
+  background: linear-gradient(
+    160deg,
+    rgb(236, 147, 161) 0%,
+    rgb(229, 241, 212) 24%,
+    rgb(215, 226, 175) 40%,
+    rgb(141, 191, 149) 48%,
+    rgba(69, 129, 147, 1) 64%,
+    rgba(195, 165, 107, 1) 83%,
+    rgba(139, 198, 68, 1) 91%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  min-height: 82vh;
+}
+.login-center {
+  margin: 30px auto;
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   background: rgb(132, 217, 179);
-  background: linear-gradient(160deg, rgb(236, 147, 161) 0%, rgb(229, 241, 212) 24%, rgb(215, 226, 175) 40%, rgb(141, 191, 149) 48%, rgba(69,129,147,1) 64%, rgba(195,165,107,1) 83%, rgba(139,198,68,1) 91%, rgba(252,176,69,1) 100%);
-  min-height: 85vh;
+  background: linear-gradient(
+    160deg,
+    rgb(236, 147, 161) 0%,
+    rgb(229, 241, 212) 24%,
+    rgb(215, 226, 175) 40%,
+    rgb(141, 191, 149) 48%,
+    rgba(69, 129, 147, 1) 64%,
+    rgba(195, 165, 107, 1) 83%,
+    rgba(139, 198, 68, 1) 91%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  min-height: 82vh;
 }
 
 .certain-search-item-count {
@@ -111,11 +141,22 @@ Main page styles
   }
 }
 
-.taille-heigth{
+.taille-heigth {
   min-height: 600px;
   background-color: #c9d0cf;
 }
-.selet{
+.selet {
   width: 100%;
   max-width: 600px;
+}
+
+.example-chip-list {
+  width: 100%;
+}
+.datep {
+  width: 100%;
+}
+
+.ui-autocomplete {
+  z-index: 1051;
 }
