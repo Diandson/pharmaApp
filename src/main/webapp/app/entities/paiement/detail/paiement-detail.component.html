@@ -1,0 +1,70 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="paiement">
+      <h2 data-cy="paiementDetailsHeading"><span jhiTranslate="appPharmaApp.paiement.detail.title">Paiement</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ paiement.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.numero">Numero</span></dt>
+        <dd>
+          <span>{{ paiement.numero }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.numeroVente">Numero Vente</span></dt>
+        <dd>
+          <span>{{ paiement.numeroVente }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.datePaiement">Date Paiement</span></dt>
+        <dd>
+          <span>{{ paiement.datePaiement | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.sommeRecu">Somme Recu</span></dt>
+        <dd>
+          <span>{{ paiement.sommeRecu }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.sommeDonner">Somme Donner</span></dt>
+        <dd>
+          <span>{{ paiement.sommeDonner }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.avoir">Avoir</span></dt>
+        <dd>
+          <span>{{ paiement.avoir }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.versement">Versement</span></dt>
+        <dd>
+          <div *ngIf="paiement.versement">
+            <a [routerLink]="['/versement', paiement.versement?.id, 'view']">{{ paiement.versement?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.operateur">Operateur</span></dt>
+        <dd>
+          <div *ngIf="paiement.operateur">
+            <a [routerLink]="['/personne', paiement.operateur?.id, 'view']">{{ paiement.operateur?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.paiement.vente">Vente</span></dt>
+        <dd>
+          <div *ngIf="paiement.vente">
+            <a [routerLink]="['/vente', paiement.vente?.id, 'view']">{{ paiement.vente?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/paiement', paiement.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

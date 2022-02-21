@@ -1,0 +1,32 @@
+{
+  "appPharmaApp": {
+    "versement": {
+      "home": {
+        "title": "Versements",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Versement",
+        "createOrEditLabel": "Créer ou éditer un Versement",
+        "notFound": "Aucun Versement trouvé"
+      },
+      "created": "Un nouveau Versement a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Versement avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Versement avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Versement {{ id }} ?"
+      },
+      "detail": {
+        "title": "Versement"
+      },
+      "id": "ID",
+      "numero": "Numero",
+      "commentaire": "Commentaire",
+      "montant": "Montant",
+      "resteAVerser": "Reste A Verser",
+      "lieuVersement": "Lieu Versement",
+      "referenceVersement": "Reference Versement",
+      "identiteReceveur": "Identite Receveur",
+      "paiement": "Paiement",
+      "operateur": "Operateur"
+    }
+  }
+}

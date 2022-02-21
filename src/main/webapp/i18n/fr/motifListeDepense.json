@@ -1,0 +1,25 @@
+{
+  "appPharmaApp": {
+    "motifListeDepense": {
+      "home": {
+        "title": "MotifListeDepenses",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Motif Liste Depense",
+        "createOrEditLabel": "Créer ou éditer un Motif Liste Depense",
+        "notFound": "Aucun Motif Liste Depense trouvé"
+      },
+      "created": "Un nouveau Motif Liste Depense a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Motif Liste Depense avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Motif Liste Depense avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Motif Liste Depense {{ id }} ?"
+      },
+      "detail": {
+        "title": "Motif Liste Depense"
+      },
+      "id": "ID",
+      "libelle": "Libelle",
+      "montant": "Montant"
+    }
+  }
+}

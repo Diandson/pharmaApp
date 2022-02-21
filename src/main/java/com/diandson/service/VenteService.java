@@ -1,14 +1,29 @@
 package com.diandson.service;
 
+import com.diandson.domain.Medicament;
+import com.diandson.domain.Paiement;
 import com.diandson.domain.Vente;
-import com.diandson.repository.VenteRepository;
+import com.diandson.domain.VenteMedicament;
+import com.diandson.repository.*;
+import com.diandson.security.SecurityUtils;
+import com.diandson.service.dto.MedicamentDTO;
 import com.diandson.service.dto.VenteDTO;
+import com.diandson.service.mapper.MedicamentMapper;
+import com.diandson.service.mapper.PaiementMapper;
 import com.diandson.service.mapper.VenteMapper;
+import com.diandson.service.mapper.VenteMedicamentMapper;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import liquibase.pro.packaged.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +40,30 @@ public class VenteService {
 
     private final VenteMapper venteMapper;
 
+    @Autowired
+    private MedicamentMapper medicamentMapper;
+
+    @Autowired
+    private MedicamentRepository medicamentRepository;
+
+    @Autowired
+    private VenteMedicamentMapper venteMedicamentMapper;
+
+    @Autowired
+    private VenteMedicamentRepository venteMedicamentRepository;
+
+    @Autowired
+    private PersonneRepository personneRepository;
+
+    @Autowired
+    private PaiementRepository paiementRepository;
+
+    @Autowired
+    private PaiementMapper paiementMapper;
+
+    @Autowired
+    private SimpMessageSendingOperations messagingTemplate;
+
     public VenteService(VenteRepository venteRepository, VenteMapper venteMapper) {
         this.venteRepository = venteRepository;
         this.venteMapper = venteMapper;
@@ -39,7 +78,26 @@ public class VenteService {
     public VenteDTO save(VenteDTO venteDTO) {
         log.debug("Request to save Vente : {}", venteDTO);
         Vente vente = venteMapper.toEntity(venteDTO);
+        vente.setNumero(String.valueOf(venteRepository.count() + 1));
+        vente.setDateVente(ZonedDateTime.now());
+        vente.setOperateur(personneRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin().get()));
         vente = venteRepository.save(vente);
+        List<VenteMedicament> venteMedicamentList = new ArrayList<>();
+        List<Medicament> medicamentList = venteDTO.getMedicament().stream().map(medicamentMapper::toEntity).collect(Collectors.toList());
+        for (Medicament medicament : medicamentList) {
+            VenteMedicament venteMedicament = new VenteMedicament();
+            Medicament medicamentOld = medicamentRepository.getById(medicament.getId());
+            medicamentOld.setStockTheorique(medicamentOld.getStockTheorique() - medicament.getStockTheorique());
+
+            medicamentOld = medicamentRepository.save(medicamentOld);
+            venteMedicament.setMedicament(medicamentOld);
+            venteMedicament.setVente(vente);
+            venteMedicament.setQuantite(medicament.getStockTheorique());
+
+            venteMedicamentList.add(venteMedicament);
+        }
+        venteMedicamentRepository.saveAll(venteMedicamentList);
+        messagingTemplate.convertAndSend("/topic/vente", venteDTO);
         return venteMapper.toDto(vente);
     }
 
@@ -95,5 +153,14 @@ public class VenteService {
     public void delete(Long id) {
         log.debug("Request to delete Vente : {}", id);
         venteRepository.deleteById(id);
+    }
+
+    public List<VenteDTO> findAllNewVentes() {
+        return venteRepository
+            .findAll()
+            .stream()
+            .filter(vente -> vente.getPaiement() == null)
+            .map(venteMapper::toDto)
+            .collect(Collectors.toList());
     }
 }

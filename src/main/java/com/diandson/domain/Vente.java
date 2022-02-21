@@ -70,6 +70,10 @@ public class Vente implements Serializable {
     )
     private Personne operateur;
 
+    @JsonIgnoreProperties(value = { "versement", "operateur", "vente" }, allowSetters = true)
+    @OneToOne(mappedBy = "vente")
+    private Paiement paiement;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -217,6 +221,25 @@ public class Vente implements Serializable {
 
     public Vente operateur(Personne personne) {
         this.setOperateur(personne);
+        return this;
+    }
+
+    public Paiement getPaiement() {
+        return this.paiement;
+    }
+
+    public void setPaiement(Paiement paiement) {
+        if (this.paiement != null) {
+            this.paiement.setVente(null);
+        }
+        if (paiement != null) {
+            paiement.setVente(this);
+        }
+        this.paiement = paiement;
+    }
+
+    public Vente paiement(Paiement paiement) {
+        this.setPaiement(paiement);
         return this;
     }
 

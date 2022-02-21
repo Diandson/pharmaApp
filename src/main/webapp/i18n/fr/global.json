@@ -26,6 +26,11 @@
         "message": "Message",
         "approvisionnement": "Approvisionnement",
         "approvisionnementMedicament": "Approvisionnement Medicament",
+        "paiement": "Paiement",
+        "depense": "Depense",
+        "versement": "Versement",
+        "lieuVersement": "Lieu Versement",
+        "motifListeDepense": "Motif Liste Depense",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -1,0 +1,20 @@
+{
+  "applications": "*",
+  "changelogDate": "20220218113043",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "lieu_versement",
+  "fields": [
+    {
+      "fieldName": "libelle",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LieuVersement",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

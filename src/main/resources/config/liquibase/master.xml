@@ -34,6 +34,11 @@
     <include file="config/liquibase/changelog/20220208193745_added_entity_Message.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220208200242_added_entity_Approvisionnement.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220208200243_added_entity_ApprovisionnementMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220218113040_added_entity_Paiement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220218113041_added_entity_Depense.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220218113042_added_entity_Versement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220218113043_added_entity_LieuVersement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220218113044_added_entity_MotifListeDepense.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20220208193730_added_entity_constraints_Medicament.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220208193731_added_entity_constraints_Personne.xml" relativeToChangelogFile="false"/>
@@ -51,6 +56,8 @@
     <include file="config/liquibase/changelog/20220208193744_added_entity_constraints_Notification.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220208193745_added_entity_constraints_Message.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220208200243_added_entity_constraints_ApprovisionnementMedicament.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220218113040_added_entity_constraints_Paiement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220218113042_added_entity_constraints_Versement.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

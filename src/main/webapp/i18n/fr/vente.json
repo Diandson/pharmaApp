@@ -26,7 +26,8 @@
       "sommeRendu": "Somme Rendu",
       "avoir": "Avoir",
       "venteMedicament": "Vente Medicament",
-      "operateur": "Operateur"
+      "operateur": "Operateur",
+      "paiement": "Paiement"
     }
   }
 }

@@ -2,6 +2,7 @@ package com.diandson.service.dto;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,6 +27,8 @@ public class VenteDTO implements Serializable {
     private Long avoir;
 
     private PersonneDTO operateur;
+
+    private List<MedicamentDTO> medicament;
 
     public Long getId() {
         return id;
@@ -97,6 +100,14 @@ public class VenteDTO implements Serializable {
 
     public void setOperateur(PersonneDTO operateur) {
         this.operateur = operateur;
+    }
+
+    public List<MedicamentDTO> getMedicament() {
+        return medicament;
+    }
+
+    public void setMedicament(List<MedicamentDTO> medicament) {
+        this.medicament = medicament;
     }
 
     @Override

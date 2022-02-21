@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <div>
-    <div *jhiHasAnyAuthority="['STRUCTURE_CAISSE', 'AGENCE_CAISSE']">
+    <div *jhiHasAnyAuthority="['STRUCTURE_CAISSE', 'AGENCE_CAISSE', 'STRUCTURE_ADMIN']">
       <div>
         <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
           <div nz-col [nzSpan]="19">
-            <nb-card size="large">
+            <nb-card size="medium">
               <nb-card-header>
                 <h3>Les prescriptions en attente</h3>
               </nb-card-header>
@@ -52,9 +52,9 @@
       </div>
     </div>
 
-    <div class="container-fluid center-screen" *jhiHasAnyAuthority="['SERVEUR', 'STRUCTURE_ADMIN']">
+    <div class="container-fluid center-screen" *jhiHasAnyAuthority="['SERVEUR']">
       <div class="justify-content-center" nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
-        <div nz-col class="gutter-row" [nzSpan]="12">
+        <div nz-col class="gutter-row" [nzSpan]="14">
           <nb-card>
             <nb-card-body>
               <nb-form-field>
@@ -126,10 +126,17 @@
               </nz-list>
             </nb-card-body>
             <nb-card-footer *ngIf="medicamentList.length > 0">
-              <div class="form-group">
-                <li class="list-group-item text-right">
-                  <span class="float-left"><strong>Montant à payer</strong></span> {{ prixTotal | currency: 'XOF' }}
-                </li>
+              <div class="row justify-content-between">
+                <div class="col-md-6">
+                  <li class="list-group-item text-right">
+                    <span class="float-left"><strong>Montant à payer</strong></span> {{ prixTotal | currency: 'XOF' }}
+                  </li>
+                </div>
+                <div class="col-md-4">
+                  <div class="row justify-content-end">
+                    <button type="button" nbButton status="primary" size="medium" (click)="validerVente()">Valider</button>
+                  </div>
+                </div>
               </div>
             </nb-card-footer>
           </nb-card>

@@ -1,0 +1,57 @@
+{
+  "applications": "*",
+  "changelogDate": "20220218113042",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "versement",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "commentaire",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "resteAVerser",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "lieuVersement",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "referenceVersement",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "identiteReceveur",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Versement",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "paiement",
+      "otherEntityRelationshipName": "versement",
+      "relationshipName": "paiement",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "personne",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

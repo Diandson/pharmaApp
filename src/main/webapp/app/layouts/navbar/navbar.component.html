@@ -1,4 +1,3 @@
-
 <div class="header-container">
   <div class="logo-container">
     <a class="logo" routerLink="">My-<span>PHARMA</span></a>
@@ -8,10 +7,9 @@
   <!--  </nb-select>-->
 </div>
 
-
 <div class="header-container main-header-right">
   <nb-actions size="small">
-    <nb-action >
+    <nb-action>
       <ul class="navbar-nav ml-auto" [ngSwitch]="isAuthenticated()">
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         <li
@@ -22,17 +20,23 @@
           [routerLinkActiveOptions]="{ exact: true }"
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
-          <span *ngIf="!account?.imageUrl">
-            <fa-icon icon="user"></fa-icon>
-            <span jhiTranslate="global.menu.account.main">Account</span>
-          </span>
+            <span *ngIf="!account?.imageUrl">
+              <fa-icon icon="user"></fa-icon>
+              <span jhiTranslate="global.menu.account.main">Account</span>
+            </span>
             <span *ngIf="account?.imageUrl">
-            <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
-          </span>
+              <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
+            </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
             <li *ngSwitchCase="true">
-              <a class="dropdown-item" routerLink="account/settings" routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
+              <a
+                class="dropdown-item"
+                routerLink="account/settings"
+                routerLinkActive="active"
+                (click)="collapseNavbar()"
+                data-cy="settings"
+              >
                 <fa-icon icon="wrench" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.account.settings">Settings</span>
               </a>
@@ -62,7 +66,13 @@
               </a>
             </li>
             <li *ngSwitchCase="false">
-              <a class="dropdown-item" routerLink="account/register" routerLinkActive="active" (click)="collapseNavbar()" data-cy="register">
+              <a
+                class="dropdown-item"
+                routerLink="account/register"
+                routerLinkActive="active"
+                (click)="collapseNavbar()"
+                data-cy="register"
+              >
                 <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.account.register">Register</span>
               </a>
@@ -72,17 +82,16 @@
       </ul>
     </nb-action>
 
-    <nb-action >
+    <nb-action>
       <div ngbDropdown class="main-header-notification">
-        <nb-icon ngbDropdownToggle class="dropdown-toggle"
-                 icon="bell-outline" class="header-icons"></nb-icon>
+        <nb-icon ngbDropdownToggle class="dropdown-toggle" icon="bell-outline" class="header-icons"></nb-icon>
         <div ngbDropdownMenu>
           <div class="header-navheading">
             <p class="main-notification-text">3 new Messages</p>
           </div>
           <div class="main-notification-list">
             <div class="media new">
-              <div class="main-img-user online"><img alt="avatar" src="../../../content/assets/img/users/10.jpg" /></div>
+              <div class="main-img-user online"><img alt="avatar" /></div>
               <div class="media-body">
                 <p>
                   Paul Molive
@@ -91,7 +100,7 @@
               </div>
             </div>
             <div class="media">
-              <div class="main-img-user"><img alt="avatar" src="../../../content/assets/img/users/8.jpg" /></div>
+              <div class="main-img-user"><img alt="avatar" /></div>
               <div class="media-body">
                 <p>
                   Sahar DaryAll
@@ -99,34 +108,23 @@
                 </p>
               </div>
             </div>
-            <div class="media">
-              <div class="main-img-user online"><img alt="avatar" src="../../../content/assets/img/users/11.jpg" /></div>
-              <div class="media-body">
-                <p>
-                  Barney Cull
-                  <span>Here are some products ...</span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="dropdown-footer">
-            <a href="javascript:void(0)">View All</a>
           </div>
         </div>
       </div>
     </nb-action>
 
-    <nb-action class="control-item"
-               [nbContextMenu]="itemsMenu"
-               icon="settings-outline">
-    </nb-action>
+    <nb-action class="control-item" [nbContextMenu]="itemsMenu" icon="settings-outline"> </nb-action>
     <nb-action class="user-action">
-      <nb-user [nbContextMenu]="userMenu" [nbContextMenuTag]="'userTags'" showTitle
-               name="{{account!.firstName + ' ' + account!.lastName}}"
-               [picture]="'data:image/jpeg;base64,' + structure.personne?.profil"
-               size="large" title="{{structure.denomination?.toUpperCase()}}">
+      <nb-user
+        [nbContextMenu]="userMenu"
+        [nbContextMenuTag]="'userTags'"
+        showTitle
+        name="{{ account!.firstName + ' ' + account!.lastName }}"
+        [picture]="'data:image/jpeg;base64,' + structure.personne?.profil"
+        size="large"
+        title="{{ structure.denomination?.toUpperCase() }}"
+      >
       </nb-user>
     </nb-action>
   </nb-actions>
 </div>
-

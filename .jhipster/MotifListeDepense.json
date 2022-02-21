@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "changelogDate": "20220218113044",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "motif_liste_depense",
+  "fields": [
+    {
+      "fieldName": "libelle",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "MotifListeDepense",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

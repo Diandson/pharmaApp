@@ -51,6 +51,13 @@
       "otherEntityRelationshipName": "vente",
       "relationshipName": "operateur",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "paiement",
+      "otherEntityRelationshipName": "vente",
+      "ownerSide": false,
+      "relationshipName": "paiement",
+      "relationshipType": "one-to-one"
     }
   ],
   "service": "serviceClass"

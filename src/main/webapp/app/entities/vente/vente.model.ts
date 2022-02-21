@@ -1,6 +1,7 @@
 import dayjs from 'dayjs/esm';
 import { IVenteMedicament } from 'app/entities/vente-medicament/vente-medicament.model';
 import { IPersonne } from 'app/entities/personne/personne.model';
+import { IMedicament } from '../medicament/medicament.model';
 
 export interface IVente {
   id?: number;
@@ -13,6 +14,7 @@ export interface IVente {
   avoir?: number | null;
   venteMedicaments?: IVenteMedicament[] | null;
   operateur?: IPersonne | null;
+  medicament?: IMedicament[] | null;
 }
 
 export class Vente implements IVente {
@@ -26,7 +28,8 @@ export class Vente implements IVente {
     public sommeRendu?: number | null,
     public avoir?: number | null,
     public venteMedicaments?: IVenteMedicament[] | null,
-    public operateur?: IPersonne | null
+    public operateur?: IPersonne | null,
+    public medicament?: IMedicament[] | null
   ) {}
 }
 

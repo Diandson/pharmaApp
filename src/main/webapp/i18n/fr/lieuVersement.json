@@ -1,0 +1,24 @@
+{
+  "appPharmaApp": {
+    "lieuVersement": {
+      "home": {
+        "title": "LieuVersements",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Lieu Versement",
+        "createOrEditLabel": "Créer ou éditer un Lieu Versement",
+        "notFound": "Aucun Lieu Versement trouvé"
+      },
+      "created": "Un nouveau Lieu Versement a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Lieu Versement avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Lieu Versement avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Lieu Versement {{ id }} ?"
+      },
+      "detail": {
+        "title": "Lieu Versement"
+      },
+      "id": "ID",
+      "libelle": "Libelle"
+    }
+  }
+}

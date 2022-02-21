@@ -1,0 +1,142 @@
+<div>
+  <h2 id="page-heading" data-cy="PaiementHeading">
+    <span jhiTranslate="appPharmaApp.paiement.home.title">Paiements</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appPharmaApp.paiement.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-paiement"
+        [routerLink]="['/paiement/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appPharmaApp.paiement.home.createLabel"> Create a new Paiement </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="paiements?.length === 0">
+    <span jhiTranslate="appPharmaApp.paiement.home.notFound">No paiements found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="paiements && paiements.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="numero">
+            <span jhiTranslate="appPharmaApp.paiement.numero">Numero</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="numeroVente">
+            <span jhiTranslate="appPharmaApp.paiement.numeroVente">Numero Vente</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="datePaiement">
+            <span jhiTranslate="appPharmaApp.paiement.datePaiement">Date Paiement</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="sommeRecu">
+            <span jhiTranslate="appPharmaApp.paiement.sommeRecu">Somme Recu</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="sommeDonner">
+            <span jhiTranslate="appPharmaApp.paiement.sommeDonner">Somme Donner</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="avoir">
+            <span jhiTranslate="appPharmaApp.paiement.avoir">Avoir</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="versement.id">
+            <span jhiTranslate="appPharmaApp.paiement.versement">Versement</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="operateur.id">
+            <span jhiTranslate="appPharmaApp.paiement.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="vente.id">
+            <span jhiTranslate="appPharmaApp.paiement.vente">Vente</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paiement of paiements; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/paiement', paiement.id, 'view']">{{ paiement.id }}</a>
+          </td>
+          <td>{{ paiement.numero }}</td>
+          <td>{{ paiement.numeroVente }}</td>
+          <td>{{ paiement.datePaiement | formatMediumDatetime }}</td>
+          <td>{{ paiement.sommeRecu }}</td>
+          <td>{{ paiement.sommeDonner }}</td>
+          <td>{{ paiement.avoir }}</td>
+          <td>
+            <div *ngIf="paiement.versement">
+              <a [routerLink]="['/versement', paiement.versement?.id, 'view']">{{ paiement.versement?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="paiement.operateur">
+              <a [routerLink]="['/personne', paiement.operateur?.id, 'view']">{{ paiement.operateur?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="paiement.vente">
+              <a [routerLink]="['/vente', paiement.vente?.id, 'view']">{{ paiement.vente?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/paiement', paiement.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/paiement', paiement.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(paiement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="paiements && paiements.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

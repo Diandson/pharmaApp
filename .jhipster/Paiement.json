@@ -1,0 +1,62 @@
+{
+  "applications": "*",
+  "changelogDate": "20220218113040",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "paiement",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numeroVente",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "datePaiement",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "sommeRecu",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "sommeDonner",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "avoir",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Paiement",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "versement",
+      "otherEntityRelationshipName": "paiement",
+      "relationshipName": "versement",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "personne",
+      "relationshipName": "operateur",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "id": false,
+      "otherEntityField": "id",
+      "otherEntityName": "vente",
+      "otherEntityRelationshipName": "paiement",
+      "ownerSide": true,
+      "relationshipName": "vente",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

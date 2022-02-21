@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="versement">
+      <h2 data-cy="versementDetailsHeading"><span jhiTranslate="appPharmaApp.versement.detail.title">Versement</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ versement.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.numero">Numero</span></dt>
+        <dd>
+          <span>{{ versement.numero }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.commentaire">Commentaire</span></dt>
+        <dd>
+          <span>{{ versement.commentaire }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.montant">Montant</span></dt>
+        <dd>
+          <span>{{ versement.montant }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.resteAVerser">Reste A Verser</span></dt>
+        <dd>
+          <span>{{ versement.resteAVerser }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.lieuVersement">Lieu Versement</span></dt>
+        <dd>
+          <span>{{ versement.lieuVersement }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.referenceVersement">Reference Versement</span></dt>
+        <dd>
+          <span>{{ versement.referenceVersement }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.identiteReceveur">Identite Receveur</span></dt>
+        <dd>
+          <span>{{ versement.identiteReceveur }}</span>
+        </dd>
+        <dt><span jhiTranslate="appPharmaApp.versement.operateur">Operateur</span></dt>
+        <dd>
+          <div *ngIf="versement.operateur">
+            <a [routerLink]="['/personne', versement.operateur?.id, 'view']">{{ versement.operateur?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/versement', versement.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

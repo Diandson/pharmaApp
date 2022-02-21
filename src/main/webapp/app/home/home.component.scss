@@ -160,3 +160,10 @@ Main page styles
 .ui-autocomplete {
   z-index: 1051;
 }
+.modal-backdrop {
+  background-color: transparent !important;
+}
+
+::ng-deep .myCustomModalClass .modal-dialog {
+  max-width: 0;
+}

@@ -84,6 +84,12 @@ public class CacheConfiguration {
             createCache(cm, com.diandson.domain.Approvisionnement.class.getName());
             createCache(cm, com.diandson.domain.Approvisionnement.class.getName() + ".approvisionnementMedicaments");
             createCache(cm, com.diandson.domain.ApprovisionnementMedicament.class.getName());
+            createCache(cm, com.diandson.domain.Paiement.class.getName());
+            createCache(cm, com.diandson.domain.Depense.class.getName());
+            createCache(cm, com.diandson.domain.Versement.class.getName());
+            createCache(cm, com.diandson.domain.Versement.class.getName() + ".paiements");
+            createCache(cm, com.diandson.domain.LieuVersement.class.getName());
+            createCache(cm, com.diandson.domain.MotifListeDepense.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

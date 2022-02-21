@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {GetstartedComponent} from "./getstarted/getstarted.component";
+import { GetstartedComponent } from './getstarted/getstarted.component';
 
 @NgModule({
   imports: [
@@ -13,7 +13,7 @@ import {GetstartedComponent} from "./getstarted/getstarted.component";
       {
         path: 'getstarted',
         data: { pageTitle: 'Configuration' },
-        component: GetstartedComponent
+        component: GetstartedComponent,
       },
       {
         path: 'medicament',
@@ -105,6 +105,31 @@ import {GetstartedComponent} from "./getstarted/getstarted.component";
         data: { pageTitle: 'appPharmaApp.approvisionnementMedicament.home.title' },
         loadChildren: () =>
           import('./approvisionnement-medicament/approvisionnement-medicament.module').then(m => m.ApprovisionnementMedicamentModule),
+      },
+      {
+        path: 'paiement',
+        data: { pageTitle: 'appPharmaApp.paiement.home.title' },
+        loadChildren: () => import('./paiement/paiement.module').then(m => m.PaiementModule),
+      },
+      {
+        path: 'depense',
+        data: { pageTitle: 'appPharmaApp.depense.home.title' },
+        loadChildren: () => import('./depense/depense.module').then(m => m.DepenseModule),
+      },
+      {
+        path: 'versement',
+        data: { pageTitle: 'appPharmaApp.versement.home.title' },
+        loadChildren: () => import('./versement/versement.module').then(m => m.VersementModule),
+      },
+      {
+        path: 'lieu-versement',
+        data: { pageTitle: 'appPharmaApp.lieuVersement.home.title' },
+        loadChildren: () => import('./lieu-versement/lieu-versement.module').then(m => m.LieuVersementModule),
+      },
+      {
+        path: 'motif-liste-depense',
+        data: { pageTitle: 'appPharmaApp.motifListeDepense.home.title' },
+        loadChildren: () => import('./motif-liste-depense/motif-liste-depense.module').then(m => m.MotifListeDepenseModule),
       },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),

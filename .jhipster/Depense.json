@@ -1,0 +1,40 @@
+{
+  "applications": "*",
+  "changelogDate": "20220218113041",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "depense",
+  "fields": [
+    {
+      "fieldName": "numero",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "motifDepense",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ordonnateur",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "justificatif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "dateDepense",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Depense",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}
