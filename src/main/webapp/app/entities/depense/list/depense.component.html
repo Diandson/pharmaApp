@@ -1,118 +1,108 @@
-<div>
-  <h2 id="page-heading" data-cy="DepenseHeading">
-    <span jhiTranslate="appPharmaApp.depense.home.title">Depenses</span>
+<nb-card>
+  <nb-card-header>
+    <h2 id="page-heading" data-cy="DepenseHeading">
+      <span >Les dépenses</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appPharmaApp.depense.home.refreshListLabel">Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-depense"
-        [routerLink]="['/depense/new']"
-      >
+      <button nbButton size="small" status="primary" outline (click)="createOrUpdate()"
+              class="float-end mr-2 jh-create-entity create-vente">
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appPharmaApp.depense.home.createLabel"> Create a new Depense </span>
+        <span> Nouvelle dépense </span>
       </button>
-    </div>
-  </h2>
 
-  <jhi-alert-error></jhi-alert-error>
+      <button class="float-end mr-2" nbButton size="small"
+              (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span ></span>
+      </button>
+    </h2>
+  </nb-card-header>
+  <nb-card-body>
+    <jhi-alert-error></jhi-alert-error>
 
-  <jhi-alert></jhi-alert>
+    <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="depenses?.length === 0">
-    <span jhiTranslate="appPharmaApp.depense.home.notFound">No depenses found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="depenses && depenses.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="numero">
-            <span jhiTranslate="appPharmaApp.depense.numero">Numero</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="motifDepense">
-            <span jhiTranslate="appPharmaApp.depense.motifDepense">Motif Depense</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="ordonnateur">
-            <span jhiTranslate="appPharmaApp.depense.ordonnateur">Ordonnateur</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="justificatif">
-            <span jhiTranslate="appPharmaApp.depense.justificatif">Justificatif</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="montant">
-            <span jhiTranslate="appPharmaApp.depense.montant">Montant</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dateDepense">
-            <span jhiTranslate="appPharmaApp.depense.dateDepense">Date Depense</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let depense of depenses; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/depense', depense.id, 'view']">{{ depense.id }}</a>
-          </td>
-          <td>{{ depense.numero }}</td>
-          <td>{{ depense.motifDepense }}</td>
-          <td>{{ depense.ordonnateur }}</td>
-          <td>{{ depense.justificatif }}</td>
-          <td>{{ depense.montant }}</td>
-          <td>{{ depense.dateDepense | formatMediumDatetime }}</td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/depense', depense.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/depense', depense.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(depense)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="depenses && depenses.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    <div class="alert alert-warning" id="no-result" *ngIf="depenses?.length === 0">
+      <span jhiTranslate="appPharmaApp.depense.home.notFound">No depenses found</span>
     </div>
 
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
+    <div class="card">
+      <p-table #dt1 [value]="depenses!" dataKey="id"
+               [rows]="10" [showCurrentPageReport]="true"
+               styleClass="p-datatable-gridlines p-datatable-sm" [sortField]="'dateDepense'" [sortMode]="'-1'"
+               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [globalFilterFields]="['justificatif','ordonnateur', 'motifDepense', 'dateDepense']">
+        <ng-template pTemplate="caption">
+          <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="search"
+                           (input)="dt1.filterGlobal(search, 'startsWith')"
+                           placeholder="Recherche ..." />
+              </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th >
+              <span >Numéro</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.depense.motifDepense">Motif Dépense</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.depense.ordonnateur">Ordonnateur</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.depense.justificatif">Justificatif</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.depense.montant">Montant</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.depense.dateDepense">Date Depense</span>
+            </th>
+            <th ></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-depense>
+          <tr>
+            <td>{{ depense.numero }}</td>
+            <td>{{ depense.motifDepense }}</td>
+            <td>{{ depense.ordonnateur }}</td>
+            <td>{{ depense.justificatif }}</td>
+            <td>{{ depense.montant | currency: 'XOF' }}</td>
+            <td>{{ depense.dateDepense | formatMediumDatetime }}</td>
+            <td class="text-right">
+              <div class="btn-group">
+                <button
+                  type="submit" (click)="viewDepense(depense)"
+                  class="btn btn-info btn-sm">
+                  <fa-icon icon="eye"></fa-icon>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+
+                <button
+                  type="submit"
+                  (click)="createOrUpdate(depense)"
+                  class="btn btn-primary btn-sm">
+                  <fa-icon icon="pencil-alt"></fa-icon>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+
+                <button type="submit" (click)="delete(depense)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <fa-icon icon="times"></fa-icon>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">Pas de données trouver.</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
-  </div>
-</div>
+  </nb-card-body>
+</nb-card>

@@ -38,7 +38,7 @@ public class TypePack implements Serializable {
 
     @OneToMany(mappedBy = "type")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "operateur", "type" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "operateur", "type", "structure" }, allowSetters = true)
     private Set<Pack> packs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

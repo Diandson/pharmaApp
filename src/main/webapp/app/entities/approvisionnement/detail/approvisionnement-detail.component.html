@@ -1,46 +1,48 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <div *ngIf="approvisionnement">
-      <h2 data-cy="approvisionnementDetailsHeading">
-        <span jhiTranslate="appPharmaApp.approvisionnement.detail.title">Approvisionnement</span>
-      </h2>
 
-      <hr />
+<div *ngIf="approvisionnement">
+  <h2 class="modal-header">
+    <span jhiTranslate="appPharmaApp.approvisionnement.detail.title">Approvisionnement</span>
+  </h2>
 
-      <jhi-alert-error></jhi-alert-error>
 
-      <jhi-alert></jhi-alert>
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ approvisionnement.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.approvisionnement.numero">Numero</span></dt>
-        <dd>
-          <span>{{ approvisionnement.numero }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.approvisionnement.agenceApp">Agence App</span></dt>
-        <dd>
-          <span>{{ approvisionnement.agenceApp }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.approvisionnement.commentaire">Commentaire</span></dt>
-        <dd>
-          <span>{{ approvisionnement.commentaire }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.approvisionnement.dateCommande">Date Commande</span></dt>
-        <dd>
-          <span>{{ approvisionnement.dateCommande | formatMediumDatetime }}</span>
-        </dd>
-      </dl>
+    <jhi-alert></jhi-alert>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
-
-      <button type="button" [routerLink]="['/approvisionnement', approvisionnement.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-      </button>
-    </div>
+    <dl class="row-md jh-entity-details">
+      <dt><span jhiTranslate="global.field.id">ID</span></dt>
+      <dd>
+        <span>{{ approvisionnement.id }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.approvisionnement.numero">Numero</span></dt>
+      <dd>
+        <span>{{ approvisionnement.numero }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.approvisionnement.agenceApp">Agence App</span></dt>
+      <dd>
+        <span>{{ approvisionnement.agenceApp }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.approvisionnement.commentaire">Commentaire</span></dt>
+      <dd>
+        <span>{{ approvisionnement.commentaire }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.approvisionnement.dateCommande">Date Commande</span></dt>
+      <dd>
+        <span>{{ approvisionnement.dateCommande | formatMediumDatetime }}</span>
+      </dd>
+    </dl>
   </div>
+
+
+  <div class="modal-footer justify-content-between">
+    <button type="submit" (click)="previousState()" mat-raised-button color="accent">
+      <span >Fermer</span>
+    </button>
+
+<!--    <button type="button" [routerLink]="['/approvisionnement', approvisionnement.id, 'edit']" class="btn btn-primary">-->
+<!--      <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>-->
+<!--    </button>-->
+  </div>
+
 </div>

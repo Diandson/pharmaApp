@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,8 @@ import { IApprovisionnement } from '../approvisionnement.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { ApprovisionnementService } from '../service/approvisionnement.service';
 import { ApprovisionnementDeleteDialogComponent } from '../delete/approvisionnement-delete-dialog.component';
+import {ApprovisionnementUpdateComponent} from "../update/approvisionnement-update.component";
+import {ApprovisionnementDetailComponent} from "../detail/approvisionnement-detail.component";
 
 @Component({
   selector: 'jhi-approvisionnement',
@@ -23,6 +25,7 @@ export class ApprovisionnementComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  search?: string;
 
   constructor(
     protected approvisionnementService: ApprovisionnementService,
@@ -31,30 +34,15 @@ export class ApprovisionnementComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
-    this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
-
+  loadPage(): void {
     this.approvisionnementService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe({
-        next: (res: HttpResponse<IApprovisionnement[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        error: () => {
-          this.isLoading = false;
-          this.onError();
-        },
-      });
+      .query()
+      .subscribe(res => this.approvisionnements = res.body ?? []);
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    // this.handleNavigation();
+    this.loadPage();
   }
 
   trackId(index: number, item: IApprovisionnement): number {
@@ -70,6 +58,25 @@ export class ApprovisionnementComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  createOrUpdate(approvisionnement?: IApprovisionnement): void {
+    const modalRef = this.modalService.open(ApprovisionnementUpdateComponent, { size: 'lg', backdrop: 'static' });
+    if (approvisionnement){
+      modalRef.componentInstance.approvisionnement = approvisionnement;
+    }
+
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
+        this.loadPage();
+      }
+    });
+  }
+
+  detailApproviso(approvisionnement?: IApprovisionnement): void {
+    const modalRef = this.modalService.open(ApprovisionnementDetailComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.approvisionnement = approvisionnement;
   }
 
   protected sort(): string[] {
@@ -90,7 +97,6 @@ export class ApprovisionnementComponent implements OnInit {
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;
-        this.loadPage(pageNumber, true);
       }
     });
   }
@@ -114,4 +120,5 @@ export class ApprovisionnementComponent implements OnInit {
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }
+
 }

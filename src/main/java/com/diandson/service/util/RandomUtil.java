@@ -43,7 +43,7 @@ public final class RandomUtil {
     public static String generateRandomSerialNumericStringCollant() {
         return RandomStringUtils.random(DEF_COUNT_SERIES_AUTO, 0, 0, false, true, null, SECURE_RANDOM);
     }
-    public static String generateRandomSerialNumericStringc() {
+    public static String generateRandomSerialNumericPaiementStringc() {
         return RandomStringUtils.random(DEF_COUNT_SERIEC, 0, 0, false, true, null, SECURE_RANDOM);
     }
 

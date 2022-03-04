@@ -66,7 +66,7 @@ public class Personne implements Serializable {
 
     @OneToMany(mappedBy = "operateur")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "venteMedicaments", "operateur" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "venteMedicaments", "operateur", "paiement" }, allowSetters = true)
     private Set<Vente> ventes = new HashSet<>();
 
     @OneToMany(mappedBy = "operateur")

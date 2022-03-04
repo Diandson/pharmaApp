@@ -64,7 +64,7 @@ public class Paiement implements Serializable {
     )
     private Personne operateur;
 
-    @JsonIgnoreProperties(value = { "venteMedicaments", "operateur" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "venteMedicaments", "operateur", "paiement" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private Vente vente;

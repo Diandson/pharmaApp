@@ -11,6 +11,10 @@ eg $input-color: red;
 @import "themes";
 @import "../css/style.css";
 
+@import "../fonts/font-awesome.min.css";
+@import "../fonts/fontawesome-all.min.css";
+@import "../css/bootstrap.min.css";
+
 @import '~@nebular/theme/styles/globals';
 //@import "../css/nebular-default.css";
 @import '~@nebular/theme/styles/prebuilt/default.css';

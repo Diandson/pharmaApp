@@ -1,52 +1,48 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <div *ngIf="depense">
-      <h2 data-cy="depenseDetailsHeading"><span jhiTranslate="appPharmaApp.depense.detail.title">Depense</span></h2>
 
-      <hr />
+<div *ngIf="depense">
+  <h2 class="modal-header"><span>Depense</span></h2>
 
-      <jhi-alert-error></jhi-alert-error>
+  <jhi-alert-error></jhi-alert-error>
 
-      <jhi-alert></jhi-alert>
+  <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ depense.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.depense.numero">Numero</span></dt>
-        <dd>
-          <span>{{ depense.numero }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.depense.motifDepense">Motif Depense</span></dt>
-        <dd>
-          <span>{{ depense.motifDepense }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.depense.ordonnateur">Ordonnateur</span></dt>
-        <dd>
-          <span>{{ depense.ordonnateur }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.depense.justificatif">Justificatif</span></dt>
-        <dd>
-          <span>{{ depense.justificatif }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.depense.montant">Montant</span></dt>
-        <dd>
-          <span>{{ depense.montant }}</span>
-        </dd>
-        <dt><span jhiTranslate="appPharmaApp.depense.dateDepense">Date Depense</span></dt>
-        <dd>
-          <span>{{ depense.dateDepense | formatMediumDatetime }}</span>
-        </dd>
-      </dl>
+  <div class="modal-body">
+    <dl class="row-md jh-entity-details">
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
-
-      <button type="button" [routerLink]="['/depense', depense.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-      </button>
-    </div>
+      <dt><span jhiTranslate="appPharmaApp.depense.numero">Numero</span></dt>
+      <dd>
+        <span>{{ depense.numero }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.depense.motifDepense">Motif Depense</span></dt>
+      <dd>
+        <span>{{ depense.motifDepense }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.depense.ordonnateur">Ordonnateur</span></dt>
+      <dd>
+        <span>{{ depense.ordonnateur }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.depense.justificatif">Justificatif</span></dt>
+      <dd>
+        <span>{{ depense.justificatif }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.depense.montant">Montant</span></dt>
+      <dd>
+        <span>{{ depense.montant | currency: 'XOF' }}</span>
+      </dd>
+      <dt><span jhiTranslate="appPharmaApp.depense.dateDepense">Date Depense</span></dt>
+      <dd>
+        <span>{{ depense.dateDepense | formatMediumDatetime }}</span>
+      </dd>
+    </dl>
   </div>
+
+  <div class="modal-footer justify-content-between">
+    <button type="submit" (click)="previousState()" mat-raised-button color="accent">
+      <span >Fermer</span>
+    </button>
+  </div>
+
+<!--  <button type="button" [routerLink]="['/depense', depense.id, 'edit']" class="btn btn-primary">-->
+<!--    <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>-->
+<!--  </button>-->
 </div>

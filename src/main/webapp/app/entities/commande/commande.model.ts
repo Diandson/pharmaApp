@@ -3,6 +3,7 @@ import { ILivraison } from 'app/entities/livraison/livraison.model';
 import { IFournisseur } from 'app/entities/fournisseur/fournisseur.model';
 import { ICommandeMedicament } from 'app/entities/commande-medicament/commande-medicament.model';
 import { IPersonne } from 'app/entities/personne/personne.model';
+import {IMedicament} from "../medicament/medicament.model";
 
 export interface ICommande {
   id?: number;
@@ -11,6 +12,7 @@ export interface ICommande {
   livraison?: ILivraison | null;
   fournisseur?: IFournisseur | null;
   commandeMedicaments?: ICommandeMedicament[] | null;
+  medicament?: IMedicament[] | null;
   operateur?: IPersonne | null;
 }
 
@@ -22,6 +24,7 @@ export class Commande implements ICommande {
     public livraison?: ILivraison | null,
     public fournisseur?: IFournisseur | null,
     public commandeMedicaments?: ICommandeMedicament[] | null,
+    public medicament?: IMedicament[] | null,
     public operateur?: IPersonne | null
   ) {}
 }

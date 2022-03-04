@@ -1,127 +1,44 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-paiement-heading" data-cy="PaiementCreateUpdateHeading" jhiTranslate="appPharmaApp.paiement.home.createOrEditLabel">
-        Create or edit a Paiement
-      </h2>
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+  <h2 class="modal-header">
+    Paiement   de   {{vente!.montant | currency: 'XOF'}}
+  </h2>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+  <div class="modal-body">
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
+<!--    <div class="form-group" [hidden]="editForm.get('id')!.value == null">-->
+<!--      <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>-->
+<!--      <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />-->
+<!--    </div>-->
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.numero" for="field_numero">Numero</label>
-          <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
-        </div>
+    <div class="form-group">
+      <label class="form-control-label">Somme Reçue</label>
+      <input type="number" nbInput fullWidth fieldSize="small" status="primary"
+             (input)="avoir = sommeRecu - vente!.montant! - sommeDonner"
+             formControlName="sommeRecu" [(ngModel)]="sommeRecu"/>
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.numeroVente" for="field_numeroVente">Numero Vente</label>
-          <input
-            type="text"
-            class="form-control"
-            name="numeroVente"
-            id="field_numeroVente"
-            data-cy="numeroVente"
-            formControlName="numeroVente"
-          />
-        </div>
+    <div class="form-group">
+      <label class="form-control-label">Monaie Donnée</label>
+      <input type="number" nbInput fullWidth fieldSize="small" status="primary"
+             (input)="avoir = sommeRecu - vente!.montant! - sommeDonner"
+        formControlName="sommeDonner" [(ngModel)]="sommeDonner"/>
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.datePaiement" for="field_datePaiement">Date Paiement</label>
-          <div class="d-flex">
-            <input
-              id="field_datePaiement"
-              data-cy="datePaiement"
-              type="datetime-local"
-              class="form-control"
-              name="datePaiement"
-              formControlName="datePaiement"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
+    <div class="form-group">
+      <label class="form-control-label clo-md-6">Avoir</label>
+      <label class="col-md-6">{{avoir}}</label>
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.sommeRecu" for="field_sommeRecu">Somme Recu</label>
-          <input type="number" class="form-control" name="sommeRecu" id="field_sommeRecu" data-cy="sommeRecu" formControlName="sommeRecu" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.sommeDonner" for="field_sommeDonner">Somme Donner</label>
-          <input
-            type="number"
-            class="form-control"
-            name="sommeDonner"
-            id="field_sommeDonner"
-            data-cy="sommeDonner"
-            formControlName="sommeDonner"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.avoir" for="field_avoir">Avoir</label>
-          <input type="number" class="form-control" name="avoir" id="field_avoir" data-cy="avoir" formControlName="avoir" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.versement" for="field_versement">Versement</label>
-          <select class="form-control" id="field_versement" data-cy="versement" name="versement" formControlName="versement">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="versementOption.id === editForm.get('versement')!.value?.id ? editForm.get('versement')!.value : versementOption"
-              *ngFor="let versementOption of versementsSharedCollection; trackBy: trackVersementById"
-            >
-              {{ versementOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.operateur" for="field_operateur">Operateur</label>
-          <select class="form-control" id="field_operateur" data-cy="operateur" name="operateur" formControlName="operateur">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="personneOption.id === editForm.get('operateur')!.value?.id ? editForm.get('operateur')!.value : personneOption"
-              *ngFor="let personneOption of personnesSharedCollection; trackBy: trackPersonneById"
-            >
-              {{ personneOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.paiement.vente" for="field_vente">Vente</label>
-          <select class="form-control" id="field_vente" data-cy="vente" name="vente" formControlName="vente">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="venteOption.id === editForm.get('vente')!.value?.id ? editForm.get('vente')!.value : venteOption"
-              *ngFor="let venteOption of ventesCollection; trackBy: trackVenteById"
-            >
-              {{ venteOption.id }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-      </div>
-    </form>
   </div>
-</div>
+
+  <div class="modal-footer justify-content-between">
+    <button type="button" mat-raised-button color="accent"
+            (click)="previousState()"><span >Fermer</span>
+    </button>
+
+    <button mat-raised-button color="primary" *ngIf="sommeRecu > 0"
+      type="submit" [disabled]="avoir < 0 || sommeRecu < vente!.montant! || sommeRecu < sommeDonner">
+      <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+    </button>
+  </div>
+</form>

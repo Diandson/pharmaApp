@@ -1,95 +1,227 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-commande-heading" data-cy="CommandeCreateUpdateHeading" jhiTranslate="appPharmaApp.commande.home.createOrEditLabel">
-        Create or edit a Commande
-      </h2>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
-
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.commande.numero" for="field_numero">Numero</label>
-          <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.commande.dateCommande" for="field_dateCommande">Date Commande</label>
-          <div class="d-flex">
-            <input
-              id="field_dateCommande"
-              data-cy="dateCommande"
-              type="datetime-local"
-              class="form-control"
-              name="dateCommande"
-              formControlName="dateCommande"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
+<nb-card size="giant">
+  <nb-card-header>
+    <h2>
+      Opération de commande
+    </h2>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="card">
+      <p-table #dt1 [value]="medicaments!" dataKey="id"
+               [rows]="20" [showCurrentPageReport]="true"
+               styleClass="p-datatable-gridlines p-datatable-sm" [sortField]="'dci'" [sortMode]="'1'"
+               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [globalFilterFields]="['dci','forme','dosage', 'classe', 'dateExpiration']">
+        <ng-template pTemplate="caption">
+          <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="search"
+                           (input)="dt1.filterGlobal(search, 'startsWith')"
+                           placeholder="Recherche ..." />
+              </span>
           </div>
-        </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:450px">DCI</th>
+            <th style="width:50px">Prix achat</th>
+            <th style="width:50px">Prix public</th>
+            <th style="width:50px">Stock disponible</th>
+            <th style="width:110px">Expiration</th>
+            <th style="width:30px"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-medicament>
+          <tr>
+            <td style="width:450px">{{ medicament.dci + ' ' + medicament.classe }}</td>
+            <td style="width:50px">
+              <p-inputNumber [(ngModel)]="medicament.prixAchat!" [size]="12" mode="currency" currency="XOF"
+                (onInput)="medicament.prixAchat = $event.value" (onBlur)="getPrixAchat()"
+                class="p-inputtext-sm" [showButtons]="true"></p-inputNumber>
+            </td>
+            <td style="width:50px">
+              <p-inputNumber [(ngModel)]="medicament.prixPublic!" [size]="12" currency="XOF"
+                (onInput)="medicament.prixPublic = $event.value" mode="currency"
+                (onBlur)="getPrixPublic()" class="p-inputtext-sm" [showButtons]="true"></p-inputNumber>
+            </td>
+            <td style="width:50px">
+              <p-inputNumber
+                [(ngModel)]="medicament.stockTheorique!"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                spinnerMode="horizontal"
+                [size]="6"
+                (onInput)="medicament.stockTheorique = $event.value"
+                (onBlur)="getStockTheorique()"
+                class="p-inputtext-sm"
+                decrementButtonClass="p-button-danger p-button-sm"
+                incrementButtonClass="p-button-success p-button-sm"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"></p-inputNumber>
+            </td>
+            <td style="width:110px">
+              <input type="text" nbInput status="primary" fullWidth fieldSize="small"
+                     [inputMask]="dateInputMask" placeholder="dd/mm/yyyy" (ngModelChange)="medicament.dateExpiration = $event"
+                     [(ngModel)]="medicament.dateExpiration!" />
+            </td>
+            <td class="text-right" style="width:30px">
+              <div class="btn-group">
+                <button type="submit" (click)="addMedicamentToCommande(medicament)"
+                        class="btn btn-info btn-sm">
+                  <i class="fas fa-plus-circle"></i>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">Pas de données trouver.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="justify-content-between">
+      <button type="button" nbButton size="small" status="basic"
+              (click)="previousState()">
+        <span >Retour</span>
+      </button>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.commande.livraison" for="field_livraison">Livraison</label>
-          <select class="form-control" id="field_livraison" data-cy="livraison" name="livraison" formControlName="livraison">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="livraisonOption.id === editForm.get('livraison')!.value?.id ? editForm.get('livraison')!.value : livraisonOption"
-              *ngFor="let livraisonOption of livraisonsCollection; trackBy: trackLivraisonById"
-            >
-              {{ livraisonOption.id }}
-            </option>
-          </select>
-        </div>
+      <button type="submit" (click)="showModal()"
+              nbButton size="small" status="success">
+        <span >Voir le resultat</span>
+      </button>
+      <!--    <button type="submit" mat-raised-button color="primary"-->
+      <!--      [disabled]="editForm.invalid || isSaving">-->
+      <!--      <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>-->
+      <!--    </button>-->
+    </div>
+  </nb-card-footer>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.commande.fournisseur" for="field_fournisseur">Fournisseur</label>
-          <select class="form-control" id="field_fournisseur" data-cy="fournisseur" name="fournisseur" formControlName="fournisseur">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                fournisseurOption.id === editForm.get('fournisseur')!.value?.id ? editForm.get('fournisseur')!.value : fournisseurOption
-              "
-              *ngFor="let fournisseurOption of fournisseursCollection; trackBy: trackFournisseurById"
-            >
-              {{ fournisseurOption.id }}
-            </option>
-          </select>
-        </div>
+</nb-card>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.commande.operateur" for="field_operateur">Operateur</label>
-          <select class="form-control" id="field_operateur" data-cy="operateur" name="operateur" formControlName="operateur">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="personneOption.id === editForm.get('operateur')!.value?.id ? editForm.get('operateur')!.value : personneOption"
-              *ngFor="let personneOption of personnesSharedCollection; trackBy: trackPersonneById"
-            >
-              {{ personneOption.id }}
-            </option>
-          </select>
-        </div>
-      </div>
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzWidth="1220px"
+  [nzStyle]="{height: '420px'}"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  [nzMaskClosable]="false"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-template #modalTitle>Liste des médicaments à commander</ng-template>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
+  <ng-template #modalContent>
+    <div class="form-group">
+      <li class="list-group-item text-right">
+        <span class="float-left"><strong>Montant de la commande</strong></span> {{ prixTotal | currency: 'XOF' }}
+      </li>
+    </div>
+    <div class="card">
+      <p-table #dt1 [value]="medicamentList!" dataKey="id"
+               [rows]="6" [showCurrentPageReport]="true"
+               styleClass="p-datatable-gridlines p-datatable-sm" [sortField]="'dci'" [sortMode]="'1'"
+               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [globalFilterFields]="['dci','forme','dosage', 'classe', 'dateExpiration']">
+        <ng-template pTemplate="caption">
+          <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="search"
+                           (input)="dt1.filterGlobal(search, 'startsWith')"
+                           placeholder="Recherche ..." />
+              </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:450px">DCI</th>
+            <th style="width:50px">Prix achat</th>
+            <th style="width:50px">Prix public</th>
+            <th style="width:50px">Stock disponible</th>
+            <th style="width:110px">Expiration</th>
+            <th style="width:30px"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-medicament>
+          <tr>
+            <td style="width:450px">{{ medicament.dci + ' ' + medicament.classe }}</td>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+            <td style="width:50px">
+              <p-inputNumber [(ngModel)]="medicament.prixAchat!" [size]="12" mode="currency" currency="XOF"
+                (onInput)="medicament.prixAchat = $event.value" (onBlur)="getPrixAchat()"
+                             class="p-inputtext-sm"></p-inputNumber>
+            </td>
+            <td style="width:50px">
+              <p-inputNumber [(ngModel)]="medicament.prixPublic!" [size]="12" mode="currency" currency="XOF"
+                (onInput)="medicament.prixPublic = $event.value" (onBlur)="getPrixPublic()"
+                class="p-inputtext-sm"></p-inputNumber>
+            </td>
+            <td style="width:50px">
+              <p-inputNumber
+                [(ngModel)]="medicament.stockTheorique!"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                spinnerMode="horizontal"
+                [size]="6"
+                (onInput)="medicament.stockTheorique = $event.value"
+                (onBlur)="getStockTheorique()"
+                class="p-inputtext-sm"
+                decrementButtonClass="p-button-danger p-button-sm"
+                incrementButtonClass="p-button-success p-button-sm"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"></p-inputNumber>
+            </td>
+            <td style="width:110px">
+              <input type="text" nbInput status="primary" fullWidth fieldSize="small"
+                     [inputMask]="dateInputMask" placeholder="dd/mm/yyyy" (ngModelChange)="medicament.dateExpiration = $event"
+                     [(ngModel)]="medicament.dateExpiration!"  />
+            </td>
+            <td class="text-right" style="width:30px">
+              <div class="btn-group">
+                <button type="submit" (click)="removeMedicament(medicament)"
+                        class="btn btn-circle btn-danger btn-sm">
+                  <i class="fas fa-minus-circle"></i>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">Pas de données trouver.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="form-group mt-2">
+      <label class="form-control-label">Fournisseur</label>
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le fournisseur"
+                 [(ngModel)]="selectedFournisseur" style="width:100%">
+        <nz-option *ngFor="let fournisseur of fournisseurs"
+                   [nzValue]="fournisseur" [nzLabel]="fournisseur.libelle!"></nz-option>
+      </nz-select>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <div class="justify-content-between">
+<!--      <button type="button" mat-raised-button color="accent"-->
+<!--              (click)="handleCancel()">-->
+<!--        <span >Fermer</span>-->
+<!--      </button>-->
+
+      <button type="submit" mat-raised-button color="primary"
+        [disabled]="selectedFournisseur.id">
+        <span >Valider</span>
+      </button>
+    </div>
+  </ng-template>
+</nz-modal>

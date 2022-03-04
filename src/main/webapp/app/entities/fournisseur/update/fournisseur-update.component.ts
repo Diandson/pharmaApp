@@ -9,6 +9,7 @@ import { IFournisseur, Fournisseur } from '../fournisseur.model';
 import { FournisseurService } from '../service/fournisseur.service';
 import { IPersonne } from 'app/entities/personne/personne.model';
 import { PersonneService } from 'app/entities/personne/service/personne.service';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-fournisseur-update',
@@ -30,6 +31,7 @@ export class FournisseurUpdateComponent implements OnInit {
     protected fournisseurService: FournisseurService,
     protected personneService: PersonneService,
     protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
     protected fb: FormBuilder
   ) {}
 
@@ -42,13 +44,14 @@ export class FournisseurUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
   }
 
   save(): void {
     this.isSaving = true;
     const fournisseur = this.createFromForm();
-    if (fournisseur.id !== undefined) {
+    if (fournisseur.id) {
       this.subscribeToSaveResponse(this.fournisseurService.update(fournisseur));
     } else {
       this.subscribeToSaveResponse(this.fournisseurService.create(fournisseur));

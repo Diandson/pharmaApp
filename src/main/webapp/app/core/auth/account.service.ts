@@ -10,6 +10,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ApplicationConfigService } from '../config/application-config.service';
 import { Account } from 'app/core/auth/account.model';
 import { TrackerService } from '../tracker/tracker.service';
+import {VenteSocketService} from "../../home/vente-socket.service";
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -22,6 +23,7 @@ export class AccountService {
     private sessionStorageService: SessionStorageService,
     private http: HttpClient,
     private trackerService: TrackerService,
+    private venteSocketService: VenteSocketService,
     private stateStorageService: StateStorageService,
     private router: Router,
     private applicationConfigService: ApplicationConfigService
@@ -39,8 +41,10 @@ export class AccountService {
     }
     if (identity) {
       this.trackerService.connect();
+      this.venteSocketService.connect();
     } else {
       this.trackerService.disconnect();
+      this.venteSocketService.disconnect();
     }
   }
 

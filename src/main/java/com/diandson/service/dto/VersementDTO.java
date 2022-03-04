@@ -1,6 +1,7 @@
 package com.diandson.service.dto;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -23,6 +24,8 @@ public class VersementDTO implements Serializable {
     private String referenceVersement;
 
     private String identiteReceveur;
+
+    private ZonedDateTime dateVersement;
 
     private PersonneDTO operateur;
 
@@ -90,6 +93,14 @@ public class VersementDTO implements Serializable {
         this.identiteReceveur = identiteReceveur;
     }
 
+    public ZonedDateTime getDateVersement() {
+        return dateVersement;
+    }
+
+    public void setDateVersement(ZonedDateTime dateVersement) {
+        this.dateVersement = dateVersement;
+    }
+
     public PersonneDTO getOperateur() {
         return operateur;
     }
@@ -131,6 +142,7 @@ public class VersementDTO implements Serializable {
             ", lieuVersement='" + getLieuVersement() + "'" +
             ", referenceVersement='" + getReferenceVersement() + "'" +
             ", identiteReceveur='" + getIdentiteReceveur() + "'" +
+            ", dateVersement='" + getDateVersement() + "'" +
             ", operateur=" + getOperateur() +
             "}";
     }

@@ -145,9 +145,8 @@ public class DepenseResource {
     @GetMapping("/depenses")
     public ResponseEntity<List<DepenseDTO>> getAllDepenses(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Depenses");
-        Page<DepenseDTO> page = depenseService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        List<DepenseDTO> page = depenseService.findAll(pageable);
+        return ResponseEntity.ok().body(page);
     }
 
     /**

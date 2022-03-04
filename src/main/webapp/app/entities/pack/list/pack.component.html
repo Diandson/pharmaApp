@@ -32,21 +32,21 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> </th>
           <th scope="col" jhiSortBy="libelle">
-            <span jhiTranslate="appPharmaApp.pack.libelle">Libelle</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.pack.libelle">Libelle</span>
           </th>
-          <th scope="col" jhiSortBy="durer"><span jhiTranslate="appPharmaApp.pack.durer">Durer</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="durer"><span jhiTranslate="appPharmaApp.pack.durer">Durer</span> </th>
           <th scope="col" jhiSortBy="valide">
-            <span jhiTranslate="appPharmaApp.pack.valide">Valide</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.pack.valide">Valide</span>
           </th>
           <th scope="col" jhiSortBy="dateRenew">
-            <span jhiTranslate="appPharmaApp.pack.dateRenew">Date Renew</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.pack.dateRenew">Date Renew</span>
           </th>
           <th scope="col" jhiSortBy="operateur.id">
-            <span jhiTranslate="appPharmaApp.pack.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.pack.operateur">Operateur</span>
           </th>
-          <th scope="col" jhiSortBy="type.id"><span jhiTranslate="appPharmaApp.pack.type">Type</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="type.id"><span jhiTranslate="appPharmaApp.pack.type">Type</span> </th>
           <th scope="col"></th>
         </tr>
       </thead>

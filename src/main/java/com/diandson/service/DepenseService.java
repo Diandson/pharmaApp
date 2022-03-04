@@ -4,7 +4,13 @@ import com.diandson.domain.Depense;
 import com.diandson.repository.DepenseRepository;
 import com.diandson.service.dto.DepenseDTO;
 import com.diandson.service.mapper.DepenseMapper;
+
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.diandson.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -39,6 +45,8 @@ public class DepenseService {
     public DepenseDTO save(DepenseDTO depenseDTO) {
         log.debug("Request to save Depense : {}", depenseDTO);
         Depense depense = depenseMapper.toEntity(depenseDTO);
+        depense.setNumero(RandomUtil.generateRandomSerialNumericPaiementStringc());
+        depense.setDateDepense(ZonedDateTime.now());
         depense = depenseRepository.save(depense);
         return depenseMapper.toDto(depense);
     }
@@ -70,9 +78,10 @@ public class DepenseService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<DepenseDTO> findAll(Pageable pageable) {
+    public List<DepenseDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Depenses");
-        return depenseRepository.findAll(pageable).map(depenseMapper::toDto);
+        return depenseRepository.findAll().stream()
+            .map(depenseMapper::toDto).collect(Collectors.toList());
     }
 
     /**

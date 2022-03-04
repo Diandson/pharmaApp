@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { ILieuVersement, LieuVersement } from '../lieu-versement.model';
 import { LieuVersementService } from '../service/lieu-versement.service';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-lieu-versement-update',
@@ -20,7 +21,11 @@ export class LieuVersementUpdateComponent implements OnInit {
     libelle: [],
   });
 
-  constructor(protected lieuVersementService: LieuVersementService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected lieuVersementService: LieuVersementService,
+    protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
+    protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lieuVersement }) => {
@@ -29,13 +34,14 @@ export class LieuVersementUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close()
   }
 
   save(): void {
     this.isSaving = true;
     const lieuVersement = this.createFromForm();
-    if (lieuVersement.id !== undefined) {
+    if (lieuVersement.id) {
       this.subscribeToSaveResponse(this.lieuVersementService.update(lieuVersement));
     } else {
       this.subscribeToSaveResponse(this.lieuVersementService.create(lieuVersement));

@@ -3,12 +3,13 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IVersement, Versement } from '../versement.model';
 import { VersementService } from '../service/versement.service';
 import { IPersonne } from 'app/entities/personne/personne.model';
 import { PersonneService } from 'app/entities/personne/service/personne.service';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-versement-update',
@@ -16,8 +17,7 @@ import { PersonneService } from 'app/entities/personne/service/personne.service'
 })
 export class VersementUpdateComponent implements OnInit {
   isSaving = false;
-
-  personnesSharedCollection: IPersonne[] = [];
+  versement: IVersement = new Versement();
 
   editForm = this.fb.group({
     id: [],
@@ -30,30 +30,35 @@ export class VersementUpdateComponent implements OnInit {
     identiteReceveur: [],
     operateur: [],
   });
+  montant = 0;
 
   constructor(
     protected versementService: VersementService,
     protected personneService: PersonneService,
     protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
     protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ versement }) => {
-      this.updateForm(versement);
-
-      this.loadRelationshipsOptions();
-    });
+    // this.activatedRoute.data.subscribe(({ versement }) => {
+    //
+    //   this.loadRelationshipsOptions();
+    // });
+    if (this.versement.id){
+      this.updateForm(this.versement);
+    }
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
   }
 
   save(): void {
     this.isSaving = true;
     const versement = this.createFromForm();
-    if (versement.id !== undefined) {
+    if (versement.id) {
       this.subscribeToSaveResponse(this.versementService.update(versement));
     } else {
       this.subscribeToSaveResponse(this.versementService.create(versement));
@@ -95,23 +100,6 @@ export class VersementUpdateComponent implements OnInit {
       identiteReceveur: versement.identiteReceveur,
       operateur: versement.operateur,
     });
-
-    this.personnesSharedCollection = this.personneService.addPersonneToCollectionIfMissing(
-      this.personnesSharedCollection,
-      versement.operateur
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.personneService
-      .query()
-      .pipe(map((res: HttpResponse<IPersonne[]>) => res.body ?? []))
-      .pipe(
-        map((personnes: IPersonne[]) =>
-          this.personneService.addPersonneToCollectionIfMissing(personnes, this.editForm.get('operateur')!.value)
-        )
-      )
-      .subscribe((personnes: IPersonne[]) => (this.personnesSharedCollection = personnes));
   }
 
   protected createFromForm(): IVersement {

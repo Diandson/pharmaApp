@@ -1,14 +1,29 @@
 package com.diandson.service;
 
+import com.diandson.domain.Medicament;
 import com.diandson.domain.Paiement;
+import com.diandson.domain.Vente;
+import com.diandson.repository.MedicamentRepository;
 import com.diandson.repository.PaiementRepository;
+import com.diandson.repository.PersonneRepository;
+import com.diandson.repository.VenteRepository;
+import com.diandson.security.SecurityUtils;
 import com.diandson.service.dto.PaiementDTO;
+import com.diandson.service.mapper.MedicamentMapper;
 import com.diandson.service.mapper.PaiementMapper;
+
+import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.diandson.service.mapper.VenteMapper;
+import com.diandson.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +39,18 @@ public class PaiementService {
     private final PaiementRepository paiementRepository;
 
     private final PaiementMapper paiementMapper;
+    @Autowired
+    private VenteMapper venteMapper;
+    @Autowired
+    private VenteRepository venteRepository;
+    @Autowired
+    private MedicamentMapper medicamentMapper;
+    @Autowired
+    private MedicamentRepository medicamentRepository;
+    @Autowired
+    private PersonneRepository personneRepository;
+    @Autowired
+    private SimpMessageSendingOperations messagingTemplate;
 
     public PaiementService(PaiementRepository paiementRepository, PaiementMapper paiementMapper) {
         this.paiementRepository = paiementRepository;
@@ -39,7 +66,15 @@ public class PaiementService {
     public PaiementDTO save(PaiementDTO paiementDTO) {
         log.debug("Request to save Paiement : {}", paiementDTO);
         Paiement paiement = paiementMapper.toEntity(paiementDTO);
+        paiement.setNumero(RandomUtil.generateRandomSerialNumericPaiementStringc());
+        paiement.setDatePaiement(ZonedDateTime.now());
+        paiement.setOperateur(personneRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin().get()));
+        Vente vente = venteMapper.toEntity(paiementDTO.getVente());
         paiement = paiementRepository.save(paiement);
+        vente.setPaiement(paiement);
+        vente = venteRepository.save(vente);
+//        messagingTemplate.convertAndSend("/topic/vente", venteMapper.toDto(vente));
+
         return paiementMapper.toDto(paiement);
     }
 

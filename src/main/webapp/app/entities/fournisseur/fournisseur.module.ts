@@ -5,9 +5,11 @@ import { FournisseurDetailComponent } from './detail/fournisseur-detail.componen
 import { FournisseurUpdateComponent } from './update/fournisseur-update.component';
 import { FournisseurDeleteDialogComponent } from './delete/fournisseur-delete-dialog.component';
 import { FournisseurRoutingModule } from './route/fournisseur-routing.module';
+import {NbButtonModule, NbCardModule, NbInputModule} from "@nebular/theme";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
-  imports: [SharedModule, FournisseurRoutingModule],
+  imports: [SharedModule, FournisseurRoutingModule, NbCardModule, NbButtonModule, MatButtonModule, NbInputModule],
   declarations: [FournisseurComponent, FournisseurDetailComponent, FournisseurUpdateComponent, FournisseurDeleteDialogComponent],
   entryComponents: [FournisseurDeleteDialogComponent],
 })

@@ -1,71 +1,48 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-assurance-heading" data-cy="AssuranceCreateUpdateHeading" jhiTranslate="appPharmaApp.assurance.home.createOrEditLabel">
-        Create or edit a Assurance
-      </h2>
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+  <h2 class="modal-header">
+    Opération assurance
+  </h2>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+  <div class="modal-body">
+    <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+      <label class="form-control-label">ID</label>
+      <input type="number" nbInput fullWidth fieldSize="small" status="primary" formControlName="id" [readonly]="true" />
+    </div>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.assurance.libelle" for="field_libelle">Libelle</label>
-          <input type="text" class="form-control" name="libelle" id="field_libelle" data-cy="libelle" formControlName="libelle" />
-          <div *ngIf="editForm.get('libelle')!.invalid && (editForm.get('libelle')!.dirty || editForm.get('libelle')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('libelle')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.assurance.taux" for="field_taux">Taux</label>
-          <input type="number" class="form-control" name="taux" id="field_taux" data-cy="taux" formControlName="taux" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.assurance.email" for="field_email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.assurance.operateur" for="field_operateur">Operateur</label>
-          <select class="form-control" id="field_operateur" data-cy="operateur" name="operateur" formControlName="operateur">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="personneOption.id === editForm.get('operateur')!.value?.id ? editForm.get('operateur')!.value : personneOption"
-              *ngFor="let personneOption of personnesSharedCollection; trackBy: trackPersonneById"
-            >
-              {{ personneOption.id }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
+    <div class="form-group">
+      <label class="form-control-label">Libelle</label>
+      <input type="text" nbInput fullWidth fieldSize="small" status="primary" formControlName="libelle" />
+      <div *ngIf="editForm.get('libelle')!.invalid && (editForm.get('libelle')!.dirty || editForm.get('libelle')!.touched)">
+        <small
+          class="form-text text-danger"
+          *ngIf="editForm.get('libelle')?.errors?.required"
+          jhiTranslate="entity.validation.required"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
+          This field is required.
+        </small>
       </div>
-    </form>
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label" >Taux</label>
+      <input type="number" nbInput fullWidth fieldSize="small" status="primary" formControlName="taux" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">Email</label>
+      <input type="text" nbInput fullWidth fieldSize="small" status="primary" formControlName="email" />
+    </div>
   </div>
-</div>
+
+  <div class="modal-footer justify-content-between">
+    <button type="button" mat-raised-button color="accent" (click)="previousState()">
+      <span >Fermer</span>
+    </button>
+
+    <button
+      type="submit" mat-raised-button color="primary"
+      [disabled]="editForm.invalid || isSaving">
+      <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+    </button>
+  </div>
+</form>

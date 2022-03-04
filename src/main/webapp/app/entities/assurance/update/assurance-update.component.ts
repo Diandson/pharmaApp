@@ -9,6 +9,7 @@ import { IAssurance, Assurance } from '../assurance.model';
 import { AssuranceService } from '../service/assurance.service';
 import { IPersonne } from 'app/entities/personne/personne.model';
 import { PersonneService } from 'app/entities/personne/service/personne.service';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-assurance-update',
@@ -31,6 +32,7 @@ export class AssuranceUpdateComponent implements OnInit {
     protected assuranceService: AssuranceService,
     protected personneService: PersonneService,
     protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
     protected fb: FormBuilder
   ) {}
 
@@ -43,13 +45,14 @@ export class AssuranceUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
   }
 
   save(): void {
     this.isSaving = true;
     const assurance = this.createFromForm();
-    if (assurance.id !== undefined) {
+    if (assurance.id) {
       this.subscribeToSaveResponse(this.assuranceService.update(assurance));
     } else {
       this.subscribeToSaveResponse(this.assuranceService.create(assurance));

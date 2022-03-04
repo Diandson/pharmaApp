@@ -25,6 +25,7 @@
       "lieuVersement": "Lieu Versement",
       "referenceVersement": "Reference Versement",
       "identiteReceveur": "Identite Receveur",
+      "dateVersement": "Date Versement",
       "paiement": "Paiement",
       "operateur": "Operateur"
     }

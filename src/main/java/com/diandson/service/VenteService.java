@@ -8,6 +8,7 @@ import com.diandson.repository.*;
 import com.diandson.security.SecurityUtils;
 import com.diandson.service.dto.MedicamentDTO;
 import com.diandson.service.dto.VenteDTO;
+import com.diandson.service.dto.VenteMedicamentDTO;
 import com.diandson.service.mapper.MedicamentMapper;
 import com.diandson.service.mapper.PaiementMapper;
 import com.diandson.service.mapper.VenteMapper;
@@ -90,14 +91,14 @@ public class VenteService {
             medicamentOld.setStockTheorique(medicamentOld.getStockTheorique() - medicament.getStockTheorique());
 
             medicamentOld = medicamentRepository.save(medicamentOld);
-            venteMedicament.setMedicament(medicamentOld);
+            venteMedicament.setMedicament(medicament);
             venteMedicament.setVente(vente);
             venteMedicament.setQuantite(medicament.getStockTheorique());
 
             venteMedicamentList.add(venteMedicament);
         }
         venteMedicamentRepository.saveAll(venteMedicamentList);
-        messagingTemplate.convertAndSend("/topic/vente", venteDTO);
+//        messagingTemplate.convertAndSend("/topic/vente", venteDTO);
         return venteMapper.toDto(vente);
     }
 
@@ -128,9 +129,10 @@ public class VenteService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<VenteDTO> findAll(Pageable pageable) {
+    public List<VenteDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Ventes");
-        return venteRepository.findAll(pageable).map(venteMapper::toDto);
+        return venteRepository.findAll().stream()
+            .map(venteMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -161,6 +163,16 @@ public class VenteService {
             .stream()
             .filter(vente -> vente.getPaiement() == null)
             .map(venteMapper::toDto)
-            .collect(Collectors.toList());
+            .peek(venteDTO -> {
+                List<MedicamentDTO> medicamentDTOList = new ArrayList<>();
+               venteMedicamentRepository.findAllByVenteId(venteDTO.getId()).stream()
+                   .peek(venteMedicament -> {
+                       MedicamentDTO medicamentDTO = medicamentMapper.toDto(venteMedicament.getMedicament());
+                       medicamentDTO.setStockTheorique(venteMedicament.getQuantite());
+                       medicamentDTOList.add(medicamentDTO);
+                   }).collect(Collectors.toList());
+               venteDTO.setMedicament(medicamentDTOList);
+
+            }).collect(Collectors.toList());
     }
 }

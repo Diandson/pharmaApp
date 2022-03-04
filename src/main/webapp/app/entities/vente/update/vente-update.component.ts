@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import {DATE_TIME_FORMAT} from 'app/config/input.constants';
 
-import { IVente, Vente } from '../vente.model';
-import { VenteService } from '../service/vente.service';
-import { IPersonne } from 'app/entities/personne/personne.model';
-import { PersonneService } from 'app/entities/personne/service/personne.service';
+import {IVente, Vente} from '../vente.model';
+import {VenteService} from '../service/vente.service';
+import {IPersonne} from 'app/entities/personne/personne.model';
+import {PersonneService} from 'app/entities/personne/service/personne.service';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-vente-update',
@@ -19,6 +20,7 @@ import { PersonneService } from 'app/entities/personne/service/personne.service'
 })
 export class VenteUpdateComponent implements OnInit {
   isSaving = false;
+  vente: IVente = new Vente()
 
   personnesSharedCollection: IPersonne[] = [];
 
@@ -38,30 +40,31 @@ export class VenteUpdateComponent implements OnInit {
     protected venteService: VenteService,
     protected personneService: PersonneService,
     protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
     protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ vente }) => {
-      if (vente.id === undefined) {
-        const today = dayjs().startOf('day');
-        vente.dateVente = today;
+      if (vente) {
+        vente.dateVente = dayjs().startOf('day');
       }
-
-      this.updateForm(vente);
-
-      this.loadRelationshipsOptions();
     });
+
+    if (this.vente.id){
+      this.updateForm(this.vente);
+    }
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
   }
 
   save(): void {
     this.isSaving = true;
     const vente = this.createFromForm();
-    if (vente.id !== undefined) {
+    if (vente.id) {
       this.subscribeToSaveResponse(this.venteService.update(vente));
     } else {
       this.subscribeToSaveResponse(this.venteService.create(vente));

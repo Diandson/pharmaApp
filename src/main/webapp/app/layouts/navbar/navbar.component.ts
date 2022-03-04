@@ -10,10 +10,15 @@ import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import {NbMediaBreakpointsService, NbMenuItem, NbMenuService, NbThemeService} from "@nebular/theme";
 import {filter, map, takeUntil} from "rxjs/operators";
-import { Subject} from "rxjs";
+import { Subject, Subscription} from "rxjs";
 import {DataService} from "../../shared/data/DataService";
 import {IStructure, Structure} from "../../entities/structure/structure.model";
 import {StructureService} from "../../entities/structure/service/structure.service";
+import {Authority} from "../../config/authority.constants";
+import {Vente} from "../../entities/vente/vente.model";
+import {VenteSocketService} from "../../home/vente-socket.service";
+import {USER_ICON} from "../../config/element.constants";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-navbar',
@@ -30,19 +35,19 @@ export class NavbarComponent implements OnInit {
   itemsMenu: NbMenuItem[] = [
     {
       title: 'Gestion des médicaments',
-      link: 'medicament',
+      link: '/medicament',
       pathMatch: "full",
       icon: 'archive'
     },
     {
       title: 'Gestion des Utilisateurs',
-      link: 'admin/user-management/all',
+      link: '/admin/user-management/all',
       pathMatch: "full",
       icon: 'people'
     },
     {
       title: 'Surveillance d\'activitées',
-      link: 'admin/tracker',
+      link: '/admin/tracker',
       pathMatch: "full",
       icon: 'monitor'
     }
@@ -51,7 +56,7 @@ export class NavbarComponent implements OnInit {
     {
       title: 'Profile',
       pathMatch: "full",
-      link: 'account/settings',
+      link: '/account/settings',
       icon: 'people'
     },
     {
@@ -63,6 +68,9 @@ export class NavbarComponent implements OnInit {
 
   currentTheme?: string = 'default';
   structure: IStructure = new Structure();
+  ventes: Vente[] = [];
+  subscription?: Subscription;
+  user_icon = USER_ICON;
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -77,6 +85,8 @@ export class NavbarComponent implements OnInit {
     private themeService: NbThemeService,
     private dataService: DataService,
     private structureService: StructureService,
+    private venteSocketService: VenteSocketService,
+    protected modalService: NgbModal,
     private router: Router
   ) {
     if (VERSION) {
@@ -89,6 +99,12 @@ export class NavbarComponent implements OnInit {
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
     });
+    if (this.accountService.hasAnyAuthority([Authority.STRUCTURE_CAISSE, Authority.USER])) {
+      this.venteSocketService.subscribe();
+      this.subscription = this.venteSocketService.receive().subscribe(res => {
+        this.ventes = res;
+      });
+    }
 
     if (this.isAuthenticated()){
       this.structureService.findOnlyAuth().subscribe(res => {
@@ -134,6 +150,7 @@ export class NavbarComponent implements OnInit {
     this.sessionStorageService.store('locale', languageKey);
     this.translateService.use(languageKey);
   }
+
   changeTheme(themeName: string): void {
     this.themeService.changeTheme(themeName);
   }
@@ -149,7 +166,7 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.collapseNavbar();
     this.loginService.logout();
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean{

@@ -1,95 +1,53 @@
-<div class="row justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-depense-heading" data-cy="DepenseCreateUpdateHeading" jhiTranslate="appPharmaApp.depense.home.createOrEditLabel">
-        Create or edit a Depense
-      </h2>
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+  <h2 class="modal-header">
+    Nouvelle dépense
+  </h2>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+  <div class="modal-body">
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
+    <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+      <label class="form-control-label" >ID</label>
+      <input type="number" nbInput fieldSize="small" status="primary" fullWidth
+             formControlName="id" [readonly]="true" />
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.depense.numero" for="field_numero">Numero</label>
-          <input type="text" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
-        </div>
+    <div class="form-group">
+      <label class="form-control-label" >Motif de dépense</label>
+      <input type="text" nbInput fieldSize="small" status="primary" fullWidth
+        formControlName="motifDepense"
+      />
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.depense.motifDepense" for="field_motifDepense">Motif Depense</label>
-          <input
-            type="text"
-            class="form-control"
-            name="motifDepense"
-            id="field_motifDepense"
-            data-cy="motifDepense"
-            formControlName="motifDepense"
-          />
-        </div>
+    <div class="form-group">
+      <label class="form-control-label">Ordonnateur</label>
+      <input type="text" nbInput fieldSize="small" status="primary" fullWidth
+        formControlName="ordonnateur"
+      />
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.depense.ordonnateur" for="field_ordonnateur">Ordonnateur</label>
-          <input
-            type="text"
-            class="form-control"
-            name="ordonnateur"
-            id="field_ordonnateur"
-            data-cy="ordonnateur"
-            formControlName="ordonnateur"
-          />
-        </div>
+    <div class="form-group">
+      <label class="form-control-label" >Justificatif</label>
+      <input type="text" nbInput fieldSize="small" status="primary" fullWidth
+        formControlName="justificatif"/>
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.depense.justificatif" for="field_justificatif">Justificatif</label>
-          <input
-            type="text"
-            class="form-control"
-            name="justificatif"
-            id="field_justificatif"
-            data-cy="justificatif"
-            formControlName="justificatif"
-          />
-        </div>
+    <div class="form-group">
+      <label class="form-control-label" >Montant</label>
+      <input type="number" nbInput fieldSize="small" status="primary"
+             fullWidth formControlName="montant" />
+    </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.depense.montant" for="field_montant">Montant</label>
-          <input type="number" class="form-control" name="montant" id="field_montant" data-cy="montant" formControlName="montant" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="appPharmaApp.depense.dateDepense" for="field_dateDepense">Date Depense</label>
-          <div class="d-flex">
-            <input
-              id="field_dateDepense"
-              data-cy="dateDepense"
-              type="datetime-local"
-              class="form-control"
-              name="dateDepense"
-              formControlName="dateDepense"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-      </div>
-    </form>
   </div>
-</div>
+
+  <div class="modal-footer justify-content-between">
+    <button type="button" mat-raised-button color="accent"
+            (click)="previousState()"><span >Fermer</span>
+    </button>
+
+    <button
+      type="submit" mat-raised-button color="primary"
+      [disabled]="editForm.invalid || isSaving">
+      <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+    </button>
+  </div>
+</form>

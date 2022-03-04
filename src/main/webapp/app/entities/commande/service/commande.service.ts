@@ -25,6 +25,11 @@ export class CommandeService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  createImprime(commande: ICommande): Observable<Blob> {
+    const copy = this.convertDateFromClient(commande);
+    return this.http.post(this.resourceUrl + '/imprimer', copy, { responseType: 'blob' });
+  }
+
   update(commande: ICommande): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(commande);
     return this.http

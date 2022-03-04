@@ -1,3 +1,4 @@
+import dayjs from 'dayjs/esm';
 import { IPaiement } from 'app/entities/paiement/paiement.model';
 import { IPersonne } from 'app/entities/personne/personne.model';
 
@@ -10,6 +11,7 @@ export interface IVersement {
   lieuVersement?: string | null;
   referenceVersement?: string | null;
   identiteReceveur?: string | null;
+  dateVersement?: dayjs.Dayjs | null;
   paiements?: IPaiement[] | null;
   operateur?: IPersonne | null;
 }
@@ -24,6 +26,7 @@ export class Versement implements IVersement {
     public lieuVersement?: string | null,
     public referenceVersement?: string | null,
     public identiteReceveur?: string | null,
+    public dateVersement?: dayjs.Dayjs | null,
     public paiements?: IPaiement[] | null,
     public operateur?: IPersonne | null
   ) {}

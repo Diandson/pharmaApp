@@ -32,22 +32,22 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="nom"><span jhiTranslate="appPharmaApp.client.nom">Nom</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> </th>
+          <th scope="col" jhiSortBy="nom"><span jhiTranslate="appPharmaApp.client.nom">Nom</span> </th>
           <th scope="col" jhiSortBy="prenom">
-            <span jhiTranslate="appPharmaApp.client.prenom">Prenom</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.client.prenom">Prenom</span>
           </th>
           <th scope="col" jhiSortBy="telephone">
-            <span jhiTranslate="appPharmaApp.client.telephone">Telephone</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.client.telephone">Telephone</span>
           </th>
           <th scope="col" jhiSortBy="numeroAssure">
-            <span jhiTranslate="appPharmaApp.client.numeroAssure">Numero Assure</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.client.numeroAssure">Numero Assure</span>
           </th>
           <th scope="col" jhiSortBy="assurance.id">
-            <span jhiTranslate="appPharmaApp.client.assurance">Assurance</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.client.assurance">Assurance</span>
           </th>
           <th scope="col" jhiSortBy="operateur.id">
-            <span jhiTranslate="appPharmaApp.client.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.client.operateur">Operateur</span>
           </th>
           <th scope="col"></th>
         </tr>

@@ -9,6 +9,7 @@ import { ILieuVersement } from '../lieu-versement.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { LieuVersementService } from '../service/lieu-versement.service';
 import { LieuVersementDeleteDialogComponent } from '../delete/lieu-versement-delete-dialog.component';
+import {LieuVersementUpdateComponent} from "../update/lieu-versement-update.component";
 
 @Component({
   selector: 'jhi-lieu-versement',
@@ -67,6 +68,19 @@ export class LieuVersementComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
+        this.loadPage();
+      }
+    });
+  }
+
+  createOrUpdate(lieuVersement?: ILieuVersement): void {
+    const modalRef = this.modalService.open(LieuVersementUpdateComponent, { size: 'lg', backdrop: 'static' });
+    if (lieuVersement){
+      modalRef.componentInstance.lieuVersement = lieuVersement;
+    }
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
         this.loadPage();
       }
     });

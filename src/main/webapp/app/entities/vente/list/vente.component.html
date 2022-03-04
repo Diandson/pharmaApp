@@ -1,118 +1,105 @@
-<div>
-  <h2 id="page-heading" data-cy="VenteHeading">
-    <span jhiTranslate="appPharmaApp.vente.home.title">Ventes</span>
+<nb-card>
+  <nb-card-header>
+    <h2 id="page-heading" data-cy="VenteHeading">
+      <span >Journal de ventes</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <!--    <button nbButton size="small" status="primary" outline-->
+      <!--      class="float-end mr-2 jh-create-entity create-vente">-->
+      <!--      <fa-icon icon="plus"></fa-icon>-->
+      <!--      <span> Create a new Vente </span>-->
+      <!--    </button>-->
+
+      <button class="float-end mr-2" nbButton size="small"
+              (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appPharmaApp.vente.home.refreshListLabel">Refresh List</span>
+        <span ></span>
       </button>
+    </h2>
+  </nb-card-header>
+  <nb-card-body>
+    <jhi-alert-error></jhi-alert-error>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-vente"
-        [routerLink]="['/vente/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appPharmaApp.vente.home.createLabel"> Create a new Vente </span>
-      </button>
-    </div>
-  </h2>
+    <jhi-alert></jhi-alert>
 
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="ventes?.length === 0">
-    <span jhiTranslate="appPharmaApp.vente.home.notFound">No ventes found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="ventes && ventes.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="numero">
-            <span jhiTranslate="appPharmaApp.vente.numero">Numero</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dateVente">
-            <span jhiTranslate="appPharmaApp.vente.dateVente">Date Vente</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="montant">
-            <span jhiTranslate="appPharmaApp.vente.montant">Montant</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="montantAssurance">
-            <span jhiTranslate="appPharmaApp.vente.montantAssurance">Montant Assurance</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="sommeDonne">
-            <span jhiTranslate="appPharmaApp.vente.sommeDonne">Somme Donne</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="sommeRendu">
-            <span jhiTranslate="appPharmaApp.vente.sommeRendu">Somme Rendu</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="avoir"><span jhiTranslate="appPharmaApp.vente.avoir">Avoir</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="operateur.id">
-            <span jhiTranslate="appPharmaApp.vente.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let vente of ventes; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/vente', vente.id, 'view']">{{ vente.id }}</a>
-          </td>
-          <td>{{ vente.numero }}</td>
-          <td>{{ vente.dateVente | formatMediumDatetime }}</td>
-          <td>{{ vente.montant }}</td>
-          <td>{{ vente.montantAssurance }}</td>
-          <td>{{ vente.sommeDonne }}</td>
-          <td>{{ vente.sommeRendu }}</td>
-          <td>{{ vente.avoir }}</td>
-          <td>
-            <div *ngIf="vente.operateur">
-              <a [routerLink]="['/personne', vente.operateur?.id, 'view']">{{ vente.operateur?.id }}</a>
-            </div>
-          </td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/vente', vente.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button type="submit" [routerLink]="['/vente', vente.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(vente)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="ventes && ventes.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    <div class="alert alert-warning" id="no-result" *ngIf="ventes?.length === 0">
+      <span jhiTranslate="appPharmaApp.vente.home.notFound">No ventes found</span>
     </div>
 
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
+    <div class="card">
+      <p-table #dt1 [value]="ventes!" dataKey="id"
+               [rows]="10" [showCurrentPageReport]="true"
+               styleClass="p-datatable-gridlines p-datatable-sm" [sortField]="'dateVente'" [sortMode]="'-1'"
+               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [globalFilterFields]="['denomination','dci','forme','dosage', 'numero', 'dateVente']">
+        <ng-template pTemplate="caption">
+          <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="search"
+                           (input)="dt1.filterGlobal(search, 'startsWith')"
+                           placeholder="Recherche ..." />
+                </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <span jhiTranslate="appPharmaApp.vente.numero">Numero</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.vente.dateVente">Date Vente</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.vente.montant">Montant</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.vente.montantAssurance">Montant Assurance</span>
+            </th>
+            <th >
+              <span jhiTranslate="appPharmaApp.vente.operateur">Operateur</span>
+            </th>
+            <th ></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vente>
+          <tr>
+            <td>{{ vente.numero }}</td>
+            <td>{{ vente.dateVente | formatMediumDatetime }}</td>
+            <td>{{ vente.montant | currency: 'XOF'}}</td>
+            <td>{{ vente.montantAssurance | currency: 'XOF' }}</td>
+            <td>
+              <div *ngIf="vente.operateur">
+                <a [routerLink]="['/personne', vente.operateur?.id, 'view']">{{ vente.operateur?.id }}</a>
+              </div>
+            </td>
+            <td class="text-right">
+              <div class="btn-group">
+                <button type="submit" [routerLink]="['/vente', vente.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                  <fa-icon icon="eye"></fa-icon>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+
+                <button type="submit" (click)="createOrUpdate(vente)"
+                        class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                  <fa-icon icon="pencil-alt"></fa-icon>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+
+                <button type="submit" (click)="delete(vente)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <fa-icon icon="times"></fa-icon>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">Pas de données trouver.</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
-  </div>
-</div>
+  </nb-card-body>
+
+</nb-card>

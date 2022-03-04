@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,8 @@ import { IVersement } from '../versement.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { VersementService } from '../service/versement.service';
 import { VersementDeleteDialogComponent } from '../delete/versement-delete-dialog.component';
+import {VersementDetailComponent} from "../detail/versement-detail.component";
+import {VersementUpdateComponent} from "../update/versement-update.component";
 
 @Component({
   selector: 'jhi-versement',
@@ -23,6 +25,7 @@ export class VersementComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  search?: string;
 
   constructor(
     protected versementService: VersementService,
@@ -31,30 +34,14 @@ export class VersementComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
-    this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
-
+  loadPage(): void {
     this.versementService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe({
-        next: (res: HttpResponse<IVersement[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        error: () => {
-          this.isLoading = false;
-          this.onError();
-        },
-      });
+      .query()
+      .subscribe(res => this.versements = res.body ?? []);
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    this.loadPage();
   }
 
   trackId(index: number, item: IVersement): number {
@@ -70,6 +57,23 @@ export class VersementComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+  createOrUpdate(versement?: IVersement): void {
+    const modalRef = this.modalService.open(VersementUpdateComponent, { size: 'lg', backdrop: 'static' });
+    if (versement){
+      modalRef.componentInstance.versement = versement;
+    }
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
+        this.loadPage();
+      }
+    });
+  }
+
+  detailVersement(versement: IVersement): void {
+    const modalRef = this.modalService.open(VersementDetailComponent, { size: 'sm', backdrop: 'static' });
+    modalRef.componentInstance.versement = versement;
   }
 
   protected sort(): string[] {
@@ -90,7 +94,6 @@ export class VersementComponent implements OnInit {
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;
-        this.loadPage(pageNumber, true);
       }
     });
   }
@@ -114,4 +117,5 @@ export class VersementComponent implements OnInit {
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }
+
 }

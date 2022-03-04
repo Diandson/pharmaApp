@@ -32,15 +32,15 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> </th>
           <th scope="col" jhiSortBy="numero">
-            <span jhiTranslate="appPharmaApp.inventaire.numero">Numero</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.inventaire.numero">Numero</span>
           </th>
           <th scope="col" jhiSortBy="dateInventaire">
-            <span jhiTranslate="appPharmaApp.inventaire.dateInventaire">Date Inventaire</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.inventaire.dateInventaire">Date Inventaire</span>
           </th>
           <th scope="col" jhiSortBy="operateur.id">
-            <span jhiTranslate="appPharmaApp.inventaire.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.inventaire.operateur">Operateur</span>
           </th>
           <th scope="col"></th>
         </tr>

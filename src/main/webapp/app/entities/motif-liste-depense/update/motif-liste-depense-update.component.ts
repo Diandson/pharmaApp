@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { IMotifListeDepense, MotifListeDepense } from '../motif-liste-depense.model';
 import { MotifListeDepenseService } from '../service/motif-liste-depense.service';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-motif-liste-depense-update',
@@ -24,6 +25,7 @@ export class MotifListeDepenseUpdateComponent implements OnInit {
   constructor(
     protected motifListeDepenseService: MotifListeDepenseService,
     protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
     protected fb: FormBuilder
   ) {}
 
@@ -34,13 +36,14 @@ export class MotifListeDepenseUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
   }
 
   save(): void {
     this.isSaving = true;
     const motifListeDepense = this.createFromForm();
-    if (motifListeDepense.id !== undefined) {
+    if (motifListeDepense.id) {
       this.subscribeToSaveResponse(this.motifListeDepenseService.update(motifListeDepense));
     } else {
       this.subscribeToSaveResponse(this.motifListeDepenseService.create(motifListeDepense));

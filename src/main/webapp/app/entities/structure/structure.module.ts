@@ -21,7 +21,7 @@ import {InputMaskModule} from "@ngneat/input-mask";
   imports: [SharedModule, StructureRoutingModule, NbCardModule,
     NbStepperModule, NbButtonModule, NzInputModule, NzSelectModule,
     NzInputNumberModule, NzUploadModule, NzIconModule, NzButtonModule,
-    MatButtonModule, AccountModule, InputMaskModule, InputMaskModule, NbInputModule, NbSelectModule
+    MatButtonModule, AccountModule, InputMaskModule, NbInputModule, NbSelectModule
   ],
   declarations: [StructureComponent, StructureDetailComponent, StructureUpdateComponent, StructureDeleteDialogComponent],
   providers: [

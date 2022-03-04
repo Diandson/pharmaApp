@@ -2,6 +2,7 @@ package com.diandson.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -44,6 +45,9 @@ public class Versement implements Serializable {
 
     @Column(name = "identite_receveur")
     private String identiteReceveur;
+
+    @Column(name = "date_versement")
+    private ZonedDateTime dateVersement;
 
     @OneToMany(mappedBy = "versement")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -175,6 +179,19 @@ public class Versement implements Serializable {
         this.identiteReceveur = identiteReceveur;
     }
 
+    public ZonedDateTime getDateVersement() {
+        return this.dateVersement;
+    }
+
+    public Versement dateVersement(ZonedDateTime dateVersement) {
+        this.setDateVersement(dateVersement);
+        return this;
+    }
+
+    public void setDateVersement(ZonedDateTime dateVersement) {
+        this.dateVersement = dateVersement;
+    }
+
     public Set<Paiement> getPaiements() {
         return this.paiements;
     }
@@ -250,6 +267,7 @@ public class Versement implements Serializable {
             ", lieuVersement='" + getLieuVersement() + "'" +
             ", referenceVersement='" + getReferenceVersement() + "'" +
             ", identiteReceveur='" + getIdentiteReceveur() + "'" +
+            ", dateVersement='" + getDateVersement() + "'" +
             "}";
     }
 }

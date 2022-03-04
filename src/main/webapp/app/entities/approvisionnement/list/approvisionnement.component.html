@@ -1,110 +1,87 @@
-<div>
-  <h2 id="page-heading" data-cy="ApprovisionnementHeading">
-    <span jhiTranslate="appPharmaApp.approvisionnement.home.title">Approvisionnements</span>
+<nb-card>
+  <nb-card-header>
+    <h2 id="page-heading" data-cy="ApprovisionnementHeading">
+      <span >Les approvisionnements</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appPharmaApp.approvisionnement.home.refreshListLabel">Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-approvisionnement"
-        [routerLink]="['/approvisionnement/new']"
-      >
+      <button nbButton size="small" status="primary" outline (click)="createOrUpdate()"
+              class="float-end mr-2 jh-create-entity create-vente">
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appPharmaApp.approvisionnement.home.createLabel"> Create a new Approvisionnement </span>
+        <span> Nouvelle approvisionnement </span>
       </button>
+
+      <button class="float-end mr-2" nbButton size="small"
+              (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span ></span>
+      </button>
+    </h2>
+  </nb-card-header>
+  <nb-card-body>
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="card">
+      <p-table #dt1 [value]="approvisionnements!" dataKey="id"
+               [rows]="10" [showCurrentPageReport]="true"
+               styleClass="p-datatable-gridlines p-datatable-sm" [sortField]="'dateCommande'" [sortMode]="'-1'"
+               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [globalFilterFields]="['numero','agenceApp', 'commentaire', 'dateCommande']">
+        <ng-template pTemplate="caption">
+          <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="search"
+                           (input)="dt1.filterGlobal(search, 'startsWith')"
+                           placeholder="Recherche ..." />
+              </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th ><span >Numéro</span></th>
+            <th ><span >Agence </span></th>
+            <th ><span >Commentaire</span></th>
+            <th ><span >Date commande</span></th>
+            <th ></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-approvisionnement>
+          <tr>
+            <td>{{ approvisionnement.numero }}</td>
+            <td>{{ approvisionnement.agenceApp }}</td>
+            <td>{{ approvisionnement.commentaire }}</td>
+            <td>{{ approvisionnement.dateCommande | formatMediumDatetime }}</td>
+            <td class="text-right">
+              <div class="btn-group">
+                <button
+                  type="submit" (click)="detailApproviso(approvisionnement)"
+                  class="btn btn-info btn-sm">
+                  <fa-icon icon="eye"></fa-icon>
+                  <span class="d-none d-md-inline" ></span>
+                </button>
+
+                <button
+                  type="submit" (click)="createOrUpdate(approvisionnement)"
+                  class="btn btn-primary btn-sm">
+                  <fa-icon icon="pencil-alt"></fa-icon>
+                  <span class="d-none d-md-inline" ></span>
+                </button>
+
+                <button type="submit" (click)="delete(approvisionnement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <fa-icon icon="times"></fa-icon>
+                  <span class="d-none d-md-inline"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">Pas de données trouver.</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
-  </h2>
-
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="approvisionnements?.length === 0">
-    <span jhiTranslate="appPharmaApp.approvisionnement.home.notFound">No approvisionnements found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="approvisionnements && approvisionnements.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="numero">
-            <span jhiTranslate="appPharmaApp.approvisionnement.numero">Numero</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="agenceApp">
-            <span jhiTranslate="appPharmaApp.approvisionnement.agenceApp">Agence App</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="commentaire">
-            <span jhiTranslate="appPharmaApp.approvisionnement.commentaire">Commentaire</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dateCommande">
-            <span jhiTranslate="appPharmaApp.approvisionnement.dateCommande">Date Commande</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let approvisionnement of approvisionnements; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/approvisionnement', approvisionnement.id, 'view']">{{ approvisionnement.id }}</a>
-          </td>
-          <td>{{ approvisionnement.numero }}</td>
-          <td>{{ approvisionnement.agenceApp }}</td>
-          <td>{{ approvisionnement.commentaire }}</td>
-          <td>{{ approvisionnement.dateCommande | formatMediumDatetime }}</td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/approvisionnement', approvisionnement.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/approvisionnement', approvisionnement.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(approvisionnement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="approvisionnements && approvisionnements.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
-    </div>
-  </div>
-</div>
+  </nb-card-body>
+</nb-card>

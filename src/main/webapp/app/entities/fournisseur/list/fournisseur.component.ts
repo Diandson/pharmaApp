@@ -9,6 +9,7 @@ import { IFournisseur } from '../fournisseur.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { FournisseurService } from '../service/fournisseur.service';
 import { FournisseurDeleteDialogComponent } from '../delete/fournisseur-delete-dialog.component';
+import {FournisseurUpdateComponent} from "../update/fournisseur-update.component";
 
 @Component({
   selector: 'jhi-fournisseur',
@@ -71,6 +72,18 @@ export class FournisseurComponent implements OnInit {
       }
     });
   }
+  createOrUpdate(fournisseur?: IFournisseur): void {
+    const modalRef = this.modalService.open(FournisseurUpdateComponent, { size: 'lg', backdrop: 'static' });
+    if (fournisseur){
+      modalRef.componentInstance.fournisseur = fournisseur;
+    }
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
+        this.loadPage();
+      }
+    });
+  }
 
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
@@ -114,4 +127,5 @@ export class FournisseurComponent implements OnInit {
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }
+
 }

@@ -32,6 +32,10 @@
     {
       "fieldName": "identiteReceveur",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "dateVersement",
+      "fieldType": "ZonedDateTime"
     }
   ],
   "fluentMethods": true,

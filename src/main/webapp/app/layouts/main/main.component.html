@@ -16,10 +16,16 @@
   <nb-layout-header *ngIf="structure && isAuthenticated()">
     <router-outlet name="navbar"></router-outlet>
   </nb-layout-header>
-  <nb-layout-column *ngIf="!isAuthenticated()">
+  <nb-sidebar *jhiHasAnyAuthority="['AGENCE_ADMIN', 'STRUCTURE_ADMIN']">
+    <jhi-pages></jhi-pages>
+  </nb-sidebar>
+  <nb-layout-column *ngIf="!structure && !isAuthenticated()">
     <router-outlet></router-outlet>
   </nb-layout-column>
-  <nb-layout-column *ngIf="isAuthenticated()">
+  <nb-layout-column *ngIf="structure && !isAuthenticated()">
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+  <nb-layout-column *ngIf="structure && isAuthenticated()">
     <router-outlet></router-outlet>
   </nb-layout-column>
 </nb-layout>

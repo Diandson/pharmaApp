@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import {DATE_TIME_FORMAT} from 'app/config/input.constants';
 
-import { IApprovisionnement, Approvisionnement } from '../approvisionnement.model';
-import { ApprovisionnementService } from '../service/approvisionnement.service';
+import {Approvisionnement, IApprovisionnement} from '../approvisionnement.model';
+import {ApprovisionnementService} from '../service/approvisionnement.service';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'jhi-approvisionnement-update',
@@ -17,6 +18,7 @@ import { ApprovisionnementService } from '../service/approvisionnement.service';
 })
 export class ApprovisionnementUpdateComponent implements OnInit {
   isSaving = false;
+  approvisionnement?: IApprovisionnement = new Approvisionnement();
 
   editForm = this.fb.group({
     id: [],
@@ -29,28 +31,31 @@ export class ApprovisionnementUpdateComponent implements OnInit {
   constructor(
     protected approvisionnementService: ApprovisionnementService,
     protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
     protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ approvisionnement }) => {
-      if (approvisionnement.id === undefined) {
-        const today = dayjs().startOf('day');
-        approvisionnement.dateCommande = today;
-      }
-
-      this.updateForm(approvisionnement);
-    });
+    // this.activatedRoute.data.subscribe(({ approvisionnement }) => {
+    //   if (approvisionnement.id === undefined) {
+    //     approvisionnement.dateCommande = dayjs().startOf('day');
+    //   }
+    // });
+    if (this.approvisionnement){
+      this.updateForm(this.approvisionnement);
+    }
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
+
   }
 
   save(): void {
     this.isSaving = true;
     const approvisionnement = this.createFromForm();
-    if (approvisionnement.id !== undefined) {
+    if (approvisionnement.id) {
       this.subscribeToSaveResponse(this.approvisionnementService.update(approvisionnement));
     } else {
       this.subscribeToSaveResponse(this.approvisionnementService.create(approvisionnement));

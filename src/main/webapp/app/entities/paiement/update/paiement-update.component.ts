@@ -1,32 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize} from 'rxjs/operators';
+import {DATE_TIME_FORMAT} from 'app/config/input.constants';
 
-import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-
-import { IPaiement, Paiement } from '../paiement.model';
-import { PaiementService } from '../service/paiement.service';
-import { IVersement } from 'app/entities/versement/versement.model';
-import { VersementService } from 'app/entities/versement/service/versement.service';
-import { IPersonne } from 'app/entities/personne/personne.model';
-import { PersonneService } from 'app/entities/personne/service/personne.service';
-import { IVente } from 'app/entities/vente/vente.model';
-import { VenteService } from 'app/entities/vente/service/vente.service';
+import {IPaiement, Paiement} from '../paiement.model';
+import {PaiementService} from '../service/paiement.service';
+import {VersementService} from 'app/entities/versement/service/versement.service';
+import {PersonneService} from 'app/entities/personne/service/personne.service';
+import {IVente} from 'app/entities/vente/vente.model';
+import {VenteService} from 'app/entities/vente/service/vente.service';
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {createMask} from "@ngneat/input-mask";
+import {IMedicament} from "../../medicament/medicament.model";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
 
 @Component({
   selector: 'jhi-paiement-update',
   templateUrl: './paiement-update.component.html',
+  styleUrls: ['../paiement.component.scss']
 })
 export class PaiementUpdateComponent implements OnInit {
   isSaving = false;
-
-  versementsSharedCollection: IVersement[] = [];
-  personnesSharedCollection: IPersonne[] = [];
   ventesCollection: IVente[] = [];
+  medicament: IMedicament[] = [];
+  vente?: IVente;
+  telephoneInputMask = createMask('99 999 999');
+  avoir = 0;
+  sommeDonner = 0;
+  sommeRecu = 0;
 
   editForm = this.fb.group({
     id: [],
@@ -41,52 +46,78 @@ export class PaiementUpdateComponent implements OnInit {
     vente: [],
   });
 
+
   constructor(
     protected paiementService: PaiementService,
     protected versementService: VersementService,
     protected personneService: PersonneService,
     protected venteService: VenteService,
     protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal,
+    private modal: NzModalService,
+    private modalService: NgbModal,
     protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ paiement }) => {
-      if (paiement.id === undefined) {
-        const today = dayjs().startOf('day');
-        paiement.datePaiement = today;
-      }
-
-      this.updateForm(paiement);
-
-      this.loadRelationshipsOptions();
-    });
+    // this.activatedRoute.data.subscribe(({ paiement }) => {
+    //   this.updateForm(paiement);
+    // });
+    this.medicament = this.vente!.medicament ?? [];
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
   }
 
   save(): void {
-    this.isSaving = true;
+    const modalRef = this.modalService.open(ProgressDialogComponent, {
+      backdrop: 'static',
+      centered: true,
+      windowClass: 'myCustomModalClass',
+    });
     const paiement = this.createFromForm();
-    if (paiement.id !== undefined) {
-      this.subscribeToSaveResponse(this.paiementService.update(paiement));
-    } else {
-      this.subscribeToSaveResponse(this.paiementService.create(paiement));
-    }
+    this.paiementService.create(paiement).subscribe(res => {
+      if (res.body){
+        modalRef.close();
+        this.success('Paiement effectué avec succès!!');
+        this.activeModal.close('succes')
+      }else {
+        modalRef.close();
+        this.warning('Une erreur est survenue!')
+      }
+    }, () => {
+      modalRef.close()
+      this.error('Erreur serveur injoignable!')
+    })
+    // if (paiement.id !== undefined) {
+    //   this.subscribeToSaveResponse(this.paiementService.update(paiement));
+    // } else {
+    //   this.subscribeToSaveResponse(this.paiementService.create(paiement));
+    // }
   }
 
-  trackVersementById(index: number, item: IVersement): number {
-    return item.id!;
+  success(msg: string): void {
+    this.modal.success({
+      nzContent: msg,
+      nzTitle: 'SUCCESS',
+      nzOkText: 'OK',
+    });
   }
-
-  trackPersonneById(index: number, item: IPersonne): number {
-    return item.id!;
+  warning(msg: string): void {
+    this.modal.warning({
+      nzContent: msg,
+      nzTitle: 'ATTENTION',
+      nzOkText: 'OK',
+    });
   }
-
-  trackVenteById(index: number, item: IVente): number {
-    return item.id!;
+  error(msg: string): void {
+    this.modal.error({
+      nzContent: msg,
+      nzTitle: 'ERROR',
+      nzOkText: 'OK',
+    });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPaiement>>): void {
@@ -121,61 +152,16 @@ export class PaiementUpdateComponent implements OnInit {
       operateur: paiement.operateur,
       vente: paiement.vente,
     });
-
-    this.versementsSharedCollection = this.versementService.addVersementToCollectionIfMissing(
-      this.versementsSharedCollection,
-      paiement.versement
-    );
-    this.personnesSharedCollection = this.personneService.addPersonneToCollectionIfMissing(
-      this.personnesSharedCollection,
-      paiement.operateur
-    );
-    this.ventesCollection = this.venteService.addVenteToCollectionIfMissing(this.ventesCollection, paiement.vente);
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.versementService
-      .query()
-      .pipe(map((res: HttpResponse<IVersement[]>) => res.body ?? []))
-      .pipe(
-        map((versements: IVersement[]) =>
-          this.versementService.addVersementToCollectionIfMissing(versements, this.editForm.get('versement')!.value)
-        )
-      )
-      .subscribe((versements: IVersement[]) => (this.versementsSharedCollection = versements));
-
-    this.personneService
-      .query()
-      .pipe(map((res: HttpResponse<IPersonne[]>) => res.body ?? []))
-      .pipe(
-        map((personnes: IPersonne[]) =>
-          this.personneService.addPersonneToCollectionIfMissing(personnes, this.editForm.get('operateur')!.value)
-        )
-      )
-      .subscribe((personnes: IPersonne[]) => (this.personnesSharedCollection = personnes));
-
-    this.venteService
-      .query({ filter: 'paiement-is-null' })
-      .pipe(map((res: HttpResponse<IVente[]>) => res.body ?? []))
-      .pipe(map((ventes: IVente[]) => this.venteService.addVenteToCollectionIfMissing(ventes, this.editForm.get('vente')!.value)))
-      .subscribe((ventes: IVente[]) => (this.ventesCollection = ventes));
   }
 
   protected createFromForm(): IPaiement {
     return {
       ...new Paiement(),
       id: this.editForm.get(['id'])!.value,
-      numero: this.editForm.get(['numero'])!.value,
-      numeroVente: this.editForm.get(['numeroVente'])!.value,
-      datePaiement: this.editForm.get(['datePaiement'])!.value
-        ? dayjs(this.editForm.get(['datePaiement'])!.value, DATE_TIME_FORMAT)
-        : undefined,
       sommeRecu: this.editForm.get(['sommeRecu'])!.value,
       sommeDonner: this.editForm.get(['sommeDonner'])!.value,
-      avoir: this.editForm.get(['avoir'])!.value,
-      versement: this.editForm.get(['versement'])!.value,
-      operateur: this.editForm.get(['operateur'])!.value,
-      vente: this.editForm.get(['vente'])!.value,
+      avoir: this.avoir,
+      vente: this.vente,
     };
   }
 }

@@ -1,32 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import {DATE_TIME_FORMAT} from 'app/config/input.constants';
 
-import { ICommande, Commande } from '../commande.model';
-import { CommandeService } from '../service/commande.service';
-import { ILivraison } from 'app/entities/livraison/livraison.model';
-import { LivraisonService } from 'app/entities/livraison/service/livraison.service';
-import { IFournisseur } from 'app/entities/fournisseur/fournisseur.model';
-import { FournisseurService } from 'app/entities/fournisseur/service/fournisseur.service';
-import { IPersonne } from 'app/entities/personne/personne.model';
-import { PersonneService } from 'app/entities/personne/service/personne.service';
+import {Commande, ICommande} from '../commande.model';
+import {CommandeService} from '../service/commande.service';
+import {LivraisonService} from 'app/entities/livraison/service/livraison.service';
+import {FournisseurService} from 'app/entities/fournisseur/service/fournisseur.service';
+import {PersonneService} from 'app/entities/personne/service/personne.service';
+import { NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {MedicamentService} from "../../medicament/service/medicament.service";
+import {IMedicament} from "../../medicament/medicament.model";
+import {createMask} from "@ngneat/input-mask";
+import {NzModalService} from "ng-zorro-antd/modal";
+import { ICommandeMedicament} from "../../commande-medicament/commande-medicament.model";
+import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
+import {Fournisseur, IFournisseur} from "../../fournisseur/fournisseur.model";
 
 @Component({
   selector: 'jhi-commande-update',
   templateUrl: './commande-update.component.html',
+  styleUrls: ['../commande.component.scss']
 })
 export class CommandeUpdateComponent implements OnInit {
   isSaving = false;
+  commande: ICommande = new Commande()
+  commandeMedicament: ICommandeMedicament[] = [];
+  medicaments?: IMedicament[];
+  medicamentList: IMedicament[] = [];
+  fournisseurs?: IFournisseur[];
 
-  livraisonsCollection: ILivraison[] = [];
-  fournisseursCollection: IFournisseur[] = [];
-  personnesSharedCollection: IPersonne[] = [];
+  dateInputMask = createMask<Date>({
+    alias: 'datetime',
+    inputFormat: 'dd/mm/yyyy',
+    parser: (value: string) => {
+      const values = value.split('/');
+      const year = +values[2];
+      const month = +values[1] - 1;
+      const date = +values[0];
+      return new Date(year, month, date);
+    },
+  });
 
   editForm = this.fb.group({
     id: [],
@@ -36,6 +55,10 @@ export class CommandeUpdateComponent implements OnInit {
     fournisseur: [],
     operateur: [],
   });
+  search?: string;
+  prixTotal = 0;
+  isVisible = false;
+  selectedFournisseur: IFournisseur = new Fournisseur();
 
   constructor(
     protected commandeService: CommandeService,
@@ -43,46 +66,135 @@ export class CommandeUpdateComponent implements OnInit {
     protected fournisseurService: FournisseurService,
     protected personneService: PersonneService,
     protected activatedRoute: ActivatedRoute,
+    protected medicamentService: MedicamentService,
+    private modalService: NgbModal,
+    private modal: NzModalService,
     protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ commande }) => {
-      if (commande.id === undefined) {
-        const today = dayjs().startOf('day');
-        commande.dateCommande = today;
-      }
+    // this.activatedRoute.data.subscribe(({ commande }) => {
+    //   if (commande.id === undefined) {
+    //     commande.dateCommande = dayjs().startOf('day');
+    //   }
+    // });
 
-      this.updateForm(commande);
+    this.medicamentService.query()
+      .subscribe( res => this.medicaments = res.body ?? [])
 
-      this.loadRelationshipsOptions();
-    });
+    this.fournisseurService.query()
+      .subscribe(res => this.fournisseurs = res.body ?? []);
   }
 
   previousState(): void {
     window.history.back();
+    // this.activeModal.close()
   }
 
   save(): void {
     this.isSaving = true;
     const commande = this.createFromForm();
-    if (commande.id !== undefined) {
+    if (commande.id) {
       this.subscribeToSaveResponse(this.commandeService.update(commande));
     } else {
       this.subscribeToSaveResponse(this.commandeService.create(commande));
     }
   }
 
-  trackLivraisonById(index: number, item: ILivraison): number {
-    return item.id!;
+  saveImprime(): void {
+    const modalRef = this.modalService.open(ProgressDialogComponent, {
+      backdrop: 'static',
+      centered: true,
+      windowClass: 'myCustomModalClass',
+    });
+
+    const commande = new Commande();
+    commande.medicament = this.medicamentList;
+
+    this.commandeService.createImprime(commande).subscribe(res => {
+      if (res.size){
+        modalRef.close();
+        this.success('Commande créée avec succès!');
+      }else {
+        modalRef.close();
+        this.warning('Erreur non définie!')
+      }
+    }, () => {
+      modalRef.close();
+      this.error('Erreur serveur non joingnable!')
+    });
   }
 
-  trackFournisseurById(index: number, item: IFournisseur): number {
-    return item.id!;
+  getPrixAchat(): void {
+    this.prixTotal = 0;
+    this.medicamentList.forEach(value => (this.prixTotal = this.prixTotal + value.stockTheorique! * value.prixPublic!));
+  }
+  getPrixPublic(): void {
+    this.prixTotal = 0;
+    this.medicamentList.forEach(value => (this.prixTotal = this.prixTotal + value.stockTheorique! * value.prixPublic!));
+  }
+  getStockTheorique(): void {
+    this.prixTotal = 0;
+    this.medicamentList.forEach(value => (this.prixTotal = this.prixTotal + value.stockTheorique! * value.prixPublic!));
   }
 
-  trackPersonneById(index: number, item: IPersonne): number {
-    return item.id!;
+  addMedicamentToCommande(medicament: IMedicament): any {
+    if (medicament.stockTheorique! > 0) {
+      const medicam = this.medicamentList.find(ex => ex.id === medicament.id);
+      if (medicam) {
+        this.warning('Ce médicament existe déjà sur la liste!');
+      } else {
+        this.medicamentList.push(medicament);
+        this.medicamentList.sort().reverse();
+
+        this.prixTotal = this.prixTotal + medicament.prixPublic! * medicament.stockTheorique!;
+      }
+    } else {
+      this.warning('Le stock de ce médicament est epuisé veuillez vous reapprovisionner!');
+    }
+  }
+  removeMedicament(medi: IMedicament): void {
+    this.modal.warning({
+      nzContent: 'Voulez-vous vraiment retirer ce produit?',
+      nzTitle: 'ATTENTION',
+      nzOkText: 'Oui',
+      nzCancelText: 'Non',
+      nzOnOk: () => {
+        this.prixTotal = 0;
+        const index = this.medicamentList.findIndex(value => value.id === medi.id);
+        this.medicamentList.splice(index, 1);
+        this.medicamentList.forEach(value => (this.prixTotal = this.prixTotal + value.prixPublic! * value.stockTheorique!));
+      },
+    });
+  }
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  success(msg: string): void {
+    this.modal.success({
+      nzContent: msg,
+      nzTitle: 'SUCCESS',
+      nzOkText: 'OK',
+    });
+  }
+  warning(msg: string): void {
+    this.modal.warning({
+      nzContent: msg,
+      nzTitle: 'ATTENTION',
+      nzOkText: 'OK',
+    });
+  }
+  error(msg: string): void {
+    this.modal.error({
+      nzContent: msg,
+      nzTitle: 'ERROR',
+      nzOkText: 'OK',
+    });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICommande>>): void {
@@ -113,48 +225,6 @@ export class CommandeUpdateComponent implements OnInit {
       fournisseur: commande.fournisseur,
       operateur: commande.operateur,
     });
-
-    this.livraisonsCollection = this.livraisonService.addLivraisonToCollectionIfMissing(this.livraisonsCollection, commande.livraison);
-    this.fournisseursCollection = this.fournisseurService.addFournisseurToCollectionIfMissing(
-      this.fournisseursCollection,
-      commande.fournisseur
-    );
-    this.personnesSharedCollection = this.personneService.addPersonneToCollectionIfMissing(
-      this.personnesSharedCollection,
-      commande.operateur
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.livraisonService
-      .query({ filter: 'commande-is-null' })
-      .pipe(map((res: HttpResponse<ILivraison[]>) => res.body ?? []))
-      .pipe(
-        map((livraisons: ILivraison[]) =>
-          this.livraisonService.addLivraisonToCollectionIfMissing(livraisons, this.editForm.get('livraison')!.value)
-        )
-      )
-      .subscribe((livraisons: ILivraison[]) => (this.livraisonsCollection = livraisons));
-
-    this.fournisseurService
-      .query({ filter: 'commande-is-null' })
-      .pipe(map((res: HttpResponse<IFournisseur[]>) => res.body ?? []))
-      .pipe(
-        map((fournisseurs: IFournisseur[]) =>
-          this.fournisseurService.addFournisseurToCollectionIfMissing(fournisseurs, this.editForm.get('fournisseur')!.value)
-        )
-      )
-      .subscribe((fournisseurs: IFournisseur[]) => (this.fournisseursCollection = fournisseurs));
-
-    this.personneService
-      .query()
-      .pipe(map((res: HttpResponse<IPersonne[]>) => res.body ?? []))
-      .pipe(
-        map((personnes: IPersonne[]) =>
-          this.personneService.addPersonneToCollectionIfMissing(personnes, this.editForm.get('operateur')!.value)
-        )
-      )
-      .subscribe((personnes: IPersonne[]) => (this.personnesSharedCollection = personnes));
   }
 
   protected createFromForm(): ICommande {
@@ -170,4 +240,5 @@ export class CommandeUpdateComponent implements OnInit {
       operateur: this.editForm.get(['operateur'])!.value,
     };
   }
+
 }

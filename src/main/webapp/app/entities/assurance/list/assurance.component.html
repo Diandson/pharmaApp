@@ -1,56 +1,50 @@
-<div>
-  <h2 id="page-heading" data-cy="AssuranceHeading">
-    <span jhiTranslate="appPharmaApp.assurance.home.title">Assurances</span>
+<nb-card>
+  <nb-card-header>
+    <h2 id="page-heading" data-cy="AssuranceHeading">
+      <span >Les assurances</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appPharmaApp.assurance.home.refreshListLabel">Refresh List</span>
-      </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-assurance"
-        [routerLink]="['/assurance/new']"
-      >
+      <button nbButton status="primary" outline size="small" (click)="createOrUpdate()"
+        class="mr-2 float-right jh-create-entity create-assurance">
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appPharmaApp.assurance.home.createLabel"> Create a new Assurance </span>
+        <span > Ajouter nouveau </span>
       </button>
+
+      <button class="float-right mr-2" nbButton size="small"
+              (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span ></span>
+      </button>
+    </h2>
+  </nb-card-header>
+  <nb-card-body>
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="assurances?.length === 0">
+      <span jhiTranslate="appPharmaApp.assurance.home.notFound">No assurances found</span>
     </div>
-  </h2>
 
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="assurances?.length === 0">
-    <span jhiTranslate="appPharmaApp.assurance.home.notFound">No assurances found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="assurances && assurances.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
+    <div class="table-responsive" id="entities" *ngIf="assurances && assurances.length > 0">
+      <table class="table table-striped table-hover table-bordered table-sm" aria-describedby="page-heading">
+        <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="libelle">
-            <span jhiTranslate="appPharmaApp.assurance.libelle">Libelle</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.assurance.libelle">Libelle</span>
           </th>
-          <th scope="col" jhiSortBy="taux"><span jhiTranslate="appPharmaApp.assurance.taux">Taux</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="taux"><span jhiTranslate="appPharmaApp.assurance.taux">Taux</span> </th>
           <th scope="col" jhiSortBy="email">
-            <span jhiTranslate="appPharmaApp.assurance.email">Email</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.assurance.email">Email</span>
           </th>
           <th scope="col" jhiSortBy="operateur.id">
-            <span jhiTranslate="appPharmaApp.assurance.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.assurance.operateur">Operateur</span>
           </th>
           <th scope="col"></th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <tr *ngFor="let assurance of assurances; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/assurance', assurance.id, 'view']">{{ assurance.id }}</a>
-          </td>
           <td>{{ assurance.libelle }}</td>
           <td>{{ assurance.taux }}</td>
           <td>{{ assurance.email }}</td>
@@ -65,48 +59,49 @@
                 type="submit"
                 [routerLink]="['/assurance', assurance.id, 'view']"
                 class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
+                data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <span class="d-none d-md-inline" ></span>
               </button>
 
               <button
                 type="submit"
-                [routerLink]="['/assurance', assurance.id, 'edit']"
+                (click)="createOrUpdate(assurance)"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                <span class="d-none d-md-inline" ></span>
               </button>
 
               <button type="submit" (click)="delete(assurance)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span class="d-none d-md-inline" ></span>
               </button>
             </div>
           </td>
         </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="assurances && assurances.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+        </tbody>
+      </table>
     </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div *ngIf="assurances && assurances.length > 0">
+      <div class="row justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
 
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
+      <div class="row justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [(page)]="ngbPaginationPage"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="loadPage($event)"
+        ></ngb-pagination>
+      </div>
     </div>
-  </div>
-</div>
+  </nb-card-footer>
+</nb-card>

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
-import { Subscription, ReplaySubject, Subject } from 'rxjs';
+import { Router, NavigationEnd, Event } from '@angular/router';
+import {Subscription, ReplaySubject, Subject, Observable} from 'rxjs';
 import SockJS from 'sockjs-client';
 import Stomp, { Client, Subscription as StompSubscription, ConnectionHeaders, Message } from 'webstomp-client';
 
 import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { Vente } from '../entities/vente/vente.model';
+import {filter} from "rxjs/operators";
 
 @Injectable({ providedIn: 'root' })
 export class VenteSocketService {
@@ -39,9 +40,9 @@ export class VenteSocketService {
 
       this.sendVente();
 
-      // this.routerSubscription = this.router.events
-      //   .pipe(filter((event: Event) => event instanceof NavigationEnd))
-      //   .subscribe(() => this.sendVente());
+      this.routerSubscription = this.router.events
+        .pipe(filter((event: Event) => event instanceof NavigationEnd))
+        .subscribe(() => this.sendVente());
     });
   }
 
@@ -63,7 +64,11 @@ export class VenteSocketService {
     }
   }
 
-  receive(): Subject<Vente[]> {
+  // receive(): Subject<Vente[]> {
+  //   return this.listenerSubject;
+  // }
+
+  receive(): Observable<Vente[]> {
     return this.listenerSubject;
   }
 
@@ -76,6 +81,7 @@ export class VenteSocketService {
       if (this.stompClient) {
         this.stompSubscription = this.stompClient.subscribe('/topic/vente', (data: Message) => {
           this.listenerSubject.next(JSON.parse(data.body));
+          // this.listenerObservable.pipe(map(JSON.parse(data.body)));
         });
       }
     });

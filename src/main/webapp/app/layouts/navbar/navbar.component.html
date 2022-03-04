@@ -82,30 +82,25 @@
       </ul>
     </nb-action>
 
-    <nb-action>
+    <nb-action badgeText="{{ventes.length}}" *jhiHasAnyAuthority="['STRUCTURE_CAISSE', 'AGENCE_CAISSE']"
+               badgePosition="top right" badgeStatus="danger">
       <div ngbDropdown class="main-header-notification">
-        <nb-icon ngbDropdownToggle class="dropdown-toggle" icon="bell-outline" class="header-icons"></nb-icon>
+        <nb-icon ngbDropdownToggle class="dropdown-toggle"
+                 icon="bell-outline" class="header-icons"></nb-icon>
         <div ngbDropdownMenu>
           <div class="header-navheading">
-            <p class="main-notification-text">3 new Messages</p>
+            <p class="main-notification-text">{{ventes.length}} nouvelles prescriptions</p>
           </div>
           <div class="main-notification-list">
-            <div class="media new">
-              <div class="main-img-user online"><img alt="avatar" /></div>
+            <div class="media" *ngFor="let vente of ventes">
+              <div class="main-img-user">
+                <img class="main-img-user"
+                     alt="client" src="{{'data:image/jpeg;base64,' + user_icon}}"/></div>
               <div class="media-body">
-                <p>
-                  Paul Molive
-                  <span>I'm sorry but i'm not sure how...</span>
+                <p style="font-size: 14px; font-width: bold;">
+                  {{vente.montant | currency: 'XOF'}}
                 </p>
-              </div>
-            </div>
-            <div class="media">
-              <div class="main-img-user"><img alt="avatar" /></div>
-              <div class="media-body">
-                <p>
-                  Sahar DaryAll
-                  <span>set ! Now, time to get to you now...</span>
-                </p>
+                <span>{{vente.dateVente | date: 'medium'}}</span>
               </div>
             </div>
           </div>
@@ -113,7 +108,8 @@
       </div>
     </nb-action>
 
-    <nb-action class="control-item" [nbContextMenu]="itemsMenu" icon="settings-outline"> </nb-action>
+    <nb-action class="control-item" *jhiHasAnyAuthority="['STRUCTURE_ADMIN', 'AGENCE_ADMIN']"
+               [nbContextMenu]="itemsMenu" icon="settings-outline"> </nb-action>
     <nb-action class="user-action">
       <nb-user
         [nbContextMenu]="userMenu"

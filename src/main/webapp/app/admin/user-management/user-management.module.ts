@@ -23,7 +23,10 @@ import {AccountModule} from "../../account/account.module";
 import {InputMaskModule} from "@ngneat/input-mask";
 
 @NgModule({
-    imports: [SharedModule, RouterModule.forChild(userManagementRoute), NbCardModule, NbInputModule, NbTreeGridModule, NbButtonModule, NbIconModule, TableModule, ButtonModule, InputTextModule, MatButtonModule, AccountModule, InputMaskModule, NbButtonGroupModule],
+    imports: [SharedModule, RouterModule.forChild(userManagementRoute), NbCardModule,
+      NbInputModule, NbTreeGridModule, NbButtonModule, NbIconModule,
+      TableModule, ButtonModule, InputTextModule, MatButtonModule,
+      AccountModule, InputMaskModule, NbButtonGroupModule],
   declarations: [
     UserManagementComponent,
     UserManagementDetailComponent,

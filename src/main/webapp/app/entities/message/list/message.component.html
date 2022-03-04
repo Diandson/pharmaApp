@@ -32,17 +32,17 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> </th>
           <th scope="col" jhiSortBy="message">
-            <span jhiTranslate="appPharmaApp.message.message">Message</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.message.message">Message</span>
           </th>
           <th scope="col" jhiSortBy="dateMessage">
-            <span jhiTranslate="appPharmaApp.message.dateMessage">Date Message</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.message.dateMessage">Date Message</span>
           </th>
-          <th scope="col" jhiSortBy="to"><span jhiTranslate="appPharmaApp.message.to">To</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="vue"><span jhiTranslate="appPharmaApp.message.vue">Vue</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="to"><span jhiTranslate="appPharmaApp.message.to">To</span> </th>
+          <th scope="col" jhiSortBy="vue"><span jhiTranslate="appPharmaApp.message.vue">Vue</span> </th>
           <th scope="col" jhiSortBy="from.id">
-            <span jhiTranslate="appPharmaApp.message.from">From</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.message.from">From</span>
           </th>
           <th scope="col"></th>
         </tr>

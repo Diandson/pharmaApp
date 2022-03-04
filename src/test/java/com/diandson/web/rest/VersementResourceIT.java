@@ -1,5 +1,6 @@
 package com.diandson.web.rest;
 
+import static com.diandson.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -10,6 +11,10 @@ import com.diandson.domain.Versement;
 import com.diandson.repository.VersementRepository;
 import com.diandson.service.dto.VersementDTO;
 import com.diandson.service.mapper.VersementMapper;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -52,6 +57,9 @@ class VersementResourceIT {
     private static final String DEFAULT_IDENTITE_RECEVEUR = "AAAAAAAAAA";
     private static final String UPDATED_IDENTITE_RECEVEUR = "BBBBBBBBBB";
 
+    private static final ZonedDateTime DEFAULT_DATE_VERSEMENT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_DATE_VERSEMENT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
     private static final String ENTITY_API_URL = "/api/versements";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -86,7 +94,8 @@ class VersementResourceIT {
             .resteAVerser(DEFAULT_RESTE_A_VERSER)
             .lieuVersement(DEFAULT_LIEU_VERSEMENT)
             .referenceVersement(DEFAULT_REFERENCE_VERSEMENT)
-            .identiteReceveur(DEFAULT_IDENTITE_RECEVEUR);
+            .identiteReceveur(DEFAULT_IDENTITE_RECEVEUR)
+            .dateVersement(DEFAULT_DATE_VERSEMENT);
         return versement;
     }
 
@@ -104,7 +113,8 @@ class VersementResourceIT {
             .resteAVerser(UPDATED_RESTE_A_VERSER)
             .lieuVersement(UPDATED_LIEU_VERSEMENT)
             .referenceVersement(UPDATED_REFERENCE_VERSEMENT)
-            .identiteReceveur(UPDATED_IDENTITE_RECEVEUR);
+            .identiteReceveur(UPDATED_IDENTITE_RECEVEUR)
+            .dateVersement(UPDATED_DATE_VERSEMENT);
         return versement;
     }
 
@@ -134,6 +144,7 @@ class VersementResourceIT {
         assertThat(testVersement.getLieuVersement()).isEqualTo(DEFAULT_LIEU_VERSEMENT);
         assertThat(testVersement.getReferenceVersement()).isEqualTo(DEFAULT_REFERENCE_VERSEMENT);
         assertThat(testVersement.getIdentiteReceveur()).isEqualTo(DEFAULT_IDENTITE_RECEVEUR);
+        assertThat(testVersement.getDateVersement()).isEqualTo(DEFAULT_DATE_VERSEMENT);
     }
 
     @Test
@@ -173,7 +184,8 @@ class VersementResourceIT {
             .andExpect(jsonPath("$.[*].resteAVerser").value(hasItem(DEFAULT_RESTE_A_VERSER.intValue())))
             .andExpect(jsonPath("$.[*].lieuVersement").value(hasItem(DEFAULT_LIEU_VERSEMENT)))
             .andExpect(jsonPath("$.[*].referenceVersement").value(hasItem(DEFAULT_REFERENCE_VERSEMENT)))
-            .andExpect(jsonPath("$.[*].identiteReceveur").value(hasItem(DEFAULT_IDENTITE_RECEVEUR)));
+            .andExpect(jsonPath("$.[*].identiteReceveur").value(hasItem(DEFAULT_IDENTITE_RECEVEUR)))
+            .andExpect(jsonPath("$.[*].dateVersement").value(hasItem(sameInstant(DEFAULT_DATE_VERSEMENT))));
     }
 
     @Test
@@ -194,7 +206,8 @@ class VersementResourceIT {
             .andExpect(jsonPath("$.resteAVerser").value(DEFAULT_RESTE_A_VERSER.intValue()))
             .andExpect(jsonPath("$.lieuVersement").value(DEFAULT_LIEU_VERSEMENT))
             .andExpect(jsonPath("$.referenceVersement").value(DEFAULT_REFERENCE_VERSEMENT))
-            .andExpect(jsonPath("$.identiteReceveur").value(DEFAULT_IDENTITE_RECEVEUR));
+            .andExpect(jsonPath("$.identiteReceveur").value(DEFAULT_IDENTITE_RECEVEUR))
+            .andExpect(jsonPath("$.dateVersement").value(sameInstant(DEFAULT_DATE_VERSEMENT)));
     }
 
     @Test
@@ -223,7 +236,8 @@ class VersementResourceIT {
             .resteAVerser(UPDATED_RESTE_A_VERSER)
             .lieuVersement(UPDATED_LIEU_VERSEMENT)
             .referenceVersement(UPDATED_REFERENCE_VERSEMENT)
-            .identiteReceveur(UPDATED_IDENTITE_RECEVEUR);
+            .identiteReceveur(UPDATED_IDENTITE_RECEVEUR)
+            .dateVersement(UPDATED_DATE_VERSEMENT);
         VersementDTO versementDTO = versementMapper.toDto(updatedVersement);
 
         restVersementMockMvc
@@ -245,6 +259,7 @@ class VersementResourceIT {
         assertThat(testVersement.getLieuVersement()).isEqualTo(UPDATED_LIEU_VERSEMENT);
         assertThat(testVersement.getReferenceVersement()).isEqualTo(UPDATED_REFERENCE_VERSEMENT);
         assertThat(testVersement.getIdentiteReceveur()).isEqualTo(UPDATED_IDENTITE_RECEVEUR);
+        assertThat(testVersement.getDateVersement()).isEqualTo(UPDATED_DATE_VERSEMENT);
     }
 
     @Test
@@ -345,6 +360,7 @@ class VersementResourceIT {
         assertThat(testVersement.getLieuVersement()).isEqualTo(DEFAULT_LIEU_VERSEMENT);
         assertThat(testVersement.getReferenceVersement()).isEqualTo(UPDATED_REFERENCE_VERSEMENT);
         assertThat(testVersement.getIdentiteReceveur()).isEqualTo(DEFAULT_IDENTITE_RECEVEUR);
+        assertThat(testVersement.getDateVersement()).isEqualTo(DEFAULT_DATE_VERSEMENT);
     }
 
     @Test
@@ -366,7 +382,8 @@ class VersementResourceIT {
             .resteAVerser(UPDATED_RESTE_A_VERSER)
             .lieuVersement(UPDATED_LIEU_VERSEMENT)
             .referenceVersement(UPDATED_REFERENCE_VERSEMENT)
-            .identiteReceveur(UPDATED_IDENTITE_RECEVEUR);
+            .identiteReceveur(UPDATED_IDENTITE_RECEVEUR)
+            .dateVersement(UPDATED_DATE_VERSEMENT);
 
         restVersementMockMvc
             .perform(
@@ -387,6 +404,7 @@ class VersementResourceIT {
         assertThat(testVersement.getLieuVersement()).isEqualTo(UPDATED_LIEU_VERSEMENT);
         assertThat(testVersement.getReferenceVersement()).isEqualTo(UPDATED_REFERENCE_VERSEMENT);
         assertThat(testVersement.getIdentiteReceveur()).isEqualTo(UPDATED_IDENTITE_RECEVEUR);
+        assertThat(testVersement.getDateVersement()).isEqualTo(UPDATED_DATE_VERSEMENT);
     }
 
     @Test

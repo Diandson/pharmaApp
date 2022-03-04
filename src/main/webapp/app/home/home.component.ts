@@ -1,19 +1,22 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { map, Observable, of, startWith, Subject, Subscription } from 'rxjs';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {map, Observable, of, startWith, Subject, Subscription} from 'rxjs';
 
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { MedicamentService } from '../entities/medicament/service/medicament.service';
-import { IMedicament } from '../entities/medicament/medicament.model';
-import { Authority } from '../config/authority.constants';
-import { IVenteMedicament } from '../entities/vente-medicament/vente-medicament.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { ProgressDialogComponent } from '../shared/progress-dialog/progress-dialog.component';
-import { Vente } from '../entities/vente/vente.model';
-import { VenteService } from '../entities/vente/service/vente.service';
-import { VenteSocketService } from './vente-socket.service';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/auth/account.model';
+import {MedicamentService} from '../entities/medicament/service/medicament.service';
+import {IMedicament} from '../entities/medicament/medicament.model';
+import {Authority} from '../config/authority.constants';
+import {IVenteMedicament} from '../entities/vente-medicament/vente-medicament.model';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {ProgressDialogComponent} from '../shared/progress-dialog/progress-dialog.component';
+import {IVente, Vente} from '../entities/vente/vente.model';
+import {VenteService} from '../entities/vente/service/vente.service';
+import {VenteSocketService} from './vente-socket.service';
+import {USER_ICON} from "../config/element.constants";
+import {PaiementUpdateComponent} from "../entities/paiement/update/paiement-update.component";
+import {DepenseUpdateComponent} from "../entities/depense/update/depense-update.component";
 
 @Component({
   selector: 'jhi-home',
@@ -33,6 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ventes: Vente[] = [];
   subscription?: Subscription;
+  user_icon = USER_ICON;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -44,12 +48,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     private venteService: VenteService,
     private venteSocketService: VenteSocketService,
     private router: Router
-  ) {}
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit(): void {
     this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
 
-    if (this.accountService.hasAnyAuthority([Authority.SERVEUR])) {
+    if (this.accountService.hasAnyAuthority([Authority.SERVEUR, Authority.STRUCTURE_ADMIN])) {
       this.medicamentService.query().subscribe(res => {
         this.medicaments = res.body ?? [];
         this.filteredMedicament = of(this.medicaments);
@@ -58,8 +64,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.venteSocketService.subscribe();
       this.subscription = this.venteSocketService.receive().subscribe(res => {
         this.ventes = res;
-        alert(this.ventes.length);
       });
+    }
+
+    if (!this.isAuthenticated()){
+      this.router.navigate(['login'])
     }
   }
 
@@ -74,6 +83,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+  reloadCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   isAuthenticated(): boolean {
@@ -173,6 +188,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (res.body) {
           modalRef.close();
           this.success('Prescription efectuee avec succes!');
+          this.reloadComponent();
         } else {
           modalRef.close();
           this.warning('Une erreur est survenue!');
@@ -183,6 +199,33 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.error('Erreur serveur verifier votre connexion!');
       }
     );
+  }
+  reloadComponent(): void {
+    const currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
+  }
+
+  openPaiement(vente: IVente): void {
+    const modalRef = this.modalService.open(PaiementUpdateComponent, { size: 'md', backdrop: 'static' });
+    modalRef.componentInstance.vente = vente;
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
+        this.reloadComponent();
+      }
+    });
+  }
+
+  createDepense(): void {
+    const modalRef = this.modalService.open(DepenseUpdateComponent, { size: 'md', backdrop: 'static' });
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
+        this.reloadComponent();
+      }
+    });
   }
 
   private filter(value: string): IMedicament[] {

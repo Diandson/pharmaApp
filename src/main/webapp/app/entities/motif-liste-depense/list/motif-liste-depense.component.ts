@@ -9,6 +9,7 @@ import { IMotifListeDepense } from '../motif-liste-depense.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { MotifListeDepenseService } from '../service/motif-liste-depense.service';
 import { MotifListeDepenseDeleteDialogComponent } from '../delete/motif-liste-depense-delete-dialog.component';
+import {MotifListeDepenseUpdateComponent} from "../update/motif-liste-depense-update.component";
 
 @Component({
   selector: 'jhi-motif-liste-depense',
@@ -67,6 +68,19 @@ export class MotifListeDepenseComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
+        this.loadPage();
+      }
+    });
+  }
+
+  createOrUpdate(motifListeDepense?: IMotifListeDepense): void {
+    const modalRef = this.modalService.open(MotifListeDepenseUpdateComponent, { size: 'lg', backdrop: 'static' });
+    if (motifListeDepense){
+      modalRef.componentInstance.motifListeDepense = motifListeDepense;
+    }
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
         this.loadPage();
       }
     });

@@ -2,26 +2,6 @@
 Main page styles
 ========================================================================== */
 
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-  background-size: contain;
-}
-
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (-moz-min-device-pixel-ratio: 2),
-  only screen and (-o-min-device-pixel-ratio: 2/1),
-  only screen and (min-resolution: 192dpi),
-  only screen and (min-resolution: 2dppx) {
-  .hipster {
-    background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-    background-size: contain;
-  }
-}
-
 .global-search-item {
   display: flex;
 }
@@ -95,10 +75,18 @@ Main page styles
   cursor: pointer;
   transition: 0.4s;
 }
+.item-card {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.4s;
+  padding: 10px;
+  margin: 5px;
+}
 
 .cardh .card_image {
   width: inherit;
   height: inherit;
+  background-color: #26491f;
   border-radius: 10px;
 }
 
@@ -113,9 +101,8 @@ Main page styles
   text-align: center;
   border-radius: 0px 0px 40px 40px;
   font-family: sans-serif;
-  color: #ffffff;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 35px;
   margin-top: -40px;
   height: 40px;
 }
@@ -124,6 +111,10 @@ Main page styles
   transform: scale(0.9, 0.9);
   box-shadow: 3px 3px 15px 5px rgba(0, 0, 0, 0.25), -3px -3px 15px 5px rgba(0, 0, 0, 0.22);
   width: 300px;
+}
+.item-card:hover {
+  transform: scale(0.96, 0.96);
+  background: #c1ffb3;
 }
 
 .title-white {
@@ -167,3 +158,5 @@ Main page styles
 ::ng-deep .myCustomModalClass .modal-dialog {
   max-width: 0;
 }
+
+

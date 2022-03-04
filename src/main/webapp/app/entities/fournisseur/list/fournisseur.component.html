@@ -1,62 +1,47 @@
-<div>
-  <h2 id="page-heading" data-cy="FournisseurHeading">
-    <span jhiTranslate="appPharmaApp.fournisseur.home.title">Fournisseurs</span>
+<nb-card>
+  <nb-card-header>
+    <h2 id="page-heading" data-cy="FournisseurHeading">
+      <span >Les Fournisseurs</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appPharmaApp.fournisseur.home.refreshListLabel">Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-fournisseur"
-        [routerLink]="['/fournisseur/new']"
-      >
+      <button nbButton status="primary" size="small" outline (click)="createOrUpdate()"
+              class="float-right mr-2 jh-create-entity create-fournisseur">
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appPharmaApp.fournisseur.home.createLabel"> Create a new Fournisseur </span>
+        <span > Ajouter nouveau </span>
       </button>
+
+      <button class="float-right mr-2" nbButton size="small"
+              (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span ></span>
+      </button>
+    </h2>
+  </nb-card-header>
+  <nb-card-body>
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="fournisseurs?.length === 0">
+      <span jhiTranslate="appPharmaApp.fournisseur.home.notFound">No fournisseurs found</span>
     </div>
-  </h2>
 
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="fournisseurs?.length === 0">
-    <span jhiTranslate="appPharmaApp.fournisseur.home.notFound">No fournisseurs found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="fournisseurs && fournisseurs.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
+    <div class="table-responsive" id="entities" *ngIf="fournisseurs && fournisseurs.length > 0">
+      <table class="table table-striped table-hover table-bordered table-sm" aria-describedby="page-heading">
+        <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="libelle">
-            <span jhiTranslate="appPharmaApp.fournisseur.libelle">Libelle</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.fournisseur.libelle">Libelle</span>
           </th>
           <th scope="col" jhiSortBy="email">
-            <span jhiTranslate="appPharmaApp.fournisseur.email">Email</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="operateur.id">
-            <span jhiTranslate="appPharmaApp.fournisseur.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.fournisseur.email">Email</span>
           </th>
           <th scope="col"></th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <tr *ngFor="let fournisseur of fournisseurs; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/fournisseur', fournisseur.id, 'view']">{{ fournisseur.id }}</a>
-          </td>
           <td>{{ fournisseur.libelle }}</td>
           <td>{{ fournisseur.email }}</td>
-          <td>
-            <div *ngIf="fournisseur.operateur">
-              <a [routerLink]="['/personne', fournisseur.operateur?.id, 'view']">{{ fournisseur.operateur?.id }}</a>
-            </div>
-          </td>
           <td class="text-right">
             <div class="btn-group">
               <button
@@ -66,45 +51,47 @@
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <span class="d-none d-md-inline"></span>
               </button>
 
               <button
                 type="submit"
-                [routerLink]="['/fournisseur', fournisseur.id, 'edit']"
+                (click)="createOrUpdate(fournisseur)"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                <span class="d-none d-md-inline" ></span>
               </button>
 
               <button type="submit" (click)="delete(fournisseur)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span class="d-none d-md-inline" ></span>
               </button>
             </div>
           </td>
         </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="fournisseurs && fournisseurs.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+        </tbody>
+      </table>
     </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div *ngIf="fournisseurs && fournisseurs.length > 0">
+      <div class="row justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
 
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
+      <div class="row justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [(page)]="ngbPaginationPage"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="loadPage($event)"
+        ></ngb-pagination>
+      </div>
     </div>
-  </div>
-</div>
+  </nb-card-footer>
+</nb-card>

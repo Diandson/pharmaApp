@@ -33,7 +33,7 @@ public class VenteMedicament implements Serializable {
     private Medicament medicament;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "venteMedicaments", "operateur" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "venteMedicaments", "operateur", "paiement" }, allowSetters = true)
     private Vente vente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -32,19 +32,19 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> </th>
           <th scope="col" jhiSortBy="titre">
-            <span jhiTranslate="appPharmaApp.notification.titre">Titre</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.notification.titre">Titre</span>
           </th>
           <th scope="col" jhiSortBy="content">
-            <span jhiTranslate="appPharmaApp.notification.content">Content</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.notification.content">Content</span>
           </th>
           <th scope="col" jhiSortBy="dateNotif">
-            <span jhiTranslate="appPharmaApp.notification.dateNotif">Date Notif</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.notification.dateNotif">Date Notif</span>
           </th>
-          <th scope="col" jhiSortBy="vue"><span jhiTranslate="appPharmaApp.notification.vue">Vue</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="vue"><span jhiTranslate="appPharmaApp.notification.vue">Vue</span> </th>
           <th scope="col" jhiSortBy="operateur.id">
-            <span jhiTranslate="appPharmaApp.notification.operateur">Operateur</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="appPharmaApp.notification.operateur">Operateur</span>
           </th>
           <th scope="col"></th>
         </tr>

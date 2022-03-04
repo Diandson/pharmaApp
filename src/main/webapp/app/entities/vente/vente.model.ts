@@ -1,4 +1,3 @@
-import dayjs from 'dayjs/esm';
 import { IVenteMedicament } from 'app/entities/vente-medicament/vente-medicament.model';
 import { IPersonne } from 'app/entities/personne/personne.model';
 import { IMedicament } from '../medicament/medicament.model';
@@ -6,7 +5,7 @@ import { IMedicament } from '../medicament/medicament.model';
 export interface IVente {
   id?: number;
   numero?: string | null;
-  dateVente?: dayjs.Dayjs | null;
+  dateVente?: any | null;
   montant?: number | null;
   montantAssurance?: number | null;
   sommeDonne?: number | null;
@@ -21,7 +20,7 @@ export class Vente implements IVente {
   constructor(
     public id?: number,
     public numero?: string | null,
-    public dateVente?: dayjs.Dayjs | null,
+    public dateVente?: any | null,
     public montant?: number | null,
     public montantAssurance?: number | null,
     public sommeDonne?: number | null,

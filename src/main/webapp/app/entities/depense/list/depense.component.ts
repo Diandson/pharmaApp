@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,8 @@ import { IDepense } from '../depense.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { DepenseService } from '../service/depense.service';
 import { DepenseDeleteDialogComponent } from '../delete/depense-delete-dialog.component';
+import {DepenseUpdateComponent} from "../update/depense-update.component";
+import {DepenseDetailComponent} from "../detail/depense-detail.component";
 
 @Component({
   selector: 'jhi-depense',
@@ -23,6 +25,7 @@ export class DepenseComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  search?: string;
 
   constructor(
     protected depenseService: DepenseService,
@@ -31,30 +34,14 @@ export class DepenseComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
-    this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
-
+  loadPage(): void {
     this.depenseService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe({
-        next: (res: HttpResponse<IDepense[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        error: () => {
-          this.isLoading = false;
-          this.onError();
-        },
-      });
+      .query()
+      .subscribe(res => this.depenses = res.body ?? []);
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    this.loadPage();
   }
 
   trackId(index: number, item: IDepense): number {
@@ -70,6 +57,24 @@ export class DepenseComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  createOrUpdate(depense?: IDepense): void {
+    const modalRef = this.modalService.open(DepenseUpdateComponent, { size: 'lg', backdrop: 'static' });
+    if (depense){
+      modalRef.componentInstance.depense = depense;
+    }
+
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
+        this.loadPage();
+      }
+    });
+  }
+  viewDepense(depense: IDepense):void {
+    const modalRef = this.modalService.open(DepenseDetailComponent, { size: 'sm', backdrop: 'static' });
+    modalRef.componentInstance.depense = depense;
   }
 
   protected sort(): string[] {
@@ -90,7 +95,6 @@ export class DepenseComponent implements OnInit {
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;
-        this.loadPage(pageNumber, true);
       }
     });
   }
@@ -114,4 +118,5 @@ export class DepenseComponent implements OnInit {
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }
+
 }

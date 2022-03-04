@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
-import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import {DATE_TIME_FORMAT} from 'app/config/input.constants';
 
-import { IDepense, Depense } from '../depense.model';
-import { DepenseService } from '../service/depense.service';
+import {Depense, IDepense} from '../depense.model';
+import {DepenseService} from '../service/depense.service';
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'jhi-depense-update',
   templateUrl: './depense-update.component.html',
+  styleUrls: ['../depense.component.scss']
 })
 export class DepenseUpdateComponent implements OnInit {
   isSaving = false;
+  depense?: IDepense;
 
   editForm = this.fb.group({
     id: [],
@@ -28,31 +32,93 @@ export class DepenseUpdateComponent implements OnInit {
     dateDepense: [],
   });
 
-  constructor(protected depenseService: DepenseService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected depenseService: DepenseService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder,
+    private activeModal: NgbActiveModal,
+    private modalService: NgbModal,
+    private modal: NzModalService
+  ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ depense }) => {
-      if (depense.id === undefined) {
-        const today = dayjs().startOf('day');
-        depense.dateDepense = today;
-      }
+    // this.activatedRoute.data.subscribe(({ depense }) => {
+    //   if (depense.id === undefined) {
+    //     depense.dateDepense = dayjs().startOf('day');
+    //   }
+    //
+    //   this.updateForm(depense);
+    // });
+    if (this.depense){
+      this.updateForm(this.depense)
+    }
 
-      this.updateForm(depense);
-    });
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.close();
   }
 
   save(): void {
-    this.isSaving = true;
+    const modalRef = this.modalService.open(ProgressDialogComponent, {
+      backdrop: 'static',
+      centered: true,
+      windowClass: 'myCustomModalClass',
+    });
     const depense = this.createFromForm();
-    if (depense.id !== undefined) {
-      this.subscribeToSaveResponse(this.depenseService.update(depense));
+
+    if (depense.id) {
+      this.depenseService.update(depense).subscribe(res => {
+        if (res.body){
+          modalRef.close();
+          this.activeModal.close('succes')
+          this.success('Dépense mis à jour avec succès!');
+        }else {
+          modalRef.close();
+          this.warning('Erreur non définie!')
+        }
+      }, () => {
+        modalRef.close();
+        this.error('Erreur serveur non joingnable!')
+      });
     } else {
-      this.subscribeToSaveResponse(this.depenseService.create(depense));
+      this.depenseService.create(depense).subscribe(res => {
+        if (res.body){
+          modalRef.close();
+          this.activeModal.close('succes')
+          this.success('Dépense ajouté avec succès!');
+        }else {
+          modalRef.close();
+          this.warning('Erreur non définie!')
+        }
+      }, () => {
+        modalRef.close();
+        this.error('Erreur serveur non joingnable!')
+      });
     }
+  }
+
+  success(msg: string): void {
+    this.modal.success({
+      nzContent: msg,
+      nzTitle: 'SUCCESS',
+      nzOkText: 'OK',
+    });
+  }
+  warning(msg: string): void {
+    this.modal.warning({
+      nzContent: msg,
+      nzTitle: 'ATTENTION',
+      nzOkText: 'OK',
+    });
+  }
+  error(msg: string): void {
+    this.modal.error({
+      nzContent: msg,
+      nzTitle: 'ERROR',
+      nzOkText: 'OK',
+    });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDepense>>): void {
@@ -90,14 +156,10 @@ export class DepenseUpdateComponent implements OnInit {
     return {
       ...new Depense(),
       id: this.editForm.get(['id'])!.value,
-      numero: this.editForm.get(['numero'])!.value,
       motifDepense: this.editForm.get(['motifDepense'])!.value,
       ordonnateur: this.editForm.get(['ordonnateur'])!.value,
       justificatif: this.editForm.get(['justificatif'])!.value,
-      montant: this.editForm.get(['montant'])!.value,
-      dateDepense: this.editForm.get(['dateDepense'])!.value
-        ? dayjs(this.editForm.get(['dateDepense'])!.value, DATE_TIME_FORMAT)
-        : undefined,
+      montant: this.editForm.get(['montant'])!.value
     };
   }
 }

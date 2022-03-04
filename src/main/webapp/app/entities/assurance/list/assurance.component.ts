@@ -9,6 +9,7 @@ import { IAssurance } from '../assurance.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { AssuranceService } from '../service/assurance.service';
 import { AssuranceDeleteDialogComponent } from '../delete/assurance-delete-dialog.component';
+import {AssuranceUpdateComponent} from "../update/assurance-update.component";
 
 @Component({
   selector: 'jhi-assurance',
@@ -67,6 +68,19 @@ export class AssuranceComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
+        this.loadPage();
+      }
+    });
+  }
+
+  createOrUpdate(assurance?: IAssurance): void {
+    const modalRef = this.modalService.open(AssuranceUpdateComponent, { size: 'lg', backdrop: 'static' });
+    if (assurance){
+      modalRef.componentInstance.assurance = assurance;
+    }
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'succes') {
         this.loadPage();
       }
     });
