@@ -2,7 +2,13 @@
 <nb-card size="giant">
   <nb-card-header>
     <h2>
-      Opération de commande
+      <span>Opération de commande</span>
+
+      <button nbButton size="small" status="primary" outline (click)="genererCommande()"
+              class="float-end mr-2 jh-create-entity create-vente">
+        <fa-icon icon="plus"></fa-icon>
+        <span> Generer la Commande </span>
+      </button>
     </h2>
   </nb-card-header>
   <nb-card-body>
@@ -38,12 +44,12 @@
             <td style="width:50px">
               <p-inputNumber [(ngModel)]="medicament.prixAchat!" [size]="12" mode="currency" currency="XOF"
                 (onInput)="medicament.prixAchat = $event.value" (onBlur)="getPrixAchat()"
-                class="p-inputtext-sm" [showButtons]="true"></p-inputNumber>
+                class="p-inputtext-sm"></p-inputNumber>
             </td>
             <td style="width:50px">
               <p-inputNumber [(ngModel)]="medicament.prixPublic!" [size]="12" currency="XOF"
                 (onInput)="medicament.prixPublic = $event.value" mode="currency"
-                (onBlur)="getPrixPublic()" class="p-inputtext-sm" [showButtons]="true"></p-inputNumber>
+                (onBlur)="getPrixPublic()" class="p-inputtext-sm"></p-inputNumber>
             </td>
             <td style="width:50px">
               <p-inputNumber
@@ -84,22 +90,16 @@
       </p-table>
     </div>
   </nb-card-body>
-  <nb-card-footer>
-    <div class="justify-content-between">
-      <button type="button" nbButton size="small" status="basic"
-              (click)="previousState()">
-        <span >Retour</span>
-      </button>
+  <nb-card-footer class="justify-content-between">
+    <button type="button" nbButton size="small" status="basic"
+            (click)="previousState()">
+      <span >Retour</span>
+    </button>
 
-      <button type="submit" (click)="showModal()"
-              nbButton size="small" status="success">
-        <span >Voir le resultat</span>
-      </button>
-      <!--    <button type="submit" mat-raised-button color="primary"-->
-      <!--      [disabled]="editForm.invalid || isSaving">-->
-      <!--      <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>-->
-      <!--    </button>-->
-    </div>
+    <button type="submit" (click)="showModal()"
+            nbButton size="small" status="success">
+      <span >Voir le resultat</span>
+    </button>
   </nb-card-footer>
 
 </nb-card>
@@ -180,7 +180,7 @@
             <td style="width:110px">
               <input type="text" nbInput status="primary" fullWidth fieldSize="small"
                      [inputMask]="dateInputMask" placeholder="dd/mm/yyyy" (ngModelChange)="medicament.dateExpiration = $event"
-                     [(ngModel)]="medicament.dateExpiration!"  />
+                     [(ngModel)]="medicament.dateExpiration!" />
             </td>
             <td class="text-right" style="width:30px">
               <div class="btn-group">
@@ -219,7 +219,7 @@
 <!--      </button>-->
 
       <button type="submit" mat-raised-button color="primary"
-        [disabled]="selectedFournisseur.id">
+        [disabled]="!selectedFournisseur.id">
         <span >Valider</span>
       </button>
     </div>

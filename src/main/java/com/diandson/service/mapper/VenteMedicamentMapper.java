@@ -4,6 +4,8 @@ import com.diandson.domain.VenteMedicament;
 import com.diandson.service.dto.VenteMedicamentDTO;
 import org.mapstruct.*;
 
+import java.util.List;
+
 /**
  * Mapper for the entity {@link VenteMedicament} and its DTO {@link VenteMedicamentDTO}.
  */

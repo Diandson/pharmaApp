@@ -1,0 +1,108 @@
+<div class="modal-header">
+  <h2 id="page-heading" data-cy="CommandeHeading">
+    <span >Generation de la commande</span>
+  </h2>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <li class="list-group-item text-right">
+      <span class="float-left"><strong>Montant de la commande</strong></span> {{ prixTotal | currency: 'XOF' }}
+    </li>
+  </div>
+  <div class="card">
+    <p-table #dt1 [value]="medicaments!" dataKey="id"
+             [rows]="5" [showCurrentPageReport]="true"
+             styleClass="p-datatable-gridlines p-datatable-sm" [sortField]="'dci'" [sortMode]="'1'"
+             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [globalFilterFields]="['dci','forme','dosage', 'classe', 'dateExpiration']">
+      <ng-template pTemplate="caption">
+        <div class="flex">
+              <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="search"
+                           (input)="dt1.filterGlobal(search, 'startsWith')"
+                           placeholder="Recherche ..." />
+              </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:450px">DCI</th>
+          <th style="width:50px">Prix achat</th>
+          <th style="width:50px">Prix public</th>
+          <th style="width:50px">Stock disponible</th>
+          <th style="width:110px">Expiration</th>
+          <th style="width:30px"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-medicament>
+        <tr>
+          <td style="width:450px">{{ medicament.dci + ' ' + medicament.classe }}</td>
+          <td style="width:50px">
+            <p-inputNumber [(ngModel)]="medicament.prixAchat!" [size]="12" mode="currency" currency="XOF"
+                           (onInput)="medicament.prixAchat = $event.value" (onBlur)="getPrixAchat()"
+                           class="p-inputtext-sm" ></p-inputNumber>
+          </td>
+          <td style="width:50px">
+            <p-inputNumber [(ngModel)]="medicament.prixPublic!" [size]="12" currency="XOF"
+                           (onInput)="medicament.prixPublic = $event.value" mode="currency"
+                           (onBlur)="getPrixPublic()" class="p-inputtext-sm"></p-inputNumber>
+          </td>
+          <td style="width:50px">
+            <p-inputNumber
+              [(ngModel)]="medicament.stockTheorique!"
+              [showButtons]="true"
+              buttonLayout="horizontal"
+              spinnerMode="horizontal"
+              [size]="6"
+              (onInput)="medicament.stockTheorique = $event.value"
+              (onBlur)="getStockTheorique()"
+              class="p-inputtext-sm"
+              decrementButtonClass="p-button-danger p-button-sm"
+              incrementButtonClass="p-button-success p-button-sm"
+              incrementButtonIcon="pi pi-plus"
+              decrementButtonIcon="pi pi-minus"></p-inputNumber>
+          </td>
+          <td style="width:110px">
+            <input type="text" nbInput status="primary" fullWidth fieldSize="small"
+                   [inputMask]="dateInputMask" placeholder="dd/mm/yyyy" (ngModelChange)="medicament.dateExpiration = $event"
+                   [(ngModel)]="medicament.dateExpiration!" />
+          </td>
+          <td class="text-right" style="width:30px">
+            <div class="btn-group">
+              <button type="submit" (click)="removeMedicament(medicament)"
+                      class="btn btn-circle btn-danger btn-sm">
+                <i class="fas fa-minus-circle"></i>
+                <span class="d-none d-md-inline"></span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">Pas de données trouver.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="form-group mt-2">
+    <label class="form-control-label">Fournisseur</label>
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le fournisseur"
+               [(ngModel)]="selectedFournisseur" style="width:100%">
+      <nz-option *ngFor="let fournisseur of fournisseurs"
+                 [nzValue]="fournisseur" [nzLabel]="fournisseur.libelle!"></nz-option>
+    </nz-select>
+  </div>
+</div>
+<div class="modal-footer justify-content-between">
+  <button type="button" nbButton size="small" status="danger"
+          (click)="close()">
+    <span >Fermer</span>
+  </button>
+
+  <button type="submit"
+          nbButton size="small" status="success">
+    <span >Valider</span>
+  </button>
+</div>

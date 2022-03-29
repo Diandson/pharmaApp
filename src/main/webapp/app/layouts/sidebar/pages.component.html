@@ -1,7 +1,7 @@
 <div>
-    <div *jhiHasAnyAuthority="['ROLE_ADMIN']">
-        <nb-menu [items]="admin_menu" autoCollapse="true"></nb-menu>
-    </div>
+<!--    <div *jhiHasAnyAuthority="['ROLE_ADMIN']">-->
+<!--        <nb-menu [items]="admin_menu" autoCollapse="true"></nb-menu>-->
+<!--    </div>-->
   <div *jhiHasAnyAuthority="['AGENCE_ADMIN', 'STRUCTURE_ADMIN']">
         <nb-menu [items]="structAdminMenu" autoCollapse="true"></nb-menu>
     </div>

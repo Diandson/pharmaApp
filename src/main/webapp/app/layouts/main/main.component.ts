@@ -58,6 +58,10 @@ export class MainComponent implements OnInit {
     }, () => {
       this.router.navigate(['getstarted']);
     });
+
+    // if (!this.isAuthenticated()){
+    //   this.router.navigate(['/login']);
+    // }
   }
 
   isAuthenticated(): boolean{

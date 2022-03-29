@@ -1,11 +1,7 @@
 package com.diandson.service;
 
-import com.diandson.domain.Medicament;
-import com.diandson.domain.Personne;
-import com.diandson.domain.Structure;
-import com.diandson.repository.MedicamentRepository;
-import com.diandson.repository.PersonneRepository;
-import com.diandson.repository.StructureRepository;
+import com.diandson.domain.*;
+import com.diandson.repository.*;
 import com.diandson.security.SecurityUtils;
 import com.diandson.service.dto.MedicamentDTO;
 import com.diandson.service.mapper.MedicamentMapper;
@@ -14,16 +10,20 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.diandson.service.mapper.VenteMapper;
+import com.diandson.service.mapper.VenteMedicamentMapper;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +47,14 @@ public class MedicamentService {
     private StructureRepository structureRepository;
     @Autowired
     private PersonneRepository personneRepository;
+    @Autowired
+    private VenteMedicamentRepository venteMedicamentRepository;
+    @Autowired
+    private VenteMedicamentMapper venteMedicamentMapper;
+    @Autowired
+    private VenteRepository venteRepository;
+    @Autowired
+    private VenteMapper venteMapper;
 
     public MedicamentService(MedicamentRepository medicamentRepository, MedicamentMapper medicamentMapper) {
         this.medicamentRepository = medicamentRepository;
@@ -156,4 +164,28 @@ public class MedicamentService {
         log.debug("Request to delete Medicament : {}", id);
         medicamentRepository.deleteById(id);
     }
+
+    public List<MedicamentDTO> findAllGenerer() {
+        List<MedicamentDTO> medicamentDTOList = medicamentRepository.findAll().stream()
+            .map(medicamentMapper::toDto).collect(Collectors.toList());
+        for (MedicamentDTO medicamentDTO : medicamentDTOList){
+            medicamentDTO.setStockTheorique(0L);
+            ZonedDateTime startMonth = ZonedDateTime.now().minusMonths(1)
+                .withDayOfMonth(1)
+                .truncatedTo(ChronoUnit.DAYS);
+            ZonedDateTime endMonth = ZonedDateTime.now();
+
+            for (Vente vente : venteRepository.findAllByDateVenteBetween(startMonth, endMonth)){
+
+                for (VenteMedicament venteMedicament : vente.getVenteMedicaments()){
+                    if (medicamentDTO.getId().equals(venteMedicament.getMedicament().getId())) {
+                        medicamentDTO.setStockTheorique(medicamentDTO.getStockTheorique() + venteMedicament.getQuantite());
+                    }
+                }
+            }
+            medicamentDTO.setStockTheorique(medicamentDTO.getStockTheorique() / 3);
+        }
+        return medicamentDTOList;
+    }
+
 }

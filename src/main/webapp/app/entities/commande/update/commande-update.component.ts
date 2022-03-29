@@ -21,6 +21,7 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import { ICommandeMedicament} from "../../commande-medicament/commande-medicament.model";
 import {ProgressDialogComponent} from "../../../shared/progress-dialog/progress-dialog.component";
 import {Fournisseur, IFournisseur} from "../../fournisseur/fournisseur.model";
+import {GenererComponent} from "../generer/generer.component";
 
 @Component({
   selector: 'jhi-commande-update',
@@ -80,7 +81,12 @@ export class CommandeUpdateComponent implements OnInit {
     // });
 
     this.medicamentService.query()
-      .subscribe( res => this.medicaments = res.body ?? [])
+      .subscribe( res => {
+        this.medicaments = res.body ?? [];
+        this.medicaments.forEach(me => {
+          me.stockTheorique = 0;
+        })
+      })
 
     this.fournisseurService.query()
       .subscribe(res => this.fournisseurs = res.body ?? []);
@@ -110,6 +116,7 @@ export class CommandeUpdateComponent implements OnInit {
 
     const commande = new Commande();
     commande.medicament = this.medicamentList;
+    commande.fournisseur = this.selectedFournisseur;
 
     this.commandeService.createImprime(commande).subscribe(res => {
       if (res.size){
@@ -173,6 +180,15 @@ export class CommandeUpdateComponent implements OnInit {
   }
   handleCancel(): void {
     this.isVisible = false;
+  }
+
+  genererCommande(): void {
+    const modalRef = this.modalService.open(GenererComponent, { size: 'xl', backdrop: 'static' });
+    modalRef.result.then((res) => {
+      if (res !== 'close'){
+        this.previousState();
+      }
+    })
   }
 
   success(msg: string): void {
@@ -240,5 +256,4 @@ export class CommandeUpdateComponent implements OnInit {
       operateur: this.editForm.get(['operateur'])!.value,
     };
   }
-
 }

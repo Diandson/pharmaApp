@@ -13,10 +13,11 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {InputMaskModule} from "@ngneat/input-mask";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzSelectModule} from "ng-zorro-antd/select";
+import { GenererComponent } from './generer/generer.component';
 
 @NgModule({
   imports: [SharedModule, CommandeRoutingModule, NbButtonModule, NbCardModule, TableModule, InputTextModule, MatButtonModule, InputNumberModule, InputMaskModule, NzModalModule, NbInputModule, NzSelectModule],
-  declarations: [CommandeComponent, CommandeDetailComponent, CommandeUpdateComponent, CommandeDeleteDialogComponent],
+  declarations: [CommandeComponent, CommandeDetailComponent, CommandeUpdateComponent, CommandeDeleteDialogComponent, GenererComponent],
   entryComponents: [CommandeDeleteDialogComponent],
 })
 export class CommandeModule {}

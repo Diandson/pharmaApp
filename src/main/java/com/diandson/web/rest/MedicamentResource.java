@@ -164,6 +164,12 @@ public class MedicamentResource {
         return ResponseEntity.ok().body(page);
     }
 
+    @GetMapping("/medicaments/generer")
+    public ResponseEntity<List<MedicamentDTO>> getAllMedicamentsGenerer() {
+        List<MedicamentDTO> page = medicamentService.findAllGenerer();
+        return ResponseEntity.ok().body(page);
+    }
+
     /**
      * {@code GET  /medicaments/:id} : get the "id" medicament.
      *

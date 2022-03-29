@@ -8,7 +8,7 @@
     <groupId>com.diandson</groupId>
     <artifactId>app-pharma</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>App Pharma</name>
     <description>Description for appPharma</description>
 

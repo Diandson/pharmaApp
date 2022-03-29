@@ -9,6 +9,7 @@ export interface ICommande {
   id?: number;
   numero?: string | null;
   dateCommande?: dayjs.Dayjs | null;
+  valider?: boolean | null;
   livraison?: ILivraison | null;
   fournisseur?: IFournisseur | null;
   commandeMedicaments?: ICommandeMedicament[] | null;
@@ -21,6 +22,7 @@ export class Commande implements ICommande {
     public id?: number,
     public numero?: string | null,
     public dateCommande?: dayjs.Dayjs | null,
+    public valider?: boolean | null,
     public livraison?: ILivraison | null,
     public fournisseur?: IFournisseur | null,
     public commandeMedicaments?: ICommandeMedicament[] | null,

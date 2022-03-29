@@ -12,6 +12,10 @@
     {
       "fieldName": "dateCommande",
       "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "valider",
+      "fieldType": "Boolean"
     }
   ],
   "fluentMethods": true,

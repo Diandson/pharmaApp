@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IFournisseur, Fournisseur } from '../fournisseur.model';
 import { FournisseurService } from '../service/fournisseur.service';
@@ -17,8 +17,7 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class FournisseurUpdateComponent implements OnInit {
   isSaving = false;
-
-  personnesSharedCollection: IPersonne[] = [];
+  fournisseur?: IFournisseur;
 
   editForm = this.fb.group({
     id: [],
@@ -36,11 +35,14 @@ export class FournisseurUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ fournisseur }) => {
-      this.updateForm(fournisseur);
-
-      this.loadRelationshipsOptions();
-    });
+    // this.activatedRoute.data.subscribe(({ fournisseur }) => {
+    //   this.updateForm(fournisseur);
+    //
+    //   this.loadRelationshipsOptions();
+    // });
+    if (this.fournisseur!.id){
+      this.updateForm(this.fournisseur!);
+    }
   }
 
   previousState(): void {
@@ -88,23 +90,6 @@ export class FournisseurUpdateComponent implements OnInit {
       email: fournisseur.email,
       operateur: fournisseur.operateur,
     });
-
-    this.personnesSharedCollection = this.personneService.addPersonneToCollectionIfMissing(
-      this.personnesSharedCollection,
-      fournisseur.operateur
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.personneService
-      .query()
-      .pipe(map((res: HttpResponse<IPersonne[]>) => res.body ?? []))
-      .pipe(
-        map((personnes: IPersonne[]) =>
-          this.personneService.addPersonneToCollectionIfMissing(personnes, this.editForm.get('operateur')!.value)
-        )
-      )
-      .subscribe((personnes: IPersonne[]) => (this.personnesSharedCollection = personnes));
   }
 
   protected createFromForm(): IFournisseur {

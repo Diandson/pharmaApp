@@ -1,0 +1,16 @@
+
+.modal-backdrop {
+  background-color: transparent !important;
+}
+
+::ng-deep .myCustomModalClass .modal-dialog {
+  max-width: 0;
+  max-height: 0;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+  z-index: 99999 !important;
+}
+.cdk-overlay-connected-position-bounding-box {
+  z-index: 99999 !important;
+}
+

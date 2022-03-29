@@ -6,7 +6,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
-  imports: [NbMenuModule, RouterModule, PagesRoutingModule, SharedModule],
+  imports: [NbMenuModule.forRoot(), RouterModule, PagesRoutingModule, SharedModule],
   declarations: [PagesComponent],
   exports: [PagesComponent],
 })

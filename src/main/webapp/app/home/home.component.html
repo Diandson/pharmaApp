@@ -5,7 +5,7 @@
         <div nz-col [nzSpan]="19">
           <nb-card size="medium">
             <nb-card-header>
-              <h3>Les prescriptions en attente</h3>
+              <h5>Les prescriptions en attente</h5>
             </nb-card-header>
             <nb-card-body>
               <div class="card col-12 item-card" *ngFor="let vente of ventes">
@@ -71,7 +71,7 @@
               <div class="row align-items-center no-gutters">
                 <div class="col me-2">
                   <div class="text-uppercase text-success fw-bold text-lg mb-1"><span>Recette journalière</span></div>
-                  <div class="text-dark fw-bold h3 mb-0 mt-5"><span>{{45000 | currency: 'XOF'}}</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{45000 | currency: 'XOF'}}</span></div>
                 </div>
                 <div class="col-auto"><i class="fas fa-calendar fa-4x text-gray-300"></i></div>
               </div>
@@ -84,7 +84,7 @@
               <div class="row align-items-center no-gutters">
                 <div class="col me-2">
                   <div class="text-uppercase text-success fw-bold text-lg mb-1"><span>Dépense journalier</span></div>
-                  <div class="text-dark fw-bold h3 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
                 </div>
                 <div class="col-auto"><i class="fas fa-dollar-sign fa-4x text-gray-300"></i></div>
               </div>
@@ -97,7 +97,7 @@
               <div class="row align-items-center no-gutters">
                 <div class="col me-2">
                   <div class="text-uppercase text-success fw-bold text-lg mb-1"><span>Net versement</span></div>
-                  <div class="text-dark fw-bold h3 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
                 </div>
                 <div class="col-auto"><i class="fas fa-dollar-sign fa-4x text-gray-300"></i></div>
               </div>
@@ -110,7 +110,7 @@
               <div class="row align-items-center no-gutters">
                 <div class="col me-2">
                   <div class="text-uppercase text-success fw-bold text-lg mb-1"><span>Net en caisse</span></div>
-                  <div class="text-dark fw-bold h3 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
                 </div>
                 <div class="col-auto"><i class="fas fa-dollar-sign fa-4x text-gray-300"></i></div>
               </div>
@@ -204,7 +204,61 @@
     </div>
 
     <div class="row" *jhiHasAnyAuthority="['AGENCE_ADMIN', 'STRUCTURE_ADMIN']">
+      <div class="row">
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-start-primary py-2">
+            <div class="card-body">
+              <div class="row align-items-center no-gutters">
+                <div class="col me-2">
+                  <div class="text-uppercase text-success fw-bold text-md mb-1"><span>Recette journalière</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{45000 | currency: 'XOF'}}</span></div>
+                </div>
+                <div class="col-auto"><i class="fas fa-calendar fa-4x text-gray-300"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-start-success py-2">
+            <div class="card-body">
+              <div class="row align-items-center no-gutters">
+                <div class="col me-2">
+                  <div class="text-uppercase text-success fw-bold text-md mb-1"><span>Dépense journalier</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
+                </div>
+                <div class="col-auto"><i class="fas fa-dollar-sign fa-4x text-gray-300"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-start-success py-2">
+            <div class="card-body">
+              <div class="row align-items-center no-gutters">
+                <div class="col me-2">
+                  <div class="text-uppercase text-success fw-bold text-md mb-1"><span>Net versement</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
+                </div>
+                <div class="col-auto"><i class="fas fa-dollar-sign fa-4x text-gray-300"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-start-success py-2">
+            <div class="card-body">
+              <div class="row align-items-center no-gutters">
+                <div class="col me-2">
+                  <div class="text-uppercase text-success fw-bold text-md mb-1"><span>Net en caisse</span></div>
+                  <div class="text-dark fw-bold h5 mb-0 mt-5"><span>{{215000 | currency: 'XOF'}}</span></div>
+                </div>
+                <div class="col-auto"><i class="fas fa-dollar-sign fa-4x text-gray-300"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+      </div>
     </div>
   </div>
 </div>

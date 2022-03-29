@@ -31,6 +31,9 @@ public class Commande implements Serializable {
     @Column(name = "date_commande")
     private ZonedDateTime dateCommande;
 
+    @Column(name = "valider")
+    private Boolean valider;
+
     @JsonIgnoreProperties(value = { "commande", "operateur" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
@@ -104,6 +107,19 @@ public class Commande implements Serializable {
 
     public void setDateCommande(ZonedDateTime dateCommande) {
         this.dateCommande = dateCommande;
+    }
+
+    public Boolean getValider() {
+        return this.valider;
+    }
+
+    public Commande valider(Boolean valider) {
+        this.setValider(valider);
+        return this;
+    }
+
+    public void setValider(Boolean valider) {
+        this.valider = valider;
     }
 
     public Livraison getLivraison() {
@@ -202,6 +218,7 @@ public class Commande implements Serializable {
             "id=" + getId() +
             ", numero='" + getNumero() + "'" +
             ", dateCommande='" + getDateCommande() + "'" +
+            ", valider='" + getValider() + "'" +
             "}";
     }
 }

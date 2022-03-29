@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-import { ADMIN_MENU_ITEMS } from './pages-menu';
 import {Authority} from "../../config/authority.constants";
 import {StructAdminMenu} from "./struct-admin-menu";
 
@@ -12,7 +11,7 @@ import {StructAdminMenu} from "./struct-admin-menu";
 export class PagesComponent {
   authority = Authority;
 
-  admin_menu = ADMIN_MENU_ITEMS;
+  // admin_menu = ADMIN_MENU_ITEMS;
   structAdminMenu = StructAdminMenu;
 
 }

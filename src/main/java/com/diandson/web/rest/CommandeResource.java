@@ -66,6 +66,11 @@ public class CommandeResource {
             .body(result);
     }
 
+    @PostMapping("/commandes/imprimer")
+    public void createCommandeImprimer(@RequestBody CommandeDTO commandeDTO) throws URISyntaxException {
+        commandeService.saveImprimer(commandeDTO);
+    }
+
     /**
      * {@code PUT  /commandes/:id} : Updates an existing commande.
      *

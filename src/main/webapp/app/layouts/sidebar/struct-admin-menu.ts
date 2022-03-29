@@ -1,7 +1,6 @@
-import { NbMenuItem } from '@nebular/theme';
+import {NbMenuItem} from "@nebular/theme";
 
 export const StructAdminMenu: NbMenuItem[] = [
-
   {
     title: 'PERSONNEL',
     pathMatch: 'full',
@@ -14,22 +13,22 @@ export const StructAdminMenu: NbMenuItem[] = [
       {
         title: 'Les assurances',
         pathMatch: 'full',
-        link: 'assurance'
+        link: '/assurance'
       },
       {
         title: 'Les fournisseurs',
         pathMatch: 'full',
-        link: 'fournisseur'
+        link: '/fournisseur'
       },
       {
         title: 'Type de dépenses',
         pathMatch: 'full',
-        link: 'motif-liste-depense'
+        link: '/motif-liste-depense'
       },
       {
         title: 'Lieu versement',
         pathMatch: 'full',
-        link: 'lieu-versement'
+        link: '/lieu-versement'
       },
     ]
   },
@@ -41,42 +40,37 @@ export const StructAdminMenu: NbMenuItem[] = [
       {
         title: 'Journal de vente',
         pathMatch: 'full',
-        link: 'vente'
+        link: '/vente'
       },
       {
         title: 'Journal de dépense',
         pathMatch: 'full',
-        link: 'depense'
+        link: '/depense'
       },
       {
         title: 'Journal de versement',
         pathMatch: 'full',
-        link: 'versement'
+        link: '/versement'
       },
       {
         title: 'Les approvisionnements',
         pathMatch: 'full',
-        link: 'approvisionnement'
+        link: '/approvisionnement'
       },
       {
         title: 'Les commandes',
         pathMatch: 'full',
-        link: 'commande'
+        link: '/commande'
       },
       {
         title: 'Les livraisons',
         pathMatch: 'full',
-        link: 'livraison'
-      },
-      {
-        title: 'Lieu versement',
-        pathMatch: 'full',
-        link: 'lieu-versement'
+        link: '/livraison'
       },
       {
         title: 'Les clients',
         pathMatch: 'full',
-        link: 'client'
+        link: '/client'
       },
     ]
   }

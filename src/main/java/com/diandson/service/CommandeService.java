@@ -1,12 +1,24 @@
 package com.diandson.service;
 
 import com.diandson.domain.Commande;
-import com.diandson.repository.CommandeRepository;
+import com.diandson.domain.CommandeMedicament;
+import com.diandson.domain.Medicament;
+import com.diandson.repository.*;
+import com.diandson.security.SecurityUtils;
 import com.diandson.service.dto.CommandeDTO;
 import com.diandson.service.mapper.CommandeMapper;
+
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.diandson.service.mapper.CommandeMedicamentMapper;
+import com.diandson.service.mapper.MedicamentMapper;
+import com.diandson.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +36,18 @@ public class CommandeService {
     private final CommandeRepository commandeRepository;
 
     private final CommandeMapper commandeMapper;
+    @Autowired
+    private MedicamentRepository medicamentRepository;
+    @Autowired
+    private MedicamentMapper medicamentMapper;
+    @Autowired
+    private CommandeMedicamentRepository commandeMedicamentRepository;
+    @Autowired
+    private CommandeMedicamentMapper commandeMedicamentMapper;
+    @Autowired
+    private PersonneRepository personneRepository;
+    @Autowired
+    private StructureRepository structureRepository;
 
     public CommandeService(CommandeRepository commandeRepository, CommandeMapper commandeMapper) {
         this.commandeRepository = commandeRepository;
@@ -95,5 +119,28 @@ public class CommandeService {
     public void delete(Long id) {
         log.debug("Request to delete Commande : {}", id);
         commandeRepository.deleteById(id);
+    }
+
+    public void saveImprimer(CommandeDTO commandeDTO) {
+        Commande commande = commandeMapper.toEntity(commandeDTO);
+        commande.setOperateur(personneRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin().get()));
+        commande.setNumero(RandomUtil.generateRandomSerialNumericPaiementStringc());
+        commande.setDateCommande(ZonedDateTime.now());
+        commande = commandeRepository.save(commande);
+
+        for (Medicament medicament : commandeDTO.getMedicament().stream()
+            .map(medicamentMapper::toEntity).collect(Collectors.toList())){
+
+//            Medicament medicamentToUpdate = medicamentRepository.getById(medicament.getId());
+//            medicamentToUpdate.setStockTheorique(medicamentToUpdate.getStockTheorique() - medicament.getStockTheorique());
+//            medicamentToUpdate = medicamentRepository.save(medicamentToUpdate);
+
+            CommandeMedicament cm = new CommandeMedicament();
+            cm.setCommande(commande);
+            cm.setQuantite(medicament.getStockTheorique());
+            cm.setMedicament(medicament);
+            cm = commandeMedicamentRepository.save(cm);
+        }
+
     }
 }
